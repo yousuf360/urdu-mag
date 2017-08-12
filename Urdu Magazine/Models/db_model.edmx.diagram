@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d9adf682ab1c437b945894231419dfc8" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="fyp_dbModel.Article" Width="1.5" PointX="3" PointY="6.25" />
+        <EntityTypeShape EntityType="fyp_dbModel.Article_Issue" Width="1.5" PointX="7.5" PointY="10.25" />
+        <EntityTypeShape EntityType="fyp_dbModel.Article_Rating" Width="1.5" PointX="5.25" PointY="6.375" />
+        <EntityTypeShape EntityType="fyp_dbModel.Article_Submit_Info" Width="1.5" PointX="10.5" PointY="10.25" />
+        <EntityTypeShape EntityType="fyp_dbModel.Comment" Width="1.5" PointX="7.5" PointY="13.875" />
+        <EntityTypeShape EntityType="fyp_dbModel.fullPageAd" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="fyp_dbModel.inPageAd" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="fyp_dbModel.Issue" Width="1.5" PointX="5.25" PointY="13" />
+        <EntityTypeShape EntityType="fyp_dbModel.Magazine" Width="1.5" PointX="3" PointY="12" />
+        <EntityTypeShape EntityType="fyp_dbModel.Magazine_Category" Width="1.5" PointX="5.25" PointY="10.125" />
+        <EntityTypeShape EntityType="fyp_dbModel.PreviewAricle" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="fyp_dbModel.UploadMedia" Width="1.5" PointX="3" PointY="20.625" />
+        <EntityTypeShape EntityType="fyp_dbModel.User" Width="1.5" PointX="0.75" PointY="11.25" />
+        <AssociationConnector Association="fyp_dbModel.FK__Article__User_Id__25869641" />
+        <AssociationConnector Association="fyp_dbModel.FK__Article_I__Artic__267ABA7A" />
+        <AssociationConnector Association="fyp_dbModel.FK__Article_R__artic__286302EC" />
+        <AssociationConnector Association="fyp_dbModel.FK__Article_S__Artic__625A9A57" />
+        <AssociationConnector Association="fyp_dbModel.FK__Article_I__Issue__276EDEB3" />
+        <AssociationConnector Association="fyp_dbModel.FK_Article_Issue_ToTable_Magazine_category" />
+        <AssociationConnector Association="fyp_dbModel.FK__Article_R__user___29572725" />
+        <AssociationConnector Association="fyp_dbModel.FK__Article_S__Submi__634EBE90" />
+        <AssociationConnector Association="fyp_dbModel.FK_Article_Submit_Info_ToTable_Category" />
+        <AssociationConnector Association="fyp_dbModel.FK_Comments_ToTable_Issue" />
+        <AssociationConnector Association="fyp_dbModel.FK_Comments_ToTable_User" />
+        <AssociationConnector Association="fyp_dbModel.FK__Issue__Magazine___2C3393D0" />
+        <AssociationConnector Association="fyp_dbModel.FK__Magazine__User_I__2D27B809" />
+        <AssociationConnector Association="fyp_dbModel.FK_Magazine_Category_ToTable_Magazine" />
+        <AssociationConnector Association="fyp_dbModel.FK_Table_ToTable_User" />
+        <EntityTypeShape EntityType="fyp_dbModel.Notification_type" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="fyp_dbModel.Notification" Width="1.5" PointX="5.375" PointY="0.75" />
+        <AssociationConnector Association="fyp_dbModel.FK_Notification_ToTable_User" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

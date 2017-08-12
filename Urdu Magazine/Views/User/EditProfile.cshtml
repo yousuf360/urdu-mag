@@ -1,0 +1,202 @@
+﻿@model Urdu_Magazine.Models.UserEditVM
+@{
+    ViewBag.Title = "EditProfile";
+    Urdu_Magazine.Models.User user = ViewBag.user as Urdu_Magazine.Models.User;
+}
+
+
+
+<link href="~/Content/iCheck/skins/flat/green.css" rel="stylesheet" />
+<div class="left_col" role="main" style="min-height: 700px;">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h1>@Urdu_Magazine.Resources.Resource.YourProfile<small></small></h1>
+                        
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br />
+@using (Html.BeginForm("EditProfile", "User", FormMethod.Post, new { @class = "form-horizontal form-label-left", id = "frm", encType = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Name">
+            @Html.DisplayNameFor(m => m.ProfilePicture)
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <label class="btn btn-lg btn-info btn-file fa fa-upload form-control">
+
+                @Html.TextBoxFor(model => model.ProfilePicture, new { @class = "form-control col-md-7 col-xs-12", type = "file", @style = "display:none" })
+            </label>
+            @Html.ValidationMessageFor(model => model.ProfilePicture, "", new { @class = "text-danger" })
+            @*<input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">*@
+        </div>
+     </div>
+    <div class="form-group">
+
+        @{
+            if (user.profile_picture == null)
+            {
+                <img class="img-responsive img-circle center-margin" style="width:200px;height:200px" id="ProfilePreview" src="~/Delete Me Later/10703961_790883610958096_1037989544213840837_n.jpg" alt="your image" />
+
+            }
+            else
+            {
+                <img class="img-responsive img-circle center-margin" style="width:200px;height:200px" id="ProfilePreview" src="@Url.Content(user.profile_picture)" alt="your image" />
+            }
+
+        }
+
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
+            @Html.DisplayNameFor(model => model.full_name) <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            @Html.EditorFor(model => model.full_name, new
+                           {
+                               htmlAttributes = new
+                               {
+                                   @class = "form-control col-md-7 col-xs-12",
+                                   @dir = "rtl"@*, @onkeypress = "return changeKey(this, event, typeUrdu);"*@ }
+                           })
+            @Html.ValidationMessageFor(model => model.full_name, "", new { @class = "text-danger" })
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="margin-right:25%;margin-top:15px">
+            <input type="checkbox" id="romanCheckBoxFullName" class="flat" checked /> @Urdu_Magazine.Resources.Resource.RomanUrduTyping
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="columns">
+            @Html.DisplayNameFor(model => model.CurrentPassword) <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            @Html.EditorFor(model => model.CurrentPassword, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12"} })
+            @Html.ValidationMessageFor(model => model.CurrentPassword, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="columns">
+            @Html.DisplayNameFor(model => model.NewPassword) <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            @Html.EditorFor(model => model.NewPassword, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12"} })
+            @Html.ValidationMessageFor(model => model.NewPassword, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="columns">
+            @Html.DisplayNameFor(model => model.NewPasswordConfirm) <span class="required">*</span>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            @Html.EditorFor(model => model.NewPasswordConfirm, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
+            @Html.ValidationMessageFor(model => model.NewPasswordConfirm, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="ln_solid"></div>
+    <div class="form-group">
+        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+
+            <button type="submit" class="btn btn-success pull-left">@Urdu_Magazine.Resources.Resource.Save</button>
+        </div>
+    </div>
+            }
+    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+  
+    <script src="~/Content/iCheck/icheck.min.js"></script>
+    
+    <script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#ProfilePreview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#ProfilePicture").change(function () {
+
+            readURL(this);
+            var img = document.getElementById('ProfilePreview');
+            //or however you get a handle to the IMG
+            //var width = img.clientWidth;
+            //var height = img.clientHeight;
+
+            //if ((height / width) > 0.708 || (height / width) < 0.706)
+            //{
+            //    alert('error');
+            //}
+            //else {
+            //    alert('good');
+            //}
+        });
+    </script>
+
+
+
+
+
+
+
+
+@*to enable a text area with only conversion*@
+<script src="https://www.google.com/jsapi"      type="text/javascript">
+    </script>
+
+<script type="text/javascript">
+
+
+    google.load("elements", "1", {
+        packages: "transliteration"
+    });
+
+    function onLoad() {
+        var options = {
+            sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage: [google.elements.transliteration.LanguageCode.URDU],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        var control = new google.elements.transliteration.TransliterationControl(options);
+        control.makeTransliteratable(['full_name']);
+        $("#full_name").css("font-family", "Jameel noori nastaleeq");
+        $("#full_name").css("font-size", "15pt");
+        $('#romanCheckBoxFullName').on('ifChecked', function (event) {
+            $("#full_name").attr("onkeypress", "");
+            control.enableTransliteration();
+            $("#full_name").focus();
+        });
+        $('#romanCheckBoxFullName').on('ifUnchecked', function (event) {
+            control.disableTransliteration();
+            $("#full_name").attr("onkeypress", "return changeKey(this, event, typeUrdu);");
+            $("#full_name").focus();
+        });
+    }
+    google.setOnLoadCallback(onLoad);
+</script>
+@*to enable a text area with only conversion*@
+    }

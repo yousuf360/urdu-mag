@@ -1,0 +1,397 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+@model Urdu_Magazine.Models.IssueCreateVM
+<link href="~/Content/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+@*<style>
+    .Features {
+    }
+
+
+    .CategoriesSelected {
+        padding: 2px 8px;
+        background-color: rgba(231,235,238,7);
+        border: 1px solid lightgray;
+        cursor: pointer;
+        display: inline-block;
+        margin-top: 3px;
+    }
+
+
+        .CategoriesSelected:hover {
+            background-color: lightgray;
+        }
+
+        .CategoriesSelected i {
+            color: darkred;
+            font-weight: 700;
+            font-style: normal;
+        }
+        .img-responsive {
+            margin:auto;
+            margin-top:3%;
+        }
+</style>*@
+<style>
+      .img-responsive {
+            margin:auto;
+            margin-top:3%;
+        }
+</style>
+<div class="left_col" role="main" style="min-height: 700px;">
+
+
+    <div class="">
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h1 class="langStyle">@Urdu_Magazine.Resources.Resource.CreateNewIssue</h1>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+
+                        <!-- Smart Wizard -->
+                        <div id="wizard" class="form_wizard wizard_horizontal">
+                            <ul class="wizard_steps">
+                                <li>
+                                    <a href="#step-1">
+                                        <span class="step_no">@Urdu_Magazine.Resources.Resource.digit1</span>
+                                        <span class="step_descr">
+                                           @Urdu_Magazine.Resources.Resource.Step1<br />
+                                            <small>@*Step 1 description*@</small>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#step-2">
+                                        <span class="step_no">@Urdu_Magazine.Resources.Resource.digit2</span>
+                                        <span class="step_descr">
+                                           @Urdu_Magazine.Resources.Resource.Step2<br />
+                                            <small>@*Step 2 description*@</small>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#step-3">
+                                        <span class="step_no">@Urdu_Magazine.Resources.Resource.digit3</span>
+                                        <span class="step_descr">
+                                            @Urdu_Magazine.Resources.Resource.Step3<br />
+                                            <small>@*Step 3 description*@</small>
+                                        </span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                            @using (Html.BeginForm("Create", "Issue", FormMethod.Post, new { id = "frm", encType = "multipart/form-data" }))
+                            {
+
+                                @Html.AntiForgeryToken();
+                                <div id="step-1">
+                                    <div class="form-horizontal form-label-left">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Name">
+                                                @Html.DisplayNameFor(m => m.Magazine_Id)<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownList("Magazine_Id", null, Urdu_Magazine.Resources.Resource.SelectDisplay, htmlAttributes: new { @class = "form-control col-md-7 col-xs-12", @onkeypress = "return changeKey(this, event, typeUrdu);" })
+                                               
+                                                @Html.ValidationMessageFor(model => model.Magazine_Id, "", new { @class = "text-danger" })
+                                                @*<input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">*@
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                               @Html.DisplayNameFor(m=>m.Issue_date) <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.EditorFor(m => m.Issue_date, new { htmlAttributes = new { @class = "date-picker form-control col-md-7 col-xs-12", @dir = "rtl"} })
+                                                @Html.ValidationMessageFor(model => model.Issue_date, "", new { @class = "text-danger" })
+                                                @*<input id="birthday" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">*@
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div id="step-2">
+                                    <div class="form-horizontal form-label-left">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Name">
+                                                @Html.DisplayNameFor(m => m.Cover)
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <label class="btn btn-lg btn-info btn-file fa fa-upload form-control">
+
+                                                    @Html.TextBoxFor(model => model.Cover, new { @class = "form-control col-md-7 col-xs-12", type = "file", @style = "display:none" })
+                                                </label>
+                                                @Html.ValidationMessageFor(model => model.Cover, "", new { @class = "text-danger" })
+                                                @*<input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">*@
+                                            </div>
+
+                                        </div>
+
+                                        <img class="img-responsive" style="max-width:300px" id="CoverPhoto" src="~/images/mag-imgs/Kadro_A4_001.png" alt="your image" />
+
+
+
+
+                                    </div>
+
+                                </div>
+                                <div id="step-3">
+                                    <div class="form-horizontal form-label-left">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                                                @Html.DisplayNameFor(m => m.Submission_date)
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.EditorFor(m => m.Submission_date, new { htmlAttributes = new { @class = "date-picker form-control col-md-7 col-xs-12", @dir = "rtl" } })
+                                                @Html.ValidationMessageFor(model => model.Submission_date, "", new { @class = "text-danger" })
+                                                @*<input id="birthday" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">*@
+                                            </div>
+                                        </div>
+
+                                      
+
+
+
+
+                                    </div>
+
+                                </div>
+                                @*<div id="step-3">
+                                    <div class="form-horizontal form-label-left">
+
+                                        <div class="form-group">
+
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Name">
+                                                @Html.DisplayNameFor(m => m.Categories)
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.HiddenFor(model => model.Categories)
+                                                <input class="form-control" id="Category-textbox" type="text" onkeypress="return changeKey(this, event, typeUrdu);">
+                                                @Html.ValidationMessageFor(model => model.Categories, "", new { @class = "text-danger" })
+                                                <span id="msg1" class="text-danger"></span>
+                                                <br />
+                                                <div class="Categories">
+
+                                                </div>
+                                                <br />
+                                             
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            }
+                        </div>
+                        <!-- End SmartWizard Content -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/moment/min/moment.min.js"></script>
+    <script src="~/Content/bootstrap-daterangepicker/daterangepicker.js"></script>
+    
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+    <script src="~/Content/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+
+    <script>
+        $(document).ready(function () {
+          
+            $('#Issue_date').daterangepicker({
+                autoUpdateInput: false,
+                "opens": "left",
+                "locale": {
+                    "format": "MM/DD/YYYY",
+                    "separator": " - ",
+                    "applyLabel": "Apply",
+                    "cancelLabel": "Cancel",
+                    "fromLabel": "From",
+                    "toLabel": "To",
+                    "customRangeLabel": "Custom",
+                    "daysOfWeek": [
+                       'اتوار', 'پیر', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتے'
+                    ],
+                    "monthNames": [
+                       'جنوری', 'فروری', 'مریخ', 'اپریل', 'مائی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'
+                    ],
+                    "firstDay": 1
+                },
+                singleDatePicker: true,
+                calender_style: "picker_3"
+            }, function(chosen_date) {
+                $('#Issue_date').val(chosen_date.format('YYYY-MM-DD'));
+                setDatePickerForSubmissionDate();
+      
+            });
+   
+           function setDatePickerForSubmissionDate(){
+                $('#Submission_date').daterangepicker({
+                    autoUpdateInput: false,
+                    maxDate: new Date($('#Issue_date').val()),
+                    "opens": "left",
+                    "locale": {
+                        "format": "MM/DD/YYYY",
+                        "separator": " - ",
+                        "applyLabel": "Apply",
+                        "cancelLabel": "Cancel",
+                        "fromLabel": "From",
+                        "toLabel": "To",
+                        "customRangeLabel": "Custom",
+                        "daysOfWeek": [
+                           'اتوار', 'پیر', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتے'
+                        ],
+                        "monthNames": [
+                           'جنوری', 'فروری', 'مریخ', 'اپریل', 'مائی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'
+                        ],
+                        "firstDay": 1
+                    },
+                    singleDatePicker: true,
+                    calender_style: "picker_3",
+               
+                }, function (chosen_date) {
+                    $('#Submission_date').val(chosen_date.format('YYYY-MM-DD'));
+
+                });
+
+            }
+
+        //    var someData = $("#Categories").val();
+        //    var category = someData.slice(0, -1).split(',');
+        //    console.log(category);
+        //    $.each(category, function (index, value) {
+        //        if (value.length > 0) {
+        //            $('.Categories').append('<span class="CategoriesSelected"><span class="CategoriesSelectedVal"  temp="' + value + '" name="Categories">' + value + '.</span>&nbsp;&nbsp;<i>X</i></span> ');
+        //        }
+
+        //    });
+        //$("#Category-textbox").keypress(function (event) {
+
+        //    if (event.which == 13) {
+        //        if ($("#msg").text() == "Please add some Category.") {
+        //            $("#msg").text('');
+        //        }
+        //        if ($("span:contains('" + $('#Category-textbox').val() + "')").length > 0) {
+        //            $("#msg1").text($('#Category-textbox').val() + ' فہرست میں پہلے سے ہی ہے');
+        //            $('#Category-textbox').val("");
+        //        }
+        //        else {
+        //            $("#msg1").text('');
+        //            $('#Categories').val($('#Categories').val() + $('#Category-textbox').val() + ',');
+        //            $('.Categories').append('<span class="CategoriesSelected"><span class="CategoriesSelectedVal"  temp="' + $('#Category-textbox').val() + '" name="Categories">' + $('#Category-textbox').val() + '.</span>&nbsp;&nbsp;<i>X</i></span> ');
+        //            $('#Category-textbox').val("");
+        //            $("#frm").validate().element("#Categories");
+        //        }
+        //        return false;
+        //    }
+        //    else {
+        //        $("#msg1").text('');
+        //        return true;
+        //    }
+        //});
+
+
+        //$("body").on("click", ".CategoriesSelected", function () {
+        //    $('#Categories').val($('#Categories').val().replace($(this).children(':first').attr('temp') + ',', ''));
+        //    $("#msg1").text('');
+        //    this.remove();
+
+        //});
+
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#CoverPhoto').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#Cover").change(function () {
+
+            readURL(this);
+            var img = document.getElementById('CoverPhoto');
+            //or however you get a handle to the IMG
+            //var width = img.clientWidth;
+            //var height = img.clientHeight;
+
+            //if ((height / width) > 0.708 || (height / width) < 0.706)
+            //{
+            //    alert('error');
+            //}
+            //else {
+            //    alert('good');
+            //}
+        });
+
+
+          $('#wizard').smartWizard({
+              onLeaveStep: leaveAStepCallback,
+              onFinish: onFinishCallback
+          });
+          function onFinishCallback(objs, context) {
+              if (validateAllSteps()) {
+                  $('#frm').submit();
+              }
+          }
+          function validateAllSteps() {
+              if (!validateSteps(1)) {
+                  return false;
+              }
+              else if (!validateSteps(2)) {
+                  return false;
+              }
+             
+              else {
+                  return true;
+              }
+          }
+          function leaveAStepCallback(obj, context) {
+
+              return validateSteps(context.fromStep); // return false to stay on step and true to continue navigation
+          }
+          function validateSteps(stepnumber) {
+              var isStepValid = true;
+              // validate step 1
+              if (stepnumber == 1) {
+                  return ($("#frm").validate().element("#Magazine_Id") && $("#frm").validate().element("#Issue_date"));
+              }
+              if(stepnumber==2)
+              {
+                  return $("#frm").validate().element("#Cover");
+              }
+              return isStepValid;
+            
+              // ...
+          }
+
+
+          $('.buttonNext').addClass('btn btn-success pull-left').html('@Urdu_Magazine.Resources.Resource.Next');
+          $('.buttonPrevious').addClass('btn btn-primary').html('@Urdu_Magazine.Resources.Resource.Previous');
+          $('.buttonFinish').addClass('btn btn-default pull-left').html('@Urdu_Magazine.Resources.Resource.Finish');
+      });
+    </script>
+}

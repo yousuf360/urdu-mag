@@ -1,0 +1,151 @@
+﻿.content-black{
+    width:100%;
+    height:680px;
+    background-color:black;
+    
+   
+}
+.mag-view{
+    top:0;
+    margin:0px;
+    height:88%;
+    color:white;
+    
+    overflow:hidden;
+}
+.issue-list{
+top:0;
+    margin:0px;
+    height:88%;
+    color:white;
+    overflow:hidden;
+}
+.mgzn-name{
+  border-bottom:1px solid;
+  border-color:black;
+ 
+  
+
+}
+.mg-issue-list{
+   
+    
+    margin-top:10px;
+}
+.mg-issue-list ol{
+
+    overflow:hidden;
+    overflow-y: scroll;
+    margin:0px;
+    padding:0px;
+    height: 520px;
+    scrollbar-darkshadow-color:black;
+    display:block;
+  
+}
+.mg-issue-list ol li{
+        padding-right: 20px;
+    height:130px !important;
+    padding-bottom:10px;
+    padding-top:10px;
+    margin:0px;
+    
+    clear:both;
+    
+}
+
+span{
+
+    color:black;
+   
+}
+.mg-issue-list ol li img{
+    width:80px;
+    height:100%;
+}
+ol::-webkit-scrollbar-track
+    {
+    
+    	background-color: #222222;
+    }
+.mg-issue-list li:hover {
+    background:#ddd;
+}
+ol::-webkit-scrollbar
+    {
+    	width: 10px;
+    	background-color: #F5F5F5;
+    }
+    
+ol::-webkit-scrollbar-thumb
+    {
+    
+    	background-color: #888888;
+    	
+    }
+/******************download section*********************/
+.comment-section{
+    
+    margin-top:20px;
+    margin-left:0px;
+    margin-right:0px;
+    /*width:64%;*/
+    padding:0px;
+    padding-left:25px;
+}
+.head{
+    background-color:#F6F6F6;
+    height:400px;
+    margin:0px;
+}
+.like-down{
+    height:60px;
+    
+    font-size:25px;
+    border-bottom:1px solid #000000;
+}
+
+.content-description{
+    margin-top:20px;
+    margin-right:20px;
+}
+.comnt{
+
+}
+.suggession{
+    margin-top:20px;
+    margin-left:0px;
+    margin-right:0px;
+    padding:0px;
+    /*width:34%;*/
+    float:left;
+    /*height:1500px;*/
+   
+    
+    background-color:#F6F6F6;
+    
+}
+.btnforweb{
+    margin:20px 20px 0px 110px;
+    color:black;
+}
+.imgofmag{
+    width:200px;
+    height:300px;
+   
+    background-size:contain;
+    float:right;
+}
+.description{
+    padding-right: 30px;
+    float:right;
+    color:black;
+    margin-left:40px;
+    width:65%;
+}
+/**************suggestion*******************/
+/************delete me****************/
+.inmgsz{
+     width:80px;
+    height:100px;
+}

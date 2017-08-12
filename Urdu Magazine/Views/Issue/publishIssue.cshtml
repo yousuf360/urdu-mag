@@ -1,0 +1,514 @@
+﻿
+@{
+    ViewBag.Title = "publishIssue";
+}
+
+@{
+    var Issues = ViewBag.Issues as List<Urdu_Magazine.Models.Issue>;
+}
+<style>
+    #modal .modal-dialog {
+        min-width: 80%;
+    }
+
+       #classification-modal .modal-dialog  {
+           padding:0;
+            width:100%;
+            height:100%
+        }
+    .my-modal {
+        min-height: 0px !important;
+    }
+
+    iframe {
+        border-width: 0px;
+    }
+
+    #previewModal {
+        z-index: 100000;
+    }
+
+    .custom-modal-class {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        /*padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    }
+
+    /* Modal Content (Image) */
+    .modal-content-custom {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    /* Caption of Modal Image (Image Text) - Same Width as the Image */
+
+
+    /* Add Animation - Zoom in the Modal */
+    .modal-content-custom {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @@-webkit-keyframes zoom {
+        from {
+            -webkit-transform: scale(0);
+        }
+
+        to {
+            -webkit-transform: scale(1);
+        }
+    }
+
+    @@keyframes zoom {
+        from {
+            transform: scale(0);
+        }
+
+        to {
+            transform: scale(1);
+        }
+    }
+
+    /* The Close Button */
+    .close-custom {
+        opacity: 0.6;
+        z-index: 5000;
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #FFFFFF;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .close-custom:hover,
+        .close-custom:focus {
+            opacity: 1;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* 100% Image Width on Smaller Screens */
+    @@media only screen and (max-width: 700px) {
+        .modal-content-custom {
+            width: 80%;
+            height: 90%;
+        }
+     
+        .close-custom {
+            top: 0px;
+            right: 0px;
+            font-size: 40px;
+        }
+    }
+</style>
+<input hidden id="issueIdToSave" value="" />
+<div class="left_col" role="main" style="min-height: 700px;">
+
+    <div class="">
+
+        <div class="clearfix"></div>
+        <div id="alertDiv"></div>
+
+        <div class="x_panel">
+
+            <div class="x_title">
+                <h1 class="langStyle">@Urdu_Magazine.Resources.Resource.PublishAnIssue</h1>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <div class="panel-body">
+                    <table class="table table-striped">
+
+
+                        <thead>
+                            <tr>
+
+                                <th>@Urdu_Magazine.Resources.Resource.IssueDisplay</th>
+                                <th style="text-align:center">@Urdu_Magazine.Resources.Resource.ArticleDataDisplay</th>
+                                <th style="text-align:center">@Urdu_Magazine.Resources.Resource.Ads</th>
+                                <th style="text-align:center">@Urdu_Magazine.Resources.Resource.Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var issue in Issues)
+                            {
+                                <tr>
+
+                                    <td><span style="padding-left:20px">@(issue.Magazine.Name)</span>@("(" + issue.Issue_date.ToShortDateString() + ")")</td>
+                                    <td align="center">
+                                        @{ if (issue.isPublished)
+                                            {
+                                                <span>---</span>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" action="show" issue-id="@issue.Id" class="btn btn-primary showArticles">
+                                                    @Urdu_Magazine.Resources.Resource.ChooseArticles
+                                                </button>
+                                            }
+                                        }
+                                    </td>
+                                    <td align="center">
+                                        @{
+                                            if (issue.isPublished)
+                                            {
+                                                <span>---</span>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" action="insertClassificationInPageAds" issue-id="@issue.Id" class="btn btn-primary insertClassificationInPageAds">
+                                                    @Urdu_Magazine.Resources.Resource.InArticle
+                                                </button>
+                                                <button type="button" action="insertClassificationFullPageAds" issue-id="@issue.Id" class="btn btn-primary insertClassificationFullPageAds">
+                                                    @Urdu_Magazine.Resources.Resource.FullPage
+                                                </button>
+
+                                            }
+                                        }
+                                    </td>
+                                    <td align="center">
+                                        @{ if (issue.isPublished)
+                                            {
+                                                <button type="button" action="unpublish" issue-id="@issue.Id" class="btn btn-danger unPublishAnIssue">
+                                                    @Urdu_Magazine.Resources.Resource.Unpublish
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" action="publish" issue-id="@issue.Id" class="btn btn-primary publishAnIssue">
+                                                    @Urdu_Magazine.Resources.Resource.Publish
+                                                </button>
+                                            }
+                                        }
+                                    </td>
+
+                                </tr>
+                                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h1 class="modal-title" id="myModalLabel" style="font-family:'Jameel Noori Nastaleeq';">@Urdu_Magazine.Resources.Resource.ChooseArticles</h1>
+            </div>
+            <div class="modal-body">
+                <div class="left_col my-modal" style="margin-right:0px" role="main">
+
+                    <div class="">
+
+                        <div class="clearfix"></div>
+                        <div class="x_panel">
+
+                            <div class="x_content">
+                                <div id="fillMeWithArticles" class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="SelectArticles">@Urdu_Magazine.Resources.Resource.Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Urdu_Magazine.Resources.Resource.Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="classification-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h1 class="modal-title" id="myModalLabel" style="font-family:'Jameel Noori Nastaleeq';">@Urdu_Magazine.Resources.Resource.ChooseAds</h1>
+            </div>
+            <div class="modal-body">
+
+                                <div id="classificationContent" class="panel-body">
+
+                                </div>
+                </div>
+
+ 
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Urdu_Magazine.Resources.Resource.Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*<div id="modalRead" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h2 class="modal-title" id="myModalLabel" style="font-family:'Jameel Noori Nastaleeq';">@Urdu_Magazine.Resources.Resource.ChooseArticles</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="left_col my-modal" style="margin-right:0px" role="main">
+
+                        <div class="">
+
+                            <div class="clearfix"></div>
+
+
+                            <iframe id="articleIframe" style="min-width:100%;min-height:1000px;background-color:white" src=""></iframe>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Urdu_Magazine.Resources.Resource.Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>*@
+
+<div id="previewModal" class="custom-modal-class">
+
+    <!-- The Close Button -->
+    <span class="close-custom" onclick="document.getElementById('previewModal').style.display = 'none'">&times;</span>
+
+    <!-- Modal Content (The Image) -->
+    <iframe style="min-width:85%;min-height:100%;background-color:white;" id="previewIframe" class="modal-content-custom"></iframe>
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("body").on("click", "#article-name-list a", function () {
+                console.log("Hey");
+                var articleId = $(this).attr('article-id');
+                $("#articleIdToSave").val(articleId);
+                $.ajax({
+                    url:'@Url.Action("getArticleJsonForClassification", "Article")',
+                    data: {
+                        articleId: articleId,
+                        issueId: $("#issueIdToSave").val()
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        $('#preview-columns').val(data['columns']);
+                        $('#preview-name').val(data['name']);
+                        $('#preview-writer').val(data['writer']);
+                        tinyMCE.get('article_data').setContent('<div class="mceNonEditable">' + data['data'] + ' <hr class="type12"/>' + '</div>' + ((data['ad'] != null) ? data['ad'] : ""));
+
+                    }
+                });
+@*<input hidden id="preview-columns" value="@FirstArticle.columns" />
+<input hidden id="preview-name" value="@FirstArticle.name"/>
+<input hidden id="preview-writer" value="@FirstArticle.User.full_name"/>*@
+            });
+
+
+
+            $('#articleIframe').css('min-height', $(window).height() * 0.67);
+            $("body").on("click", "#SelectArticles", function () {
+                var frmData = $("#frm").serialize();
+                console.log(frmData);
+                $.ajax({
+                    url: "@Url.Action("submitArticles", "Article")",
+                    data: frmData,
+                    type:"POST",
+                    success: function (data) {
+                        if (data == "login") {
+                            window.location.href = "@Url.Action("Index", "User")"
+                        }
+                        else if (data == "success") {
+                            $('#modal').modal('toggle');
+                        }
+                    }
+                });
+            });
+
+            $("body").on("click", ".insertClassificationFullPageAds", function () {
+                var customModal = document.getElementById('previewModal');
+                $("#previewIframe").attr("src", "@Url.Action("insertClassificationFullPageAds", "Issue")" + '?Id=' + $(this).attr('issue-id'));
+                customModal.style.display = "block";
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function () {
+                   customModal.style.display = "none";
+                }
+            });
+
+            $("body").on("click", ".insertClassificationInPageAds", function () {
+                console.log(1);
+                var issueId = $(this).attr("issue-id");
+                $("#issueIdToSave").val(issueId);
+                $.ajax({
+                    url: '@Url.Action("insertClassificationInPageAdsPartialView", "Issue")',
+                    data: { Id: issueId },
+                    success: function (data) {
+                        if (data == "login") {
+                            window.location.href = "@Url.Action("Index", "User")"
+                        }
+
+                        else if (data == "selectArticles") {
+                            $('#alertDiv').append('<div class="alert alert-warning alert-dismissible fade in" ' +
+                          'id="NoArticleSubmittedAlert" role="alert">' +
+                          '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                          '<span aria-hidden="true">×</span></button>@Urdu_Magazine.Resources.Resource.ChooseArticles' +
+                          '</div>');
+                            //$(".showArticles[issue-id='"+issueId+"']").click();
+                        }
+                        else{
+                            $('#classificationContent').html(data);
+                            $('#classification-modal').modal({
+                                show: 'true'
+                            });
+                            $('#article-name-list li:first a').click();
+                        }
+
+                    }
+                });
+
+            });
+        $("body").on("click", ".showArticles", function () {
+            var issueId = $(this).attr("issue-id");
+            $.ajax({
+                url: "@Url.Action("getSubmittedArticles", "Article")",
+                data: { issueId: issueId },
+                success: function (data) {
+                    if (data == "login") {
+                        window.location.href = "@Url.Action("Index", "User")"
+                    }
+
+                    else if (data == "no article") {
+                        @*BootstrapDialog.show({
+                            message: "@Urdu_Magazine.Resources.Resource.NoArticlesSubmittedForThisIssueYet"
+                        });*@
+                        $('#alertDiv').append('<div class="alert alert-warning alert-dismissible fade in" ' +
+                            'id="NoArticleSubmittedAlert" role="alert">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                            '<span aria-hidden="true">×</span></button>@Urdu_Magazine.Resources.Resource.NoArticlesSubmittedForThisIssueYet' +
+                            '</div>');
+                    }
+                    else {
+                        $('#fillMeWithArticles').html(data);
+                        $('#modal').modal({
+                            show: 'true'
+                        });
+                    }
+                }
+            });
+        });
+            $("body").on("click", ".publishAnIssue", function () {
+                var issueId = $(this).attr("issue-id");
+                var div = $(this);
+                $.ajax({
+
+                    url: "@Url.Action("publishIssue", "Issue")",
+                    data: { issueId: issueId },
+                    type:"POST",
+                    success: function (data) {
+                        if (data == "login") {
+                            window.location.href = "@Url.Action("Index", "User")"
+                        }
+                        else if (data == "published") {
+                            var prev = div.parent().prev();
+                            var prepre = div.parent().prev().prev();
+
+                            div.parent().html('<button type="button" action="unpublish" issue-id="' + issueId + '" class="btn btn-danger unPublishAnIssue">' +
+                                                            '@Urdu_Magazine.Resources.Resource.Unpublish' +
+                                                        '</button>');
+                            prepre.html('<span>---</span>');
+
+                            prev.html('<span>---</span>');
+
+                        }
+                        else if (data == "selectArticles") {
+                            $('#alertDiv').append('<div class="alert alert-warning alert-dismissible fade in" ' +
+                          'id="NoArticleSubmittedAlert" role="alert">' +
+                          '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                          '<span aria-hidden="true">×</span></button>@Urdu_Magazine.Resources.Resource.ChooseArticles' +
+                          '</div>');
+                            //$(".showArticles[issue-id='"+issueId+"']").click();
+                        }
+                    }
+                });
+            });
+            $("body").on("click", ".unPublishAnIssue", function () {
+                var issueId = $(this).attr("issue-id");
+                var div = $(this);
+                $.ajax({
+
+                    url: "@Url.Action("unPublishIssue", "Issue")",
+                    data: { issueId: issueId },
+                    type:"POST",
+                    success: function (data) {
+                        if (data == "login") {
+                            window.location.href = "@Url.Action("Index", "User")"
+                        }
+                        else if (data == "unpublished") {
+                            var prev = div.parent().prev();
+                            var prepre = div.parent().prev().prev();
+                            div.parent().html('<button type="button" action="publish" issue-id="' + issueId + '" class="btn btn-primary publishAnIssue">' +
+                                                            '@Urdu_Magazine.Resources.Resource.Publish' +
+                                                        '</button>');
+                            prev.html('<button type="button" action="insertClassification" issue-id="' + issueId + '" class="btn btn-primary insertClassificationInPageAds">'
+                                                    + '@Urdu_Magazine.Resources.Resource.InArticle' +
+                            '</button>'+
+                              '<button type="button" action="insertClassificationFullPageAds" issue-id="'+issueId+'" class="btn btn-primary insertClassificationFullPageAds">'+
+                                                     '@Urdu_Magazine.Resources.Resource.FullPage' +
+                                               '</button>');
+                            prepre.html('<button type="button" action="show" issue-id="' + issueId + '" class="btn btn-primary showArticles">' +
+                                                '@Urdu_Magazine.Resources.Resource.ChooseArticles'+
+                                            '</button>');
+                        }
+
+                    }
+                });
+            });
+
+    });
+    </script>
+}

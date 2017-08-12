@@ -1,0 +1,22 @@
+﻿body {
+    background: #808080;
+    padding-top: 8px;
+    overflow-y: hidden;
+}
+
+.page {
+    zoom: 0.4;
+    -moz-transform: scale(0.4);
+    -moz-transform-origin: 0 0;
+}
+
+#img-cover {
+    zoom: 0.4;
+    -moz-transform: scale(0.4);
+    -moz-transform-origin: 0 0;
+    width: 1062px !important;
+    height: 1500px !important;
+    position: relative;
+    margin: -24px !important;
+    padding: 0 !important;
+}

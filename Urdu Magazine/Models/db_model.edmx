@@ -1,0 +1,1135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="fyp_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="article_data" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="Available_To_Select" Type="bit" Nullable="false" />
+          <Property Name="columns" Type="tinyint" Nullable="false" />
+          <Property Name="Number_Of_Submissions" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Article_Issue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Issue_Id" Type="int" Nullable="false" />
+          <Property Name="Article_Id" Type="int" Nullable="false" />
+          <Property Name="In_category" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Article_Rating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="article_Id" Type="int" Nullable="false" />
+          <Property Name="user_Id" Type="int" Nullable="false" />
+          <Property Name="rate" Type="numeric" Precision="2" Scale="1" />
+        </EntityType>
+        <EntityType Name="Article_Submit_Info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Article_Id" Type="int" Nullable="false" />
+          <Property Name="SubmittedForIssue" Type="int" Nullable="false" />
+          <Property Name="In_Category" Type="int" Nullable="false" />
+          <Property Name="Available" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="comment" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="issueId" Type="int" Nullable="false" />
+          <Property Name="timestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="fullPageAds">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="issueId" Type="int" Nullable="false" />
+          <Property Name="articleId" Type="int" Nullable="false" />
+          <Property Name="pageId" Type="int" Nullable="false" />
+          <Property Name="priorityId" Type="int" Nullable="false" />
+          <Property Name="html" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="inPageAds">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="articleId" Type="int" Nullable="false" />
+          <Property Name="issueId" Type="int" Nullable="false" />
+          <Property Name="html" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Issue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Magazine_Id" Type="int" Nullable="false" />
+          <Property Name="Issue_date" Type="date" Nullable="false" />
+          <Property Name="Submission_date" Type="date" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="isPublished" Type="bit" Nullable="false" />
+          <Property Name="Folder" Type="varchar" MaxLength="150" />
+          <Property Name="fileName" Type="varchar" MaxLength="150" />
+          <Property Name="Cover" Type="varchar" MaxLength="200" />
+          <Property Name="pdfStatus" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Magazine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="Folder" Type="varchar" MaxLength="50" />
+          <Property Name="Cover" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Magazine_Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="magazine_id" Type="int" Nullable="false" />
+          <Property Name="category" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="who" Type="int" />
+          <Property Name="type" Type="int" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="link" Type="varchar(max)" />
+          <Property Name="issue_id" Type="int" />
+          <Property Name="article_id" Type="int" />
+          <Property Name="mag_id" Type="int" />
+          <Property Name="date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Notification_type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PreviewAricle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="article_name" Type="nvarchar(max)" />
+          <Property Name="article_data" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="UploadMedia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="imgPath" Type="varchar(max)" Nullable="false" />
+          <Property Name="imgName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="imgFileName" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="full_name" Type="nvarchar" MaxLength="150" />
+          <Property Name="email" Type="varchar" MaxLength="120" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="status" Type="bit" Nullable="false" />
+          <Property Name="rights" Type="varchar(max)" />
+          <Property Name="profile_picture" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK__Article__User_Id__25869641">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_I__Artic__267ABA7A">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="Article_Issue" Type="Self.Article_Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Issue">
+              <PropertyRef Name="Article_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_I__Issue__276EDEB3">
+          <End Role="Issue" Type="Self.Issue" Multiplicity="1" />
+          <End Role="Article_Issue" Type="Self.Article_Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Issue">
+              <PropertyRef Name="Issue_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_R__artic__286302EC">
+          <End Role="Article" Type="Self.Article" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Article_Rating" Type="Self.Article_Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Rating">
+              <PropertyRef Name="article_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_R__user___29572725">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Article_Rating" Type="Self.Article_Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Article_Rating">
+              <PropertyRef Name="user_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_S__Artic__625A9A57">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="Article_Submit_Info" Type="Self.Article_Submit_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Submit_Info">
+              <PropertyRef Name="Article_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_S__Submi__634EBE90">
+          <End Role="Issue" Type="Self.Issue" Multiplicity="1" />
+          <End Role="Article_Submit_Info" Type="Self.Article_Submit_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Submit_Info">
+              <PropertyRef Name="SubmittedForIssue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Issue__Magazine___2C3393D0">
+          <End Role="Magazine" Type="Self.Magazine" Multiplicity="1" />
+          <End Role="Issue" Type="Self.Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Magazine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Issue">
+              <PropertyRef Name="Magazine_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Magazine__User_I__2D27B809">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Magazine" Type="Self.Magazine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Magazine">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_Issue_ToTable_Magazine_category">
+          <End Role="Magazine_Category" Type="Self.Magazine_Category" Multiplicity="1" />
+          <End Role="Article_Issue" Type="Self.Article_Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Magazine_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Issue">
+              <PropertyRef Name="In_category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_Submit_Info_ToTable_Category">
+          <End Role="Magazine_Category" Type="Self.Magazine_Category" Multiplicity="1" />
+          <End Role="Article_Submit_Info" Type="Self.Article_Submit_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Magazine_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Submit_Info">
+              <PropertyRef Name="In_Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_ToTable_Issue">
+          <End Role="Issue" Type="Self.Issue" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="issueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_ToTable_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Magazine_Category_ToTable_Magazine">
+          <End Role="Magazine" Type="Self.Magazine" Multiplicity="1" />
+          <End Role="Magazine_Category" Type="Self.Magazine_Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Magazine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Magazine_Category">
+              <PropertyRef Name="magazine_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_ToTable_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="who" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_ToTable_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UploadMedia" Type="Self.UploadMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UploadMedia">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="get_notification" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="fyp_dbModelStoreContainer">
+          <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Article_Issue" EntityType="Self.Article_Issue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Article_Rating" EntityType="Self.Article_Rating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Article_Submit_Info" EntityType="Self.Article_Submit_Info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fullPageAds" EntityType="Self.fullPageAds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="inPageAds" EntityType="Self.inPageAds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Issue" EntityType="Self.Issue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Magazine" EntityType="Self.Magazine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Magazine_Category" EntityType="Self.Magazine_Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notification_type" EntityType="Self.Notification_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PreviewAricle" EntityType="Self.PreviewAricle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UploadMedia" EntityType="Self.UploadMedia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Article__User_Id__25869641" Association="Self.FK__Article__User_Id__25869641">
+            <End Role="User" EntitySet="User" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_I__Artic__267ABA7A" Association="Self.FK__Article_I__Artic__267ABA7A">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Article_Issue" EntitySet="Article_Issue" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_I__Issue__276EDEB3" Association="Self.FK__Article_I__Issue__276EDEB3">
+            <End Role="Issue" EntitySet="Issue" />
+            <End Role="Article_Issue" EntitySet="Article_Issue" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_R__artic__286302EC" Association="Self.FK__Article_R__artic__286302EC">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Article_Rating" EntitySet="Article_Rating" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_R__user___29572725" Association="Self.FK__Article_R__user___29572725">
+            <End Role="User" EntitySet="User" />
+            <End Role="Article_Rating" EntitySet="Article_Rating" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_S__Artic__625A9A57" Association="Self.FK__Article_S__Artic__625A9A57">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="Article_Submit_Info" EntitySet="Article_Submit_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_S__Submi__634EBE90" Association="Self.FK__Article_S__Submi__634EBE90">
+            <End Role="Issue" EntitySet="Issue" />
+            <End Role="Article_Submit_Info" EntitySet="Article_Submit_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Issue__Magazine___2C3393D0" Association="Self.FK__Issue__Magazine___2C3393D0">
+            <End Role="Magazine" EntitySet="Magazine" />
+            <End Role="Issue" EntitySet="Issue" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Magazine__User_I__2D27B809" Association="Self.FK__Magazine__User_I__2D27B809">
+            <End Role="User" EntitySet="User" />
+            <End Role="Magazine" EntitySet="Magazine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_Issue_ToTable_Magazine_category" Association="Self.FK_Article_Issue_ToTable_Magazine_category">
+            <End Role="Magazine_Category" EntitySet="Magazine_Category" />
+            <End Role="Article_Issue" EntitySet="Article_Issue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_Submit_Info_ToTable_Category" Association="Self.FK_Article_Submit_Info_ToTable_Category">
+            <End Role="Magazine_Category" EntitySet="Magazine_Category" />
+            <End Role="Article_Submit_Info" EntitySet="Article_Submit_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_ToTable_Issue" Association="Self.FK_Comments_ToTable_Issue">
+            <End Role="Issue" EntitySet="Issue" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_ToTable_User" Association="Self.FK_Comments_ToTable_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Magazine_Category_ToTable_Magazine" Association="Self.FK_Magazine_Category_ToTable_Magazine">
+            <End Role="Magazine" EntitySet="Magazine" />
+            <End Role="Magazine_Category" EntitySet="Magazine_Category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_ToTable_User" Association="Self.FK_Notification_ToTable_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Notification" EntitySet="Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_ToTable_User" Association="Self.FK_Table_ToTable_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UploadMedia" EntitySet="UploadMedia" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="fyp_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="fyp_dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Articles" EntityType="fyp_dbModel.Article" />
+          <EntitySet Name="Article_Issue" EntityType="fyp_dbModel.Article_Issue" />
+          <EntitySet Name="Article_Rating" EntityType="fyp_dbModel.Article_Rating" />
+          <EntitySet Name="Article_Submit_Info" EntityType="fyp_dbModel.Article_Submit_Info" />
+          <EntitySet Name="Comments" EntityType="fyp_dbModel.Comment" />
+          <EntitySet Name="fullPageAds" EntityType="fyp_dbModel.fullPageAd" />
+          <EntitySet Name="inPageAds" EntityType="fyp_dbModel.inPageAd" />
+          <EntitySet Name="Issues" EntityType="fyp_dbModel.Issue" />
+          <EntitySet Name="Magazines" EntityType="fyp_dbModel.Magazine" />
+          <EntitySet Name="Magazine_Category" EntityType="fyp_dbModel.Magazine_Category" />
+          <EntitySet Name="PreviewAricles" EntityType="fyp_dbModel.PreviewAricle" />
+          <EntitySet Name="UploadMedias" EntityType="fyp_dbModel.UploadMedia" />
+          <EntitySet Name="Users" EntityType="fyp_dbModel.User" />
+          <AssociationSet Name="FK__Article__User_Id__25869641" Association="fyp_dbModel.FK__Article__User_Id__25869641">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Article" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_I__Artic__267ABA7A" Association="fyp_dbModel.FK__Article_I__Artic__267ABA7A">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="Article_Issue" EntitySet="Article_Issue" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_R__artic__286302EC" Association="fyp_dbModel.FK__Article_R__artic__286302EC">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="Article_Rating" EntitySet="Article_Rating" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_S__Artic__625A9A57" Association="fyp_dbModel.FK__Article_S__Artic__625A9A57">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="Article_Submit_Info" EntitySet="Article_Submit_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_I__Issue__276EDEB3" Association="fyp_dbModel.FK__Article_I__Issue__276EDEB3">
+            <End Role="Issue" EntitySet="Issues" />
+            <End Role="Article_Issue" EntitySet="Article_Issue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_Issue_ToTable_Magazine_category" Association="fyp_dbModel.FK_Article_Issue_ToTable_Magazine_category">
+            <End Role="Magazine_Category" EntitySet="Magazine_Category" />
+            <End Role="Article_Issue" EntitySet="Article_Issue" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_R__user___29572725" Association="fyp_dbModel.FK__Article_R__user___29572725">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Article_Rating" EntitySet="Article_Rating" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Article_S__Submi__634EBE90" Association="fyp_dbModel.FK__Article_S__Submi__634EBE90">
+            <End Role="Issue" EntitySet="Issues" />
+            <End Role="Article_Submit_Info" EntitySet="Article_Submit_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_Submit_Info_ToTable_Category" Association="fyp_dbModel.FK_Article_Submit_Info_ToTable_Category">
+            <End Role="Magazine_Category" EntitySet="Magazine_Category" />
+            <End Role="Article_Submit_Info" EntitySet="Article_Submit_Info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_ToTable_Issue" Association="fyp_dbModel.FK_Comments_ToTable_Issue">
+            <End Role="Issue" EntitySet="Issues" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_ToTable_User" Association="fyp_dbModel.FK_Comments_ToTable_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Issue__Magazine___2C3393D0" Association="fyp_dbModel.FK__Issue__Magazine___2C3393D0">
+            <End Role="Magazine" EntitySet="Magazines" />
+            <End Role="Issue" EntitySet="Issues" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Magazine__User_I__2D27B809" Association="fyp_dbModel.FK__Magazine__User_I__2D27B809">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Magazine" EntitySet="Magazines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Magazine_Category_ToTable_Magazine" Association="fyp_dbModel.FK_Magazine_Category_ToTable_Magazine">
+            <End Role="Magazine" EntitySet="Magazines" />
+            <End Role="Magazine_Category" EntitySet="Magazine_Category" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_ToTable_User" Association="fyp_dbModel.FK_Table_ToTable_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UploadMedia" EntitySet="UploadMedias" />
+          </AssociationSet>
+          <EntitySet Name="Notification_type" EntityType="fyp_dbModel.Notification_type" />
+          <EntitySet Name="Notifications" EntityType="fyp_dbModel.Notification" />
+          <FunctionImport Name="get_notification" ReturnType="Collection(fyp_dbModel.get_notification_Result)">
+          <Parameter Name="UserId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <AssociationSet Name="FK_Notification_ToTable_User" Association="fyp_dbModel.FK_Notification_ToTable_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="article_data" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="Available_To_Select" Type="Boolean" Nullable="false" />
+          <Property Name="columns" Type="Byte" Nullable="false" />
+          <Property Name="Number_Of_Submissions" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="fyp_dbModel.FK__Article__User_Id__25869641" FromRole="Article" ToRole="User" />
+          <NavigationProperty Name="Article_Issue" Relationship="fyp_dbModel.FK__Article_I__Artic__267ABA7A" FromRole="Article" ToRole="Article_Issue" />
+          <NavigationProperty Name="Article_Rating" Relationship="fyp_dbModel.FK__Article_R__artic__286302EC" FromRole="Article" ToRole="Article_Rating" />
+          <NavigationProperty Name="Article_Submit_Info" Relationship="fyp_dbModel.FK__Article_S__Artic__625A9A57" FromRole="Article" ToRole="Article_Submit_Info" />
+        </EntityType>
+        <EntityType Name="Article_Issue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Issue_Id" Type="Int32" Nullable="false" />
+          <Property Name="Article_Id" Type="Int32" Nullable="false" />
+          <Property Name="In_category" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="fyp_dbModel.FK__Article_I__Artic__267ABA7A" FromRole="Article_Issue" ToRole="Article" />
+          <NavigationProperty Name="Issue" Relationship="fyp_dbModel.FK__Article_I__Issue__276EDEB3" FromRole="Article_Issue" ToRole="Issue" />
+          <NavigationProperty Name="Magazine_Category" Relationship="fyp_dbModel.FK_Article_Issue_ToTable_Magazine_category" FromRole="Article_Issue" ToRole="Magazine_Category" />
+        </EntityType>
+        <EntityType Name="Article_Rating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="article_Id" Type="Int32" Nullable="false" />
+          <Property Name="user_Id" Type="Int32" Nullable="false" />
+          <Property Name="rate" Type="Decimal" Precision="2" Scale="1" />
+          <NavigationProperty Name="Article" Relationship="fyp_dbModel.FK__Article_R__artic__286302EC" FromRole="Article_Rating" ToRole="Article" />
+          <NavigationProperty Name="User" Relationship="fyp_dbModel.FK__Article_R__user___29572725" FromRole="Article_Rating" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Article_Submit_Info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Article_Id" Type="Int32" Nullable="false" />
+          <Property Name="SubmittedForIssue" Type="Int32" Nullable="false" />
+          <Property Name="In_Category" Type="Int32" Nullable="false" />
+          <Property Name="Available" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="fyp_dbModel.FK__Article_S__Artic__625A9A57" FromRole="Article_Submit_Info" ToRole="Article" />
+          <NavigationProperty Name="Issue" Relationship="fyp_dbModel.FK__Article_S__Submi__634EBE90" FromRole="Article_Submit_Info" ToRole="Issue" />
+          <NavigationProperty Name="Magazine_Category" Relationship="fyp_dbModel.FK_Article_Submit_Info_ToTable_Category" FromRole="Article_Submit_Info" ToRole="Magazine_Category" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="comment1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="issueId" Type="Int32" Nullable="false" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Issue" Relationship="fyp_dbModel.FK_Comments_ToTable_Issue" FromRole="Comment" ToRole="Issue" />
+          <NavigationProperty Name="User" Relationship="fyp_dbModel.FK_Comments_ToTable_User" FromRole="Comment" ToRole="User" />
+        </EntityType>
+        <EntityType Name="fullPageAd">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="issueId" Type="Int32" Nullable="false" />
+          <Property Name="articleId" Type="Int32" Nullable="false" />
+          <Property Name="pageId" Type="Int32" Nullable="false" />
+          <Property Name="priorityId" Type="Int32" Nullable="false" />
+          <Property Name="html" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="inPageAd">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="articleId" Type="Int32" Nullable="false" />
+          <Property Name="issueId" Type="Int32" Nullable="false" />
+          <Property Name="html" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Issue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Magazine_Id" Type="Int32" Nullable="false" />
+          <Property Name="Issue_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Submission_date" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="isPublished" Type="Boolean" Nullable="false" />
+          <Property Name="Folder" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="fileName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Cover" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="pdfStatus" Type="Byte" />
+          <NavigationProperty Name="Article_Issue" Relationship="fyp_dbModel.FK__Article_I__Issue__276EDEB3" FromRole="Issue" ToRole="Article_Issue" />
+          <NavigationProperty Name="Article_Submit_Info" Relationship="fyp_dbModel.FK__Article_S__Submi__634EBE90" FromRole="Issue" ToRole="Article_Submit_Info" />
+          <NavigationProperty Name="Comments" Relationship="fyp_dbModel.FK_Comments_ToTable_Issue" FromRole="Issue" ToRole="Comment" />
+          <NavigationProperty Name="Magazine" Relationship="fyp_dbModel.FK__Issue__Magazine___2C3393D0" FromRole="Issue" ToRole="Magazine" />
+        </EntityType>
+        <EntityType Name="Magazine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="Folder" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cover" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Issues" Relationship="fyp_dbModel.FK__Issue__Magazine___2C3393D0" FromRole="Magazine" ToRole="Issue" />
+          <NavigationProperty Name="User" Relationship="fyp_dbModel.FK__Magazine__User_I__2D27B809" FromRole="Magazine" ToRole="User" />
+          <NavigationProperty Name="Magazine_Category" Relationship="fyp_dbModel.FK_Magazine_Category_ToTable_Magazine" FromRole="Magazine" ToRole="Magazine_Category" />
+        </EntityType>
+        <EntityType Name="Magazine_Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="magazine_id" Type="Int32" Nullable="false" />
+          <Property Name="category" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Article_Issue" Relationship="fyp_dbModel.FK_Article_Issue_ToTable_Magazine_category" FromRole="Magazine_Category" ToRole="Article_Issue" />
+          <NavigationProperty Name="Article_Submit_Info" Relationship="fyp_dbModel.FK_Article_Submit_Info_ToTable_Category" FromRole="Magazine_Category" ToRole="Article_Submit_Info" />
+          <NavigationProperty Name="Magazine" Relationship="fyp_dbModel.FK_Magazine_Category_ToTable_Magazine" FromRole="Magazine_Category" ToRole="Magazine" />
+        </EntityType>
+        <EntityType Name="PreviewAricle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="article_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="article_data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UploadMedia">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="imgPath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="imgName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="imgFileName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="fyp_dbModel.FK_Table_ToTable_User" FromRole="UploadMedia" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="full_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="Boolean" Nullable="false" />
+          <Property Name="rights" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="profile_picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Articles" Relationship="fyp_dbModel.FK__Article__User_Id__25869641" FromRole="User" ToRole="Article" />
+          <NavigationProperty Name="Article_Rating" Relationship="fyp_dbModel.FK__Article_R__user___29572725" FromRole="User" ToRole="Article_Rating" />
+          <NavigationProperty Name="Comments" Relationship="fyp_dbModel.FK_Comments_ToTable_User" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="Magazines" Relationship="fyp_dbModel.FK__Magazine__User_I__2D27B809" FromRole="User" ToRole="Magazine" />
+          <NavigationProperty Name="UploadMedias" Relationship="fyp_dbModel.FK_Table_ToTable_User" FromRole="User" ToRole="UploadMedia" />
+          <NavigationProperty Name="Notifications" Relationship="fyp_dbModel.FK_Notification_ToTable_User" FromRole="User" ToRole="Notification" />
+        </EntityType>
+        <Association Name="FK__Article__User_Id__25869641">
+          <End Type="fyp_dbModel.User" Role="User" Multiplicity="1" />
+          <End Type="fyp_dbModel.Article" Role="Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_I__Artic__267ABA7A">
+          <End Type="fyp_dbModel.Article" Role="Article" Multiplicity="1" />
+          <End Type="fyp_dbModel.Article_Issue" Role="Article_Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Issue">
+              <PropertyRef Name="Article_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_R__artic__286302EC">
+          <End Type="fyp_dbModel.Article" Role="Article" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="fyp_dbModel.Article_Rating" Role="Article_Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Rating">
+              <PropertyRef Name="article_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_S__Artic__625A9A57">
+          <End Type="fyp_dbModel.Article" Role="Article" Multiplicity="1" />
+          <End Type="fyp_dbModel.Article_Submit_Info" Role="Article_Submit_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Submit_Info">
+              <PropertyRef Name="Article_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_I__Issue__276EDEB3">
+          <End Type="fyp_dbModel.Issue" Role="Issue" Multiplicity="1" />
+          <End Type="fyp_dbModel.Article_Issue" Role="Article_Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Issue">
+              <PropertyRef Name="Issue_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_Issue_ToTable_Magazine_category">
+          <End Type="fyp_dbModel.Magazine_Category" Role="Magazine_Category" Multiplicity="1" />
+          <End Type="fyp_dbModel.Article_Issue" Role="Article_Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Magazine_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Issue">
+              <PropertyRef Name="In_category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_R__user___29572725">
+          <End Type="fyp_dbModel.User" Role="User" Multiplicity="1" />
+          <End Type="fyp_dbModel.Article_Rating" Role="Article_Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Article_Rating">
+              <PropertyRef Name="user_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Article_S__Submi__634EBE90">
+          <End Type="fyp_dbModel.Issue" Role="Issue" Multiplicity="1" />
+          <End Type="fyp_dbModel.Article_Submit_Info" Role="Article_Submit_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Submit_Info">
+              <PropertyRef Name="SubmittedForIssue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_Submit_Info_ToTable_Category">
+          <End Type="fyp_dbModel.Magazine_Category" Role="Magazine_Category" Multiplicity="1" />
+          <End Type="fyp_dbModel.Article_Submit_Info" Role="Article_Submit_Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Magazine_Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Article_Submit_Info">
+              <PropertyRef Name="In_Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_ToTable_Issue">
+          <End Type="fyp_dbModel.Issue" Role="Issue" Multiplicity="1" />
+          <End Type="fyp_dbModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="issueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_ToTable_User">
+          <End Type="fyp_dbModel.User" Role="User" Multiplicity="1" />
+          <End Type="fyp_dbModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Issue__Magazine___2C3393D0">
+          <End Type="fyp_dbModel.Magazine" Role="Magazine" Multiplicity="1" />
+          <End Type="fyp_dbModel.Issue" Role="Issue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Magazine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Issue">
+              <PropertyRef Name="Magazine_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Magazine__User_I__2D27B809">
+          <End Type="fyp_dbModel.User" Role="User" Multiplicity="1" />
+          <End Type="fyp_dbModel.Magazine" Role="Magazine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Magazine">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Magazine_Category_ToTable_Magazine">
+          <End Type="fyp_dbModel.Magazine" Role="Magazine" Multiplicity="1" />
+          <End Type="fyp_dbModel.Magazine_Category" Role="Magazine_Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Magazine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Magazine_Category">
+              <PropertyRef Name="magazine_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_ToTable_User">
+          <End Type="fyp_dbModel.User" Role="User" Multiplicity="1" />
+          <End Type="fyp_dbModel.UploadMedia" Role="UploadMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UploadMedia">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Notification_type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="type" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="who" Type="Int32" />
+          <Property Name="type" Type="Int32" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="link" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="issue_id" Type="Int32" />
+          <Property Name="article_id" Type="Int32" />
+          <Property Name="mag_id" Type="Int32" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="fyp_dbModel.FK_Notification_ToTable_User" FromRole="Notification" ToRole="User" />
+        </EntityType>
+        <ComplexType Name="get_notification_Result">
+          <Property Type="Int32" Name="type" Nullable="true" />
+          <Property Type="String" Name="description" Nullable="true" />
+          <Property Type="String" Name="link" Nullable="true" />
+          <Property Type="Int32" Name="issue_id" Nullable="true" />
+          <Property Type="Int32" Name="article_id" Nullable="true" />
+          <Property Type="Int32" Name="mag_id" Nullable="true" />
+          <Property Type="DateTime" Name="date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="full_name" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="profile_picture" Nullable="true" />
+        </ComplexType>
+        <Association Name="FK_Notification_ToTable_User">
+          <End Type="fyp_dbModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="fyp_dbModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="who" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="fyp_dbModelStoreContainer" CdmEntityContainer="fyp_dbEntities">
+          <EntitySetMapping Name="Articles">
+            <EntityTypeMapping TypeName="fyp_dbModel.Article">
+              <MappingFragment StoreEntitySet="Article">
+                <ScalarProperty Name="Number_Of_Submissions" ColumnName="Number_Of_Submissions" />
+                <ScalarProperty Name="columns" ColumnName="columns" />
+                <ScalarProperty Name="Available_To_Select" ColumnName="Available_To_Select" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="article_data" ColumnName="article_data" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Article_Issue">
+            <EntityTypeMapping TypeName="fyp_dbModel.Article_Issue">
+              <MappingFragment StoreEntitySet="Article_Issue">
+                <ScalarProperty Name="In_category" ColumnName="In_category" />
+                <ScalarProperty Name="Article_Id" ColumnName="Article_Id" />
+                <ScalarProperty Name="Issue_Id" ColumnName="Issue_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Article_Rating">
+            <EntityTypeMapping TypeName="fyp_dbModel.Article_Rating">
+              <MappingFragment StoreEntitySet="Article_Rating">
+                <ScalarProperty Name="rate" ColumnName="rate" />
+                <ScalarProperty Name="user_Id" ColumnName="user_Id" />
+                <ScalarProperty Name="article_Id" ColumnName="article_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Article_Submit_Info">
+            <EntityTypeMapping TypeName="fyp_dbModel.Article_Submit_Info">
+              <MappingFragment StoreEntitySet="Article_Submit_Info">
+                <ScalarProperty Name="Available" ColumnName="Available" />
+                <ScalarProperty Name="In_Category" ColumnName="In_Category" />
+                <ScalarProperty Name="SubmittedForIssue" ColumnName="SubmittedForIssue" />
+                <ScalarProperty Name="Article_Id" ColumnName="Article_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="fyp_dbModel.Comment">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="issueId" ColumnName="issueId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="comment1" ColumnName="comment" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fullPageAds">
+            <EntityTypeMapping TypeName="fyp_dbModel.fullPageAd">
+              <MappingFragment StoreEntitySet="fullPageAds">
+                <ScalarProperty Name="html" ColumnName="html" />
+                <ScalarProperty Name="priorityId" ColumnName="priorityId" />
+                <ScalarProperty Name="pageId" ColumnName="pageId" />
+                <ScalarProperty Name="articleId" ColumnName="articleId" />
+                <ScalarProperty Name="issueId" ColumnName="issueId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="inPageAds">
+            <EntityTypeMapping TypeName="fyp_dbModel.inPageAd">
+              <MappingFragment StoreEntitySet="inPageAds">
+                <ScalarProperty Name="html" ColumnName="html" />
+                <ScalarProperty Name="issueId" ColumnName="issueId" />
+                <ScalarProperty Name="articleId" ColumnName="articleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Issues">
+            <EntityTypeMapping TypeName="fyp_dbModel.Issue">
+              <MappingFragment StoreEntitySet="Issue">
+                <ScalarProperty Name="pdfStatus" ColumnName="pdfStatus" />
+                <ScalarProperty Name="Cover" ColumnName="Cover" />
+                <ScalarProperty Name="fileName" ColumnName="fileName" />
+                <ScalarProperty Name="Folder" ColumnName="Folder" />
+                <ScalarProperty Name="isPublished" ColumnName="isPublished" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Submission_date" ColumnName="Submission_date" />
+                <ScalarProperty Name="Issue_date" ColumnName="Issue_date" />
+                <ScalarProperty Name="Magazine_Id" ColumnName="Magazine_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Magazines">
+            <EntityTypeMapping TypeName="fyp_dbModel.Magazine">
+              <MappingFragment StoreEntitySet="Magazine">
+                <ScalarProperty Name="Cover" ColumnName="Cover" />
+                <ScalarProperty Name="Folder" ColumnName="Folder" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Magazine_Category">
+            <EntityTypeMapping TypeName="fyp_dbModel.Magazine_Category">
+              <MappingFragment StoreEntitySet="Magazine_Category">
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="magazine_id" ColumnName="magazine_id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PreviewAricles">
+            <EntityTypeMapping TypeName="fyp_dbModel.PreviewAricle">
+              <MappingFragment StoreEntitySet="PreviewAricle">
+                <ScalarProperty Name="article_data" ColumnName="article_data" />
+                <ScalarProperty Name="article_name" ColumnName="article_name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UploadMedias">
+            <EntityTypeMapping TypeName="fyp_dbModel.UploadMedia">
+              <MappingFragment StoreEntitySet="UploadMedia">
+                <ScalarProperty Name="imgFileName" ColumnName="imgFileName" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="imgName" ColumnName="imgName" />
+                <ScalarProperty Name="imgPath" ColumnName="imgPath" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="fyp_dbModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="profile_picture" ColumnName="profile_picture" />
+                <ScalarProperty Name="rights" ColumnName="rights" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="full_name" ColumnName="full_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notification_type">
+            <EntityTypeMapping TypeName="fyp_dbModel.Notification_type">
+              <MappingFragment StoreEntitySet="Notification_type">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="fyp_dbModel.Notification">
+              <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="mag_id" ColumnName="mag_id" />
+                <ScalarProperty Name="article_id" ColumnName="article_id" />
+                <ScalarProperty Name="issue_id" ColumnName="issue_id" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="who" ColumnName="who" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="get_notification" FunctionName="fyp_dbModel.Store.get_notification">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="fyp_dbModel.get_notification_Result">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="issue_id" ColumnName="issue_id" />
+                <ScalarProperty Name="article_id" ColumnName="article_id" />
+                <ScalarProperty Name="mag_id" ColumnName="mag_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="full_name" ColumnName="full_name" />
+                <ScalarProperty Name="profile_picture" ColumnName="profile_picture" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

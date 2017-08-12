@@ -1,0 +1,10 @@
+﻿
+@font-face {
+    font-family: 'Jameel Noori Nastaleeq';
+    src: url('Admin-ui/rtl/Jameel Noori Nastaleeq.ttf') format('truetype');
+}
+
+body{
+    font-family:'Jameel Noori Nastaleeq';
+    font-size:14pt;
+}

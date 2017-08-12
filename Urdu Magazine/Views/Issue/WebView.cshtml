@@ -1,0 +1,417 @@
+﻿
+@{
+    ViewBag.Title = "Webview";
+
+    var issue = ViewBag.Issue as Urdu_Magazine.Models.Issue;
+    int UserId = -1;
+    if (Session["User"] == null)
+    {
+        Layout = "~/Views/Shared/_Layoutbflogin.cshtml";
+    }
+    else
+    {
+        UserId = ((Urdu_Magazine.Models.User)Session["User"]).id;
+    }
+
+}
+<style>
+    .left_col {
+        padding: 0px !important;
+        font-family: 'Jameel Noori Nastaleeq';
+    }
+    iframe {
+        border-width:0px;
+        width:100%;min-height:600px;
+        min-width:1025px;
+    }
+    body{
+    min-width: 1120px;
+}
+</style>
+<link href="~/Content/iCheck/skins/flat/green.css" rel="stylesheet" />
+<link href="~/Content/webview.css" rel="stylesheet" />
+<input id="issueIdForLiveConnectivity" hidden value="@issue.Id" />
+<div class="left_col" role="main">
+   
+    <div class="content-black">
+        <div style="padding-top:60px"></div>
+        <div class="mag-view col-sm-12">
+            <iframe id="magIframe" src="@Url.Action("GetPartialViewByIssueId","Article",new { Id = issue.Id})" ></iframe>
+        </div>
+    
+
+
+    </div>
+    <div class="container body" style="max-width:100%; background-color:white !important;">
+        <div class="comment-section col-lg-10 col-md-9 col-sm-9 col-xs-9">
+            <div class="head">
+                <div class="like-down">
+                    @*<div class="btnforweb fa fa-thumbs-o-up">&nbsp;&nbsp; پسند</div>
+                    <div class="btnforweb fa fa-thumbs-o-down">&nbsp;&nbsp;نا پسند</div>*@
+                    @if (issue.pdfStatus == 1)
+                    {
+                    <a href="@Url.Action("Download", "Issue", new { Id = issue.Id })">
+                        <div class="btnforweb fa fa-download">&nbsp;&nbsp;<span style="font-family:'Jameel Noori Nastaleeq';color:black">@Urdu_Magazine.Resources.Resource.Save</span></div>
+                    </a>}
+                </div>
+                <div class="content-description container">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><img class="imgofmag" src="@Url.Content(issue.Cover)"/></div>
+                    <div class="description col-lg-9 col-md-5 col-sm-5 col-xs-5">
+                        <h1>@issue.Magazine.Name (@issue.Issue_date.ToString("MM-dd-yyyy"))</h1>
+                        <p>ورکامیابی حاصل کی لیکن انہیں انتقال کر جانے کے کچھ ہی عرصہ بعد بھلا دیا گیا جبکہ وحیدمراد کا انتقال 23 نومبر1983 کوہوا تھا اور اب جبکہ ملک بھر میں 23 نومبر کو ان کی 33 ویں برسی منائی جارہی ہے لیکن اس طویل عرصہ میں وحیدمراد ہی وہ واحد پاکستانی اداکار ہیں جن کے مداح ان کی برسی کادن ہر سال مناتے ہیں اور اس موقع پر ان کے لیئے قرآن خوانی کااہتمام کرکے ایثال ثواب کے لیئے دعا کی جاتی ہے۔</p>
+                    </div>
+                     
+
+
+                </div>
+
+
+
+            </div>
+            @*<div class="comnt">
+
+            </div>*@
+            <div class="container" style="padding:20px;">
+                <div class="row">
+                    <div class="">
+
+                        <!-- Fluid width widget -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 style="font-size: 27px;">
+                                    @Urdu_Magazine.Resources.Resource.Comments
+                                </h2>
+                            </div>
+                            <div id="appendCommentsHere" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border: 1px solid #dddddd;   border-radius: 5px;">
+                            
+                                 <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11" >
+                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style=" margin-top:20px;">
+                                         <textarea id="comment-text" class="form-control pull-right " style="font-size:15pt!important;font-family:'Jameel Noori Nastaleeq';" rows="3"></textarea>
+
+                                     </div> 
+                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="color:black;margin-top:15px">
+                                         <input type="checkbox" id="romanCheckBox" class="flat" checked/> @Urdu_Magazine.Resources.Resource.RomanUrduTyping
+                                     </div>
+                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="float:left; margin-top:10px; margin-bottom:20px;">
+                                         <input id="submitComment" type="submit" class="btn btn-danger btn-block" value="@Urdu_Magazine.Resources.Resource.Submit">
+                                     </div>
+                                 </div>
+                                @foreach (var item in issue.Comments)
+                                {
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center; color:#d3d3d3"><hr style="border-bottom: solid 0.5px #d3d3d3 !important;"/></div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                                <ul class="media-list">
+                                    <li class="media">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-lg-1 col-md-2 col-sm-2 col-xs-2 media-img">
+                                            @if (item.User.profile_picture == null)
+                                            {
+                                            <img src="@Url.Content("~/Delete Me Later/10703961_790883610958096_1037989544213840837_n.jpg")" style="width:75px;height:75px" class="img-circle">
+                                            }
+                                            else
+                                            {
+                                                <img src="@Url.Content(item.User.profile_picture)" style="width:75px;height:75px" class="img-circle">
+
+                                            }
+                                        </div>
+                                        
+                                            <div class="col-lg-11 col-md-10 col-sm-10 col-xs-10 media-body" style="padding-top:5px; ">
+                                                <div class="col-md-9 media-name" style="padding-top:6px;">
+                                                    <h4 class="media-heading" style="color:Black">
+                                                        <a href="#" style="font-family:'Jameel Noori Nastaleeq';font-size:25px">@item.User.full_name</a> 
+                                                        <br>
+                                                        <small>
+                                                            @item.timestamp
+                                                        </small>
+                                                    </h4>
+                                                </div>
+                                                <div class="col-md-11">
+                                                    <p style="color:black">
+                                                        @item.comment1
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                       </div>
+                                       
+                                    </li>
+
+                                </ul>
+                                </div>
+                                }
+                             
+                            </div>
+                        </div>
+                        <!-- End fluid width widget -->
+
+                    </div>
+                </div>
+            </div>
+        
+
+        </div>
+        <div class="suggession col-lg-2 col-md-3 col-sm-3 col-xs-3">
+
+            <div class="mgzn-name">
+                <h1 style="color:black;padding-right:15px">@issue.Magazine.Name</h1>
+            </div>
+            <div class="mg-issue-list">
+                <ol>
+                    @foreach(var item in issue.Magazine.Issues.Where(x=>x.Id!=issue.Id && x.isPublished)) {
+                        
+                    <li>
+                        <a href="@Url.Action("WebView","Issue",new {Id=item.Id })">
+                            <img src="@Url.Content(item.Cover)" alt="Profile Image" />
+                            <span>@item.Issue_date.ToString("MM-dd-yyyy")</span>
+
+                        </a>
+                    </li>
+
+    }
+
+                </ol>
+            </div>
+        </div>
+
+      
+      
+        @*<div class="">
+                <ol>
+                    <li>
+                        <a>
+                            <img class="inmgsz" src="~/images/img/Oversized-kraft-background-HD-picture-1-40828.jpg" alt="Profile Image" />
+                            <span>آشیانہ</span>
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a>
+                            <img class="inmgsz" src="~/images/img/Oversized-kraft-background-HD-picture-1-40828.jpg" alt="Profile Image" />
+                            <span>آشیانہ</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <img class="inmgsz" src="~/images/img/Oversized-kraft-background-HD-picture-1-40828.jpg" alt="Profile Image" />
+                            <span>آشیانہ</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <img class="inmgsz" src="~/images/img/Oversized-kraft-background-HD-picture-1-40828.jpg" alt="Profile Image" />
+                            <span>آشیانہ</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <img class="inmgsz" src="~/images/img/Oversized-kraft-background-HD-picture-1-40828.jpg" alt="Profile Image" />
+                            <span>آشیانہ</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <img class="inmgsz" src="~/images/img/Oversized-kraft-background-HD-picture-1-40828.jpg" alt="Profile Image" />
+                            <span>آشیانہ</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <img class="inmgsz" src="~/images/img/Oversized-kraft-background-HD-picture-1-40828.jpg" alt="Profile Image" />
+                            <span>آشیانہ</span>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <img class="inmgsz" src="~/images/img/Oversized-kraft-background-HD-picture-1-40828.jpg" alt="Profile Image" />
+                            <span>آشیانہ</span>
+
+                        </a>
+                    </li>
+
+                </ol>
+            </div>*@
+        
+    </div>
+</div>
+
+@section scripts{ 
+@if (UserId == -1)
+{
+<!--SignalR implementation-->
+<script src="~/Scripts/jquery.signalR-2.1.2.min.js"></script>
+<!--Reference the autogenerated SignalR hub script. -->
+<script src="/signalr/hubs"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var liveConnectivity = $.connection.liveConnectivity;
+        liveConnectivity.client.addComment = function (from,profilePic,commentText,date){
+            if(profilePic=="default"){
+                profilePic="~/Delete Me Later/10703961_790883610958096_1037989544213840837_n.jpg"
+            }
+            $('#appendCommentsHere').append('<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center; color:#d3d3d3"><hr style="border-bottom: solid 0.5px #d3d3d3 !important;"/></div>'+
+                               '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">'+
+                               '<ul class="media-list">'+
+                                   '<li class="media">'+
+                                       '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">'+
+                                       '<div class="col-lg-1 col-md-2 col-sm-2 col-xs-2 media-img">'+
+                                           '<img src="'+profilePic.replace('~', '@Url.Content("~/")') +'" style="width:75px;height:75px" class="img-circle">'+
+                                       '</div>'
+
+                                           +'<div class="col-lg-11 col-md-10 col-sm-10 col-xs-10 media-body" style="padding-top:5px; ">'
+                                               +'<div class="col-md-9 media-name" style="padding-top:6px;">'
+                                                   +'<h4 class="media-heading" style="color:Black">'
+                                                       +'<a href="#" style="font-family:\'Jameel Noori Nastaleeq\';font-size:25px">'+from+'</a>'
+                                                       +'<br>'
+                                                       +'<small>'
+                                                           +date
+                                                       +'</small>'
+                                                   +'</h4>'
+                                               +'</div>'
+                                               +'<div class="col-md-11">'
+                                                   +'<p style="color:black">'
+                                                     +commentText
+                                                   +'</p>'
+                                               +'</div>'
+                                           +'</div>'
+
+                                      +'</div>'
+
+                                   +'</li>'
+
+                               +'</ul>'
+                               +'</div>');
+        }
+        $.connection.hub.start().done(function () {
+            liveConnectivity.server.addMeToWebViewRoom('@issue.Id');
+
+
+        });
+
+
+    })
+</script>
+
+}
+
+
+<script src="~/Scripts/rtl/urdukeys.js"></script>
+<script src="~/Content/iCheck/icheck.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('body').on('click', '#submitComment', function () {
+            commentText=$('#comment-text').val();
+            if(commentText.length==0){
+                return;
+            }
+
+            issueId=@issue.Id;
+            console.log(issueId);
+            $.ajax({
+                url: "@Url.Action("postComment", "Issue")",
+                type:"POST",
+                data: {
+                    issueId: issueId,
+                    commentText: commentText,
+                },
+                success: function (data) {
+                    if (data == "login") {
+                        window.location.href = "@Url.Action("Index", "User")"
+                    }
+                    else if(data=="success"){
+                        $('#comment-text').val("");
+                        //$('#appendCommentsHere').append('<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center; color:#d3d3d3"><hr style="border-bottom: solid 0.5px #d3d3d3 !important;"/></div>'+
+                        //        '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">'+
+                        //        '<ul class="media-list">'+
+                        //            '<li class="media">'+
+                        //                '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">'+
+                        //                '<div class="col-lg-1 col-md-2 col-sm-2 col-xs-2 media-img">'+
+                        //                    '<img src="'+$('#userProfileOnNavBar').attr('src')+'" style="width:75px;height:75px" class="img-circle">'+
+                        //                '</div>'
+
+                        //                    +'<div class="col-lg-11 col-md-10 col-sm-10 col-xs-10 media-body" style="padding-top:5px; ">'
+                        //                        +'<div class="col-md-9 media-name" style="padding-top:6px;">'
+                        //                            +'<h4 class="media-heading" style="color:Black">'
+                        //                                +'<a href="#" style="font-family:\'Jameel Noori Nastaleeq\';font-size:25px">'+
+                        //                                $('#userProfileOnNavBar').attr('username')+
+                        //                                '</a>'
+                        //                                +'<br>'
+                        //                                +'<small>'
+                        //                                    +'ابھی ابھی'
+                        //                                +'</small>'
+                        //                            +'</h4>'
+                        //                        +'</div>'
+                        //                        +'<div class="col-md-11">'
+                        //                            +'<p style="color:black">'
+                        //                              +commentText
+                        //                            +'</p>'
+                        //                        +'</div>'
+                        //                    +'</div>'
+
+                        //               +'</div>'
+
+                        //            +'</li>'
+
+                        //        +'</ul>'
+                        //        +'</div>');
+                    }
+                }
+            });
+        });
+
+    });
+
+</script>
+
+
+
+
+@*to enable a text area with only conversion*@
+<script src="https://www.google.com/jsapi"
+        type="text/javascript">
+</script>
+
+<script type="text/javascript">
+   
+
+    google.load("elements", "1", {
+        packages: "transliteration"
+    });
+
+    function onLoad() {
+        var options = {
+            sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage: [google.elements.transliteration.LanguageCode.URDU],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        var control = new google.elements.transliteration.TransliterationControl(options);
+        control.makeTransliteratable(['comment-text']);
+        $("#comment-text").css("font-family", "Jameel noori nastaleeq");
+        $("#comment-text").css("font-size", "15pt");
+        $('#romanCheckBox').on('ifChecked', function (event) {
+            $("#comment-text").attr("onkeypress", "");
+            control.enableTransliteration();
+            $("#comment-text").focus();
+        });            
+        $('#romanCheckBox').on('ifUnchecked', function (event) {
+            control.disableTransliteration();
+            $("#comment-text").attr("onkeypress", "return changeKey(this, event, typeUrdu);");
+            $("#comment-text").focus();
+        });
+    }
+    google.setOnLoadCallback(onLoad);
+</script>
+@*to enable a text area with only conversion*@
+}

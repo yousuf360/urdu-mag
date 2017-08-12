@@ -1,0 +1,396 @@
+﻿@model List<Urdu_Magazine.Models.Article>
+@{
+    int UserId = -1;
+
+    if (Session["User"] != null) {
+        UserId = ((Urdu_Magazine.Models.User)Session["User"]).id;
+
+    }
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <link href="~/Content/columnizerUI/PrintStyle.css" rel="stylesheet" />
+    <link href="~/Content/columnizerUI/BodyStyle.css" rel="stylesheet" />
+    <link href="~/Content/columnizerUI/IndexStyle.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/ratingjs/themes/fontawesome-stars-o.css" rel="stylesheet" />
+    <link href="~/Content/SideBarW3/w3.css" rel="stylesheet" />
+    <script src="~/Content/dateChangeScript/script.js"></script>
+    <style>
+                 .loader {
+                     display: none;
+                     position: fixed;
+                     z-index: 1000;
+                     top: 0;
+                     left: 0;
+                     height: 100%;
+                     width: 100%;
+                     background: rgba( 255, 255, 255, .8 ) url('https://d13yacurqjgara.cloudfront.net/users/107759/screenshots/2436386/copper-loader.gif') 50% 50% no-repeat;
+                 }
+
+                 /* When the body has the loading class, we turn
+        the scrollbar off with overflow:hidden */
+                 body.loading {
+                     overflow: hidden;
+                 }
+
+                     /* Anytime the body has the loading class, our
+        modal element will be visible */
+                     body.loading .loader {
+                         display: block;
+                     }
+    </style>
+   <style>
+      
+                body {
+                     background: #ffffff;
+   
+        }
+       #main{
+            transform: scale(0.4);
+           transform-origin: top right;
+    transition: all 2s;
+           padding-right:3%;
+
+       }
+       .rate-button {
+           font-family: Jameel Noori Nastaleeq;
+           position:absolute;
+           left:20%;
+           font-size:30px !important;
+    background-color: #D95354; /* Green */
+    border: none;    padding-bottom: 10px;
+    color: white;
+    padding-left: 25px;
+    padding-right: 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+           .rate-button:hover {
+           background-color:#d43f3a
+           }
+           #main.zoomMain {
+            transform: scale(1);
+           }
+        #img-cover {
+           
+           
+            width: 1062px !important;
+            height: 1449px !important;
+            position: relative;
+            margin-right: -24px !important;
+            padding: 0 !important;
+        }
+    .zoom{
+    position:fixed;
+    bottom:10px;
+   left:10px;
+    cursor:pointer;
+    z-index:5000
+    }
+       .btnIndex {
+        position:fixed;
+    top:10px;
+    cursor:pointer;
+    left:10px;
+    z-index:5000
+       }
+
+        .br-theme-fontawesome-stars-o .br-widget a {
+        font-size:55px;
+        margin-right: 12px;
+        
+        }
+        .br-theme-fontawesome-stars-o .br-widget {
+        text-align:center;
+        }
+      
+          hr.type12 { 
+  padding: 0;
+  border: none; 
+  border-top: medium double #8c8c8c; 
+  color: #8c8c8c; 
+  text-align: center; 
+      margin-top: 30px
+} 
+hr.type12:after { 
+  content: "§§§"; 
+  display: inline-block; 
+  position: relative; 
+  top: -1.1em; 
+  font-size: 1.5em; 
+  padding: 0 0.25em; 
+  background: #fff; 
+}
+
+
+         </style>
+   <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.columnizer.js"></script>
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+    <script src="~/Content/columnizerScripts/simple.js"></script>
+    <script src="~/Content/SideBarW3/mousewheel.js"></script>
+    
+    <script src="~/Content/ratingjs/jquery.barrating.min.js"></script>
+    <script>
+       
+        function toggleNav() {
+            console.log($("#mySidenav").css('width'));
+            if ($("#mySidenav").css('width').replace('px','')<250) {
+                document.getElementById("mySidenav").style.width = "250px";
+                document.getElementById("premain").style.marginRight = "250px";
+            }
+            else {
+                document.getElementById("mySidenav").style.width = "0";
+                document.getElementById("premain").style.marginRight = "0";
+                
+            }
+           
+        }
+
+        
+
+        $(document).ready(function () {
+            /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+         
+
+
+            setTimeout(function () {
+                changeDateToUrdu();
+                startColumnizing(true);
+                $('.barrate').each(function (index, element) {
+                    $(this).barrating({
+                        theme: 'fontawesome-stars-o'
+                    });
+                });
+
+
+                enableScrollView('#mySidenav');
+                $('body').removeClass("loading");
+            }, 5000);
+   
+            var zoom = false
+            $('body').on('click', '.zoom', function (event) {
+                console.log($('#main').css('zoom')+zoom);
+                if (!zoom) {
+                    $('#main').addClass('zoomMain');
+                    $('body').css({ 'width': '1400px' });
+                    var left = $(document).outerWidth() - $(window).width();
+                    $('body,html').scrollLeft(left);
+                    $(".zoom").removeClass("fa-search-plus");
+                    $(".zoom").addClass("fa-search-minus");
+                }
+                else {
+               
+                    $('#main').removeClass('zoomMain');
+                    $(".zoom").removeClass("fa-search-minus");
+                    $(".zoom").addClass("fa-search-plus");
+
+                    
+                }
+                zoom = !zoom;
+            });
+            $('*[id^="rating-average-"]').each(function (index, element) {
+                $(this).barrating({
+                    theme: 'fontawesome-stars-o',
+                    initialRating: $(this).data('current-rating'),
+                    readonly: true
+                });
+            });
+            $('body').on('click', '.rate-button', function () {
+                var articleId = $(this).attr('article-id');
+                var rating = $('#rate-' + articleId).val();
+                if (rating == "") {
+                    rating = 0;
+                }
+                $.ajax({
+                    url: "@Url.Action("Rate", "Article")",
+                    type: 'POST',
+                    data: {
+                        articleId: articleId,
+                        rate: rating,
+                    },
+                    success: function (data) {
+                        if (data == "login") {
+                            top.window.location.href = "@Url.Action("Index", "User")"
+                        }
+                        else if (data == "success") {
+                            console.log("Successfully Rated.");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    
+</head>
+
+<body onload="$('body').addClass('loading');" style="font-family: Jameel Noori Nastaleeq;">
+    <div id="mySidenav" class="sidenav" dir="rtl">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
+        <hr class="style11" />
+            @{
+                int articleCountForSideBar = 1;
+                foreach (var item in Model)
+                {
+                <a href="#article-@(articleCountForSideBar++)" >@item.name</a>
+                <hr class="style11"/>
+                }
+            }
+       
+    </div>
+    <span  onclick="toggleNav()" class="btnIndex fa fa-2x fa-navicon"></span>
+   <div id="premain">
+        <div id="main">
+            <div id="issue-cover" style="width: 1000px !important;
+    height: 1414px !important;position:relative">
+                <div style="background: brown;
+    padding-bottom: 40px;
+    padding-top: 0px;
+    width: 47.4%;
+    text-align: center;
+    opacity: 0.98;
+    position: absolute;
+    /* align-self: center; */
+    right: -25px;
+    /*top: 45%;*/
+    vertical-align: middle;
+    z-index: 5000;
+    color: white;">
+                    <span style="font-size:53pt">@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Magazine.Name</span><br />
+                    <span style="font-size:20pt" class="changeDateFormat" date="@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Issue_date.ToString("yyyy-MM-dd")">@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Issue_date.ToString("MM-dd-yyyy")</span>
+                </div>
+<img id="img-cover" src="@Url.Content(Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Cover)" />
+            </div>
+            <div>
+
+                <div id="page_template">
+                    <div class='header'>@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Magazine.Name<hr></div>
+                    <div class='content' dir="rtl"></div>
+                    <div class='footer' style="position:absolute;bottom:13px;left:95px"><hr><span id="pgNum"></span></div>
+
+                </div>
+                <div id="newsletterContent" hidden>
+
+                    @{ Dictionary<string, List<string>> contentDic = new Dictionary<string, List<string>>();}
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+
+                        <div id='@("article" + i)' class="article" columns="@(Model.ElementAt(i).columns)">
+                            <div style="margin-bottom: 20px;">
+                                <div>
+                                    <h1  style="margin-bottom: -8px;">
+                                        @Model.ElementAt(i).name
+                                    </h1>
+                                </div>
+                                <div>
+                                    <span style="font-size: 21px;font-weight: 500;padding: 0 10px;">
+                                        @Urdu_Magazine.Resources.Resource.Writer: @Model.ElementAt(i).User.full_name
+                                    </span>
+                                </div>
+                            </div>
+                               
+                            @Html.Raw(Model.ElementAt(i).article_data)
+                            <hr class="type12" />
+                        </div>
+                        //rating-id-@(Model.ElementAt(i).Id
+                        <div id="rating-div-@(i)">
+                            <div class="ratingCustomStyle" style="margin-top:50%">
+                                @if (UserId != -1)
+                                {
+                                    var article_rating = Model.ElementAt(i).Article_Rating.Where(x => x.user_Id == UserId).SingleOrDefault();
+                                    int rate = 0;
+                                    if (article_rating != null)
+                                    {
+                                        rate = (int)article_rating.rate.Value;
+                                    }
+
+                                    <select id="rate-@(Model.ElementAt(i).Id)" class="barrate">
+                                        <option value=""></option>
+                                        <option @((rate == 1) ? "selected" : "") value="1">1</option>
+                                        <option @((rate == 2) ? "selected" : "") value="2">2</option>
+                                        <option @((rate == 3) ? "selected" : "") value="3">3</option>
+                                        <option @((rate == 4) ? "selected" : "") value="4">4</option>
+                                        <option @((rate == 5) ? "selected" : "") value="5">5</option>
+                                    </select>
+                                    <button class="rate-button"  article-id="@(Model.ElementAt(i).Id)">@Urdu_Magazine.Resources.Resource.Rate</button>
+
+                                }
+                                else
+                                {
+                                    <div>LOGIN TO RATE</div>
+                                }
+                                @{var rated = Model.ElementAt(i).Article_Rating.Select(x => x.rate);
+                                    decimal averageRated = 0;
+                                    if (rated.Count() > 0)
+                                    {
+                                        averageRated = rated.Sum().Value / rated.Count();
+                                    }
+
+                                    <br />
+                                    <select id="rating-average-@(Model.ElementAt(i).Id)" data-current-rating="@averageRated">
+                                        <option value=""></option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                }
+                            </div>
+
+                        </div>
+                                        string cat = Model.ElementAt(i).Article_Issue.ElementAt(0).Magazine_Category.category;
+
+                                        if (contentDic.ContainsKey(cat))
+                                        {
+                                            contentDic[cat].Add(Model.ElementAt(i).name);
+                                        }
+                                        else
+                                        {
+                                            contentDic[cat] = new List<string>();
+                                            contentDic[cat].Add(Model.ElementAt(i).name);
+                                        }
+                                    }
+
+                    <div id="tempTableOfContent" class="tempTableOfContent">
+                        <h1 style="text-align:center">@Urdu_Magazine.Resources.Resource.Index</h1>
+
+                        @{
+                            var tempId = 0;
+                            var keys = contentDic.Keys.ToList();
+                            keys.Sort();
+                            foreach (var key in keys)
+                            {
+                                <h2 align="right">@key</h2>
+                                <ul class="leaders">
+                                    @foreach (var item in contentDic[key])
+                                    {
+                                        <li>
+                                            <a id="table-of-content-element-@(tempId+1)">
+                                                <span>@item</span>
+                                                <span id="indexPage-@(tempId+1)"></span>
+                                            </a>
+                                        </li>
+                                        tempId++;
+                                    }
+                                </ul>
+                            }
+
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <span class="zoom fa fa-2x fa-search-plus" ></span>
+    <div class="loader"><!-- Place at bottom of page --></div>
+</body>
+</html>

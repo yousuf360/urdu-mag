@@ -1,0 +1,42 @@
+﻿@model List<Urdu_Magazine.Models.Issue>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Urdu_Magazine.Resources.Resource.MagazineDisplay</th>
+            <th>@Urdu_Magazine.Resources.Resource.IssueDateDisplay</th>
+            <th>@Urdu_Magazine.Resources.Resource.CategoryOfArticle</th>
+            <th style="text-align:center">@Urdu_Magazine.Resources.Resource.Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Magazine.Name</td>
+                <td>@item.Issue_date.ToShortDateString()</td>
+                <td>
+                    <select issue-id="@item.Id">
+                        <option value="">
+
+                        </option>
+                        @foreach (var cat in item.Magazine.Magazine_Category) {
+                            <option value="@cat.Id">
+                                @cat.category
+                            </option>
+                        }
+                    </select>
+                    <br />
+                    <span class="categoryError error" hidden issue-id="@item.Id">
+                        @Urdu_Magazine.Resources.Resource.Required
+                    </span>
+                </td>
+                <td align="center">
+                    <button type="button" action="submit" issue-id="@item.Id" class="btn btn-primary submitArticleToThisIssue">
+                        @Urdu_Magazine.Resources.Resource.SubmitArticle
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

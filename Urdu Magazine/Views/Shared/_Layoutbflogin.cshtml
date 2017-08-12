@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css-rtl")
+    @*@Styles.Render("~/Content/font-awesome")*@
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    @Styles.Render("~/Content/malihu-custom-scrollbar-plugin")
+    @Scripts.Render("~/bundles/modernizr")
+    @{    var page = ((RazorView)ViewContext.View).ViewPath;}
+    <link href="~/Content/home_page.css" rel="stylesheet" />
+    <style>
+        .top_nav {
+            height: 52px;
+            position: fixed;
+            width: 100%;
+            z-index: 9999;
+        }
+
+        .nav_menu {
+            height: 100%;
+            padding: 9px;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        button {
+            width: 180px;
+            font: 12px Arial;
+            margin-left: 2% !important;
+            float: left;
+            font-family: 'Jameel Noori Nastaleeq';
+            font-size: 16px !important;
+        }
+
+        .btn-danger {
+            color: #ffffff;
+            background-color: none !important;
+            border-color: #d43f3a;
+        }
+
+        .title {
+            float: right;
+            margin-top: -10px;
+            margin-right: 1% !important;
+        }
+
+            .title h1 {
+                font-family: 'Jameel Noori Nastaleeq' !important;
+                color: white;
+            }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+
+        .bkg {
+            width: 100%;
+            height: auto;
+            background-color: #F2D19B;
+        }
+    </style>
+
+
+</head>
+<body>
+  
+     
+            <div class="top_nav">
+
+                <div class="nav_menu">
+                    <div class="title"><h1>@Urdu_Magazine.Resources.Resource.UrduMagazine</h1></div>
+                    <a href="@Url.Action("Index","User")">
+                        <button type="button" class="btn btn-round btn-danger">@Urdu_Magazine.Resources.Resource.GetStarted</button>
+                    </a>
+                </div>
+            </div>
+
+            @if (!page.Equals("~/Views/Issue/WebView.cshtml"))
+            {
+
+                <div class="headcontent">
+                    <div class="light1"></div>
+                    <img src="~/images/check.jpg" />
+
+
+                </div>}
+
+            <div class="bkg">
+                @RenderBody()
+            </div>
+
+       
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap-rtl")
+        @Scripts.Render("~/bundles/Custom-rtl")
+        @Scripts.Render("~/bundles/malihu-custom-scrollbar-plugin")
+        @RenderSection("scripts", required: false)
+        <script>
+            $(window).scroll(function () {
+                var wScroll = $(this).scrollTop();
+
+                $('.light1').css({
+                    'transform': 'translate(0px, -' + wScroll / 11 + '%)'
+                });
+
+
+            });
+
+        </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+﻿ul.leaders {
+    max-width: 98%;
+    padding: 0;
+    overflow-x: hidden;
+    list-style: none;
+}
+
+    ul.leaders li:before {
+        float: right;
+        width: 0;
+        white-space: nowrap;
+        content: ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . " ". . . . . . . . . . . . . . . . . . . . "". . . . . . . . . . . . . . . . . . . . "". . . . . . . . . . . . . . . . . . . . "". . . . . . . . . . . . . . . . . . . . "". . . . . . . . . . . . . . . . . . . . "". . . . . . . . . . . . . . . . . . . . ";
+    }
+
+    ul.leaders span:first-child {
+        padding-right: 0.33em;
+        background: white;
+    }
+
+    ul.leaders span + span {
+        float: left;
+      
+        background: white;
+    }
+
+#img-cover {
+    width: 1000px !important;
+    height: 1414px !important;
+    position: relative;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#issue-cover {
+    margin: 0 !important;
+    padding: 0 !important;
+    page-break-after: always;
+}

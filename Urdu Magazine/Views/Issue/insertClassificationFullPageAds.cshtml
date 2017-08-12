@@ -1,0 +1,737 @@
+﻿@model List<Urdu_Magazine.Models.Article>
+@{
+    int UserId = -1;
+
+    if (Session["User"] != null)
+    {
+        UserId = ((Urdu_Magazine.Models.User)Session["User"]).id;
+
+    }
+    var _issue_Id = Model.ElementAt(0).Article_Issue.ElementAt(0).Issue_Id;
+    var uploadedMedia = ViewBag.UploadedMedia as List<Urdu_Magazine.Models.UploadMedia>;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <link href="~/Content/columnizerUI/PrintStyle.css" rel="stylesheet" />
+    <link href="~/Content/columnizerUI/BodyStyle.css" rel="stylesheet" />
+    <link href="~/Content/columnizerUI/IndexStyle.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/SideBarW3/w3.css" rel="stylesheet" />
+    <style>
+        .loader {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('https://d13yacurqjgara.cloudfront.net/users/107759/screenshots/2436386/copper-loader.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .loader {
+    display: block;
+}
+
+
+    </style>
+    
+    <style>
+        .save {
+              position: fixed;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            z-index: 50000;
+        }
+        body {
+            background: #ffffff;
+        }
+
+        #main {
+            transform: scale(0.4);
+            transform-origin: top right;
+            transition: all 2s;
+            padding-right: 3%;
+        }
+
+            #main.zoomMain {
+                transform: scale(1);
+            }
+
+        #img-cover {
+            width: 1062px !important;
+            height: 1449px !important;
+            position: relative;
+            margin: -24px !important;
+            padding: 0 !important;
+        }
+
+        .zoom {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            cursor: pointer;
+            z-index: 5000;
+        }
+          .close {
+        opacity: 0.6;
+        z-index: 5000;
+        position: absolute;
+        top: -13px;
+        left: 10px;
+        color: #FFFFFF;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .close:hover,
+        .close:focus {
+            opacity: 1;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* 100% Image Width on Smaller Screens */
+    @@media only screen and (max-width: 700px) {
+        .close {
+            top: 0px;
+            right: 0px;
+            font-size: 40px;
+        }
+    }
+     </style>
+
+    <style>
+        div.customGallery {
+            margin: 5px;
+            border: 1px solid #ccc;
+            float: left;
+            width: 150px;
+            cursor:pointer
+           
+        }
+
+            div.customGallery:hover {
+                border: 1px solid #777;
+            }
+
+            div.customGallery img {
+                width: 150px;
+             height:150px
+            }
+
+        div.customDesc {
+            padding: 5px;
+            font-size:20px;
+            text-align: center;
+            text-overflow:ellipsis;
+            overflow:hidden;
+        }
+        div.adPatternElemtsInModal {
+            height:275px !important;
+        }
+        div.adPatternElemtsInModal img {
+            height:220px !important;
+        }
+        .addPagehere {
+        cursor:pointer
+        }
+        .adPage {
+        padding-top:0px !important;
+        border: 1px solid;
+        }
+        .addAdHere {
+        cursor:pointer;
+        padding-top:34%;
+        padding-right:47%;
+        }
+        .adImage {
+            margin:0px !important;
+        }
+
+
+           hr.type12 { 
+  padding: 0;
+  border: none; 
+  border-top: medium double #8c8c8c; 
+  color: #8c8c8c; 
+  text-align: center; 
+      margin-top: 30px
+} 
+hr.type12:after { 
+  content: "§§§"; 
+  display: inline-block; 
+  position: relative; 
+  top: -1.1em; 
+  font-size: 1.5em; 
+  padding: 0 0.25em; 
+  background: #fff; 
+}
+
+    </style>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.columnizer.js"></script>
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+    <script src="~/Content/columnizerScripts/simple.js"></script>
+  
+ 
+
+    
+    <link href="~/Content/AnimateModal/animate.min.css" rel="stylesheet" />
+    <script src="~/Content/AnimateModal/animatedModal.js"></script>
+    <script>
+
+
+
+
+        $(document).ready(function () {
+
+            $('body').on('click', '.save', function (event) {
+
+                var fullPageAds = [];
+                var temp;
+
+
+                $(".adPage").each(function (i) {
+                    temp = $('<div>').append($(this).clone(true)).clone(true);
+                    $(temp).find('.addAdvertiseImage').parent().remove();
+                    fullPageAds[i] = {
+                        issueId :@_issue_Id,
+                        articleId: $(this).attr('data-article-num'),
+                        pageId: $(this).attr('data-pg-num'),
+                        priorityId: $(this).attr('priority-num'),
+                        html: $(temp).html()
+                    }
+                });
+                console.log(fullPageAds);
+
+                var data = JSON.stringify({
+                    issueId :@_issue_Id,
+
+                    fullPage:fullPageAds
+                });
+                $.ajax({
+                    url: '@Url.Action("insertClassificationFullPageAds", "Issue")',
+                    dataType : "json",
+                    contentType : "application/json",
+                    data: data,
+                    type:"POST",
+
+                    success: function (data) {
+                        if(data=='login'){
+                            top.window.location.href="@Url.Action("Index", "User")"
+                        }
+                        else{
+                            //Code Something To show That data has been saved
+                        }
+
+                    }
+                });
+            });
+
+            /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+            $("#demo01").animatedModal({
+                color: "rgba(60,60,60,0.8)",
+                animatedOut:'bounceOut'
+            });
+
+     
+            setTimeout(function () {
+
+                startColumnizing(false);
+
+                $(".page").each(function () {
+                    $(this).after("<div style='width:1000px;text-align:center;margin-top: 75px;'><i class='fa fa-2x fa-plus addPagehere'></i> add page</div>");
+                });
+                $('body').removeClass("loading");
+
+            }, 5000);
+            var _articleId;
+            var _pgNum;
+            var _priorityNum;
+            var _mainDiv
+           // var parentsPrevious;
+            $('body').on('click', '.addPagehere', function (event) {
+                $('#demo01').click();
+                $('#animatedModal').css({
+
+                    'width': '90%',
+                    'height': '90%',
+                    'top': '5%',
+                    'left': '5%',
+                    'border': '3px solid',
+                    'border-radius': '5px'
+                });
+               _articleId;
+               _pgNum;
+               _priorityNum = 0;
+             //   var parentsPrevious = $(this).parent().prev();
+                if ($(this).parent().prev().hasClass('adPage')) {
+                    _priorityNum = parseInt($(this).parent().prev().attr('priority-num')) + 1;
+
+                }
+                if ($(this).parent().prev().attr("data-article-num") === undefined) {
+                    _pgNum = 0;
+                    _articleId = -1;
+                }
+                else {
+                    _articleId = $(this).parent().prev().attr("data-article-num");
+                    _pgNum = $(this).parent().prev().attr("data-pg-num");
+                }
+                _mainDiv = $(this).parent();
+              
+                $('.adPatternElemtsInModal').css('display','block');
+                $('.adGalleryElemtsInModal').css('display','none');
+              //  $(this).parent().remove();
+            });
+            
+
+
+            $('body').on('click', '.adPatternGallery', function (event) {
+                var adPattern = $(this).attr('ad-pattern');
+             if(adPattern==1){
+                    _mainDiv.before("<div class='page adPage' priority-num="+_priorityNum+" data-article-num='" + _articleId + "' data-pg-num=" + _pgNum + " style='display:block;width: 1000px;height:1400px;margin-right: -24px !important;'>" 
+                         + '<div class="content" dir="rtl"><div class="first last column " style="width:100%; float: right;">' +
+
+                                           "<div style='height:1398px;border:2px solid'>"+
+                                           "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                           "</div>"+
+                                           
+                                       "</div>" +
+                                "</div>");
+             }
+             else if(adPattern==2){
+                 _mainDiv.before("<div class='page adPage' priority-num="+_priorityNum+" data-article-num='" + _articleId + "' data-pg-num=" + _pgNum + " style='display:block;width: 1000px;height:1400px;margin-right: -24px !important;'>" 
+                   + '<div class="content" dir="rtl"><div class="first last column " style="width:100%; float: right;">' +
+
+                                     "<div style='height:1398px;display:inline-block;width:496px;border:2px solid'>"+
+                                     "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                     "</div>"+
+                                     "<div style='height:1398px;display:inline-block;width:496px;border:2px solid;float:left'>"+
+                                     "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                     "</div>"+
+                                      
+                                 "</div>" +
+                          "</div>");
+             }
+              else  if(adPattern==3){
+                    _mainDiv.before("<div class='page adPage' priority-num="+_priorityNum+" data-article-num='" + _articleId + "' data-pg-num=" + _pgNum + " style='display:block;width: 1000px;height:1400px;margin-right: -24px !important;'>" 
+                        + '<div class="content" dir="rtl"><div class="first last column " style="width:100%; float: right;">' +
+
+                                          "<div style='height:696px;border:2px solid'>"+
+                                          "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                          "</div>"+
+                                          "<div style='height:696px;border:2px solid'>"+
+                                          "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                          "</div>"+
+                                      
+                                      "</div>" +
+                               "</div>");
+              }
+              else if(adPattern==4){
+                  _mainDiv.before("<div class='page adPage' priority-num="+_priorityNum+" data-article-num='" + _articleId + "' data-pg-num=" + _pgNum + " style='display:block;width: 1000px;height:1400px;margin-right: -24px !important;'>" 
+                    + '<div class="content" dir="rtl"><div class="first last column " style="width:100%; float: right;">' +
+
+                                      "<div style='height:1398px;display:inline-block;width:496px;border:2px solid'>"+
+                                        "<div style='height:696px;border:2px solid'>"+
+                                        "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                        "</div>"+
+                                        "<div style='height:696px;border:2px solid'>"+
+                                        "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                        "</div>"+
+                                      "</div>"+
+                                      "<div style='height:1398px;display:inline-block;width:496px;border:2px solid;float:left'>"+
+                                      "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                      "</div>"+
+                                      
+                                  "</div>" +
+                           "</div>");
+              }
+              else if(adPattern==5){
+                  _mainDiv.before("<div class='page adPage' priority-num="+_priorityNum+" data-article-num='" + _articleId + "' data-pg-num=" + _pgNum + " style='display:block;width: 1000px;height:1400px;margin-right: -24px !important;'>" 
+                    + '<div class="content" dir="rtl"><div class="first last column " style="width:100%; float: right;">' +
+
+                                      "<div style='height:1398px;display:inline-block;width:496px;border:2px solid'>"+
+                                        "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                      "</div>"+
+                                      "<div style='height:1398px;display:inline-block;width:496px;border:2px solid;float:left'>"+
+                                     "<div style='height:696px;border:2px solid'>"+
+                                        "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                        "</div>"+
+                                        "<div style='height:696px;border:2px solid'>"+
+                                        "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                        "</div>"+
+                                      "</div>"+
+                                      
+                                  "</div>" +
+                           "</div>");
+              }
+              else if(adPattern==6){
+                  _mainDiv.before("<div class='page adPage' priority-num="+_priorityNum+" data-article-num='" + _articleId + "' data-pg-num=" + _pgNum + " style='display:block;border: 1px solid;width: 1000px;height:1400px;margin-right: -24px !important;'>" + 
+                      '<div class="content" dir="rtl"><div class="first last column " style="width:100%; float: right;">' +
+
+                                          
+                                        "<div style='height:696px;border:2px solid'>"+
+                                        "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                        "</div> "+
+                                   
+                                          
+                                        "<div style='height:696px'>"+
+                                        "<div style='display:inline-block;height:695px;width:496px;border:2px solid'>"+
+                                        "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                        "</div>"+
+                                        "<div style='display:inline-block;height:695px;width:496px;float:left;border:2px solid'>"+
+                                        "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                        "</div>"+
+                                        "</div>"+
+                                        
+                                          
+                                      
+                                    "</div>" +
+                             "</div>");
+              }
+           
+                else if(adPattern==7){
+                    _mainDiv.before("<div class='page adPage' priority-num="+_priorityNum+" data-article-num='" + _articleId + "' data-pg-num=" + _pgNum + " style='display:block;border: 1px solid;width: 1000px;height:1400px;margin-right: -24px !important;'>" + 
+                        '<div class="content" dir="rtl"><div class="first last column " style="width:100%; float: right;">' +
+
+                                          "<div style='height:696px'>"+
+                                          "<div style='display:inline-block;height:695px;width:496px;border:2px solid'>"+
+                                          "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                          "</div>"+
+                                          "<div style='display:inline-block;height:695px;width:496px;float:left;border:2px solid'>"+
+                                          "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                          "</div>"+
+                                          "</div>"+
+                                          "<div style='height:696px;border:2px solid'>"+
+                                          "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                          "</div> "+
+                                      
+                                      
+                                      "</div>" +
+                               "</div>");
+                }
+              
+            
+            
+             
+                else if(adPattern==8){
+                    _mainDiv.before("<div class='page adPage' priority-num="+_priorityNum+" data-article-num='" + _articleId + "' data-pg-num=" + _pgNum + " style='display:block;width: 1000px;height:1400px;margin-right: -24px !important;'>" 
+                      + '<div class="content" dir="rtl"><div class="first last column " style="width:100%; float: right;">' +
+
+                                        "<div style='height:1398px;display:inline-block;width:496px;border:2px solid'>"+
+                                           "<div style='height:696px;border:2px solid'>"+
+                                          "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                          "</div>"+
+                                          "<div style='height:696px;border:2px solid'>"+
+                                          "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                          "</div>"+
+                                        "</div>"+
+                                        "<div style='height:1398px;display:inline-block;width:496px;border:2px solid;float:left'>"+
+                                       "<div style='height:696px;border:2px solid'>"+
+                                          "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                          "</div>"+
+                                          "<div style='height:696px;border:2px solid'>"+
+                                          "<i class='fa fa-2x fa-plus addAdHere' />"+
+                                          "</div>"+
+                                        "</div>"+
+                                      
+                                    "</div>" +
+                             "</div>");
+                }
+                $('.close-animatedModal').click();
+            });
+
+            var _adDiv;
+            $('body').on('click', '.addAdHere', function (event) {
+                $('#demo01').click();
+                $('#animatedModal').css({
+
+                    'width': '90%',
+                    'height': '90%',
+                    'top': '5%',
+                    'left': '5%',
+                    'border': '3px solid',
+                    'border-radius': '5px'
+                });
+                _adDiv = $(this).parent();
+               // console.log(_adDiv);
+                $('.adPatternElemtsInModal').css('display','none');
+                $('.adGalleryElemtsInModal').css('display','block');
+            });
+
+            
+            $('body').on('click', '.adGallery', function (event) {
+                var imgLink = $(this).attr('img-link');
+                $(_adDiv).html('<img style="min-width:100%;min-height:100%;" class="adImage" src="' + imgLink + '"/>');
+                $('.close-animatedModal').click();
+            });
+            var zoom = false
+            $('body').on('click', '.zoom', function (event) {
+                console.log($('#main').css('zoom')+zoom);
+                if (!zoom) {
+                    $('#main').addClass('zoomMain');
+                    $('body').css({ 'width': '1400px' });
+                    var left = $(document).outerWidth() - $(window).width();
+                    $('body,html').scrollLeft(left);
+                    $(".zoom").removeClass("fa-search-plus");
+                    $(".zoom").addClass("fa-search-minus");
+                }
+                else {
+
+                    $('#main').removeClass('zoomMain');
+                    $(".zoom").removeClass("fa-search-minus");
+                    $(".zoom").addClass("fa-search-plus");
+
+
+                }
+                zoom = !zoom;
+            });
+
+
+
+
+
+            //$('body').on('click', '.customGallery', function () {
+            //    var imgLink = $(this).attr('img-link');
+            //    _mainDiv.html('<div  class="resizable"><img style="min-width:100%;min-height:95%;z-index:50000;" src="' + imgLink + '"/></div>')
+            //    .css({ "cursor": "move" })
+            //    .addClass("draggable");
+            //    _mainDiv.draggable({
+
+            //        scroll: false,
+            //        cursor: "move",
+            //        grid: [4, 4]
+
+            //    });
+            //    _mainDiv.css("position","absolute");
+            //    var child = _mainDiv.children(".resizable");
+            //    child.resizable({
+            //        autoHide: true,
+            //        start: function (event, ui) {
+            //            ui.element.css('position', 'absolute');
+            //        },
+            //        handles: "n, w, e, s, se",
+            //        grid: [4, 4]
+            //    });
+            //    $('.close-animatedModal').click();
+            //});
+        });
+    </script>
+
+</head>
+
+<body onload="$('body').addClass('loading');" style="font-family: Jameel Noori Nastaleeq;">
+    
+    <div id="premain">
+        <div id="main">
+            <div id="issue-cover" style="width: 1000px !important;
+    height: 1414px !important;position:relative">
+                <div style="background: brown;
+    padding-bottom: 40px;
+    padding-top: 0px;
+    width: 100%;
+    text-align: center;
+    opacity: 0.98;
+    position: absolute;
+    /* align-self: center; */
+    right: -25px;
+    top: 45%;
+    vertical-align: middle;
+    z-index: 5000;
+    color: white;">
+                    <span style="font-size:53pt">@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Magazine.Name</span><br />
+                    <span>@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Issue_date.ToString("MM-dd-yyyy")</span>
+                </div>
+                <img id="img-cover" style="width:1000px!important" src="@Url.Content(Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Cover)" />
+            </div>
+            <div>
+
+                <div id="page_template">
+                    <div class='header'>@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Magazine.Name<hr></div>
+                    <div class='content' dir="rtl"></div>
+                    <div class='footer' style="position:absolute;bottom:13px;left:95px"><hr><span id="pgNum"></span></div>
+
+                </div>
+                <div id="newsletterContent" hidden>
+
+                    @{ Dictionary<string, List<string>> contentDic = new Dictionary<string, List<string>>();}
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+
+                        <div id='@("article" + i)' class="article" columns="@(Model.ElementAt(i).columns)">
+                            <div style="margin-bottom: 20px;">
+                                <div>
+                                    <h1 style="margin-bottom: -8px;">
+                                        @Model.ElementAt(i).name
+                                    </h1>
+                                </div>
+                                <div>
+                                    <span style="font-size: 21px;font-weight: 500;padding: 0 10px;">
+                                        @Urdu_Magazine.Resources.Resource.Writer: @Model.ElementAt(i).User.full_name
+                                    </span>
+                                </div>
+                            </div>
+
+                            @Html.Raw(Model.ElementAt(i).article_data)
+                            <hr class="type12" />
+                         
+                           </div>
+
+
+
+                        string cat = Model.ElementAt(i).Article_Issue.ElementAt(0).Magazine_Category.category;
+                        if (contentDic.ContainsKey(cat))
+                        {
+                            contentDic[cat].Add(Model.ElementAt(i).name);
+                        }
+                        else
+                        {
+                            contentDic[cat] = new List<string>();
+                            contentDic[cat].Add(Model.ElementAt(i).name);
+                        }
+                    }
+
+                    <div id="tempTableOfContent" class="tempTableOfContent">
+                        <h1 style="text-align:center">@Urdu_Magazine.Resources.Resource.Index</h1>
+
+                        @{
+                            var tempId = 0;
+                            var keys = contentDic.Keys.ToList();
+                            keys.Sort();
+                            foreach (var key in keys)
+                            {
+                                <h2 align="right">@key</h2>
+                                <ul class="leaders">
+                                    @foreach (var item in contentDic[key])
+                                    {
+                                        <li>
+                                            <a id="table-of-content-element-@(tempId+1)">
+                                                <span>@item</span>
+                                                <span id="indexPage-@(tempId+1)"></span>
+                                            </a>
+                                        </li>
+                                        tempId++;
+                                    }
+                                </ul>
+                            }
+
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <span class="zoom fa fa-2x fa-search-plus"></span>
+    <span class="save fa fa-2x fa-save"></span>
+    <!--Call your modal-->
+    <a id="demo01" href="#animatedModal" style="display:none">DEMO01</a>
+
+    <!--DEMO01-->
+    <div id="animatedModal">
+        <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID  class="close-animatedModal" -->
+        <div class="close-animatedModal">
+            <span class="close">&times;</span>
+        </div>
+
+        <div class="modal-content" style="padding-top: 50px;padding-left: 50px;">
+            <div class="adPatternElemtsInModal" hidden>
+                <div class="customGallery adPatternGallery" ad-pattern="1">
+                    <a>
+                        <img src="~/images/AdPattern/P1-1-Ad.PNG" alt="Fjords" style="width:150px" />
+                  
+                      
+                    </a>
+                    <div class="customDesc" style="color:white">Pattern 1</div>
+                </div>
+
+                <div class="customGallery adPatternGallery" ad-pattern="2">
+                    <a>
+                        <img src="~/images/AdPattern/P2-2-Ads-l1-r1.PNG"  alt="Fjords" style="width:150px"/>
+                   
+                    </a>
+                    <div class="customDesc" style="color:white">Pattern 2</div>
+                </div>
+                <div class="customGallery adPatternGallery" ad-pattern="3">
+                    <a>
+                       
+
+                        <img src="~/images/AdPattern/P3-2-Ads-t1-b1.PNG" alt="Fjords" style="width:150px"/>
+                    </a>
+                    <div class="customDesc" style="color:white">Pattern 3</div>
+                </div>
+                <div class="customGallery adPatternGallery" ad-pattern="4">
+                    <a>
+
+                        <img src="~/images/AdPattern/P4-3-Ads-l1-r2.png" alt="Fjords" style="width:150px"/>
+                      
+                    </a>
+                    <div class="customDesc" style="color:white">Pattern 4</div>
+                </div>
+                <div class="customGallery adPatternGallery" ad-pattern="5">
+                    <a>
+                        <img src="~/images/AdPattern/P5-3-Ads-l2-r1.PNG" alt="Fjords" style="width:150px"/>
+
+                    </a>
+                    <div class="customDesc" style="color:white">Pattern 5</div>
+                </div>
+                <div class="customGallery adPatternGallery" ad-pattern="6">
+                    <a>
+                        <img src="~/images/AdPattern/P6-3-Ads-t1-b2.png" alt="Fjords" style="width:150px"/>
+
+                      
+                    </a>
+                    <div class="customDesc" style="color:white">Pattern 6</div>
+                </div>
+                <div class="customGallery adPatternGallery" ad-pattern="7">
+                    <a>
+                        <img src="~/images/AdPattern/P7-3-Ads-t2-b1.png" alt="Fjords" style="width:150px"/>
+
+                    </a>
+                    <div class="customDesc" style="color:white">Pattern 7</div>
+                </div>
+                <div class="customGallery adPatternGallery" ad-pattern="8">
+                    <a>
+                        <img src="~/images/AdPattern/P8-4-Ads-2t-2b.PNG" alt="Fjords" style="width:150px"/>
+
+                    </a>
+                    <div class="customDesc" style="color:white">Pattern 8</div>
+                </div>
+            </div>
+      <div class="adGalleryElemtsInModal" hidden>
+          @foreach (var item in uploadedMedia)
+            {
+              <div class="customGallery adGallery" img-link="@Url.Content(item.imgPath)">
+                  <a>
+                      <img src="@Url.Content(item.imgPath)" alt="Fjords" style="width:150px">
+                  </a>
+                  <div class="customDesc" style="color:white">@item.imgName</div>
+              </div>
+          }
+
+
+
+      </div>
+
+        </div>
+    </div>
+   
+    <div class="loader"><!-- Place at bottom of page --></div>
+   </body>
+</html>

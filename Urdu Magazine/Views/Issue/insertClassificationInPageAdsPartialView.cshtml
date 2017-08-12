@@ -1,0 +1,204 @@
+﻿@model List<Urdu_Magazine.Models.HelpingModels.issueInfoForClassification>
+@{ 
+    var uploadedMedia = ViewBag.UploadedMedia as List<Urdu_Magazine.Models.UploadMedia>;
+   // var FirstArticle = ViewBag.FirstArticle as Urdu_Magazine.Models.Article;
+}
+  <style>
+      #style-2::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar
+{
+	width: 2px;
+	background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color:#ce4800;
+}
+  </style>
+@*<input hidden id="articleIdToSave" value="@FirstArticle.Id" />*@
+<input hidden id="articleIdToSave" value="" />
+<input hidden id="previewId" value="@Guid.NewGuid()" />
+
+@*<input hidden id="preview-columns" value="@FirstArticle.columns" />
+<input hidden id="preview-name" value="@FirstArticle.name"/>
+<input hidden id="preview-writer" value="@FirstArticle.User.full_name"/>*@
+<input hidden id="preview-columns" value="" />
+<input hidden id="preview-name" value="" />
+<input hidden id="preview-writer" value="" />
+<div class="col-xs-3" id="style-2" style="height:360px;overflow-y:scroll">
+    <!-- required for floating -->
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs tabs-left" id="article-name-list">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        <li class="active">
+                            <a href="#article-classification-@Model.ElementAt(i).articleId" article-Id="@Model.ElementAt(i).articleId" data-toggle="tab">@Model.ElementAt(i).name</a>
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="#article-classification-@Model.ElementAt(i).articleId" article-Id="@Model.ElementAt(i).articleId" data-toggle="tab">@Model.ElementAt(i).name</a>
+                        </li>
+                    }
+                }
+
+    </ul>
+ 
+</div>
+<div class="col-xs-9">
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="home">
+            @*<textarea id="article_data"><div class="mceNonEditable">@FirstArticle.article_data</div></br></textarea>*@
+            <textarea id="article_data"><div class="mceNonEditable"></div></br></textarea>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/TextEditor/tinymce.min.js"></script>
+<script type="text/javascript">
+    function makeTinyMCE() {
+        tinyMCE.init({
+            relative_urls: false,
+            mode: "exact",
+            elements: "article_data",
+            menubar: false,
+            plugins: [
+        'image imagetools',
+        'searchreplace noneditable',
+        'directionality',
+        'paste textcolor colorpicker textpattern autoresize'
+            ],
+
+            toolbar1: 'SaveClassification fontsizeselect fontselect | bold italic | alignleft aligncenter alignright alignjustify | link image | forecolor backcolor | Urdu searchreplace | PreviewArticle',
+            imagetools_cors_hosts: ['www.tinymce.com', 'pbs.twimg.com'],
+            nonbreaking_force_tab: true,
+            paste_data_images: true,
+            image_list: [
+                @foreach (var item in uploadedMedia) {
+                    <text>
+                        {title:'@item.imgName',value:'@Url.Content(item.imgPath)'},
+                    </text>
+                }
+                ],
+            font_formats: 'Urdu=Jameel Noori Nastaleeq;',
+            content_css: "@Url.Content("~/Content/Editor_Style.css")",
+            //  image_advtab: true,
+            directionality: 'rtl',
+            autoresize_max_height: 340,
+            setup: function (ed) {
+
+                // Add a custom button
+                ed.addButton('Urdu', {
+                    title: 'Type in Urdu',
+                    text: "اردو",
+
+                    // image: '../Content/TextEditor/skins/lightgray/img/anchor.gif',
+                    onclick: function () {
+                        $('#modal').modal({
+                            show: 'true'
+                        });
+
+                    }
+                });
+                ed.addButton('SaveClassification', {
+                    title: 'Save Classification',
+                    text: "@Urdu_Magazine.Resources.Resource.Save",
+                    icon:"save",
+                    // image: '../Content/TextEditor/skins/lightgray/img/anchor.gif',
+                    onclick: function () {
+                        var completeData = $('<div>' + tinyMCE.get('article_data').getContent() + '</div>').clone(true);
+                        completeData.find('.mceNonEditable').remove();
+
+                        var data =  {
+                            issueId: $("#issueIdToSave").val(),
+                            articleId: $("#articleIdToSave").val(),
+                            html: completeData.html()
+                        }
+                        console.log(data);
+                        $.ajax({
+                            url:'@Url.Action("insertClassificationInPageAds","Issue")',
+                            data:data,
+                            type: 'POST',
+                            success: function (data) {
+                                if (data == "login") {
+                                    window.location.href = "@Url.Action("Index", "User")"
+                                }
+                                else {
+
+                                }
+                            }
+                        });
+                    }
+                });
+                ed.addButton('PreviewArticle', {
+                    title: 'Preview Article',
+                    text: "پیش نظارہ آرٹیکل",
+
+                    // image: '../Content/TextEditor/skins/lightgray/img/anchor.gif',
+                    onclick: function () {
+                        $.ajax({
+                            url: "@Url.Action("saveArticleToPreview", "Article")",
+                            type: 'POST',
+                            data: {
+                                Id: $('#previewId').val(),
+                                articleName: $('#preview-name').val(),
+                                articleData: tinyMCE.get('article_data').getContent()
+                            },
+                            success: function (data) {
+                                if (data == "login") {
+                                    window.location.href = "@Url.Action("Index", "User")"
+                                }
+                                else if (data == "success") {
+                                    // Get the modal
+                                    var customModal = document.getElementById('previewModal');
+
+                                    $("#previewIframe").attr("src", " @Url.Action("previewArticleForEditor", "Article")" + '?Id=' + $("#previewId").val()
+                                        + '&columns=' + $("#preview-columns").val() + "&" + "writerName=" + $("#preview-writer").val());
+                                    // Get the image and insert it inside the modal - use its "alt" text as a caption
+
+                                    customModal.style.display = "block";
+                                    // Get the <span> element that closes the modal
+                                    var span = document.getElementsByClassName("close")[0];
+                                    // When the user clicks on <span> (x), close the modal
+                                    span.onclick = function () {
+                                        customModal.style.display = "none";
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                });
+            }
+        }
+);
+    }
+    $(document).ready(function () {
+
+        $(document).on('focusin', function (e) {
+            if ($(e.target).closest(".mce-window").length) {
+                e.stopImmediatePropagation();
+            }
+        });
+
+        makeTinyMCE();
+
+
+
+    });
+
+</script>

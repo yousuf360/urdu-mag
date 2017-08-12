@@ -1,0 +1,214 @@
+﻿@model Urdu_Magazine.Models.PreviewAricle
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/columnizerUI/PrintStyle.css" rel="stylesheet" />
+    <link href="~/Content/columnizerUI/BodyStyle.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+                 .loader {
+                     display: none;
+                     position: fixed;
+                     z-index: 1000;
+                     top: 0;
+                     left: 0;
+                     height: 100%;
+                     width: 100%;
+                     background: rgba( 255, 255, 255, .8 ) url('https://d13yacurqjgara.cloudfront.net/users/107759/screenshots/2436386/copper-loader.gif') 50% 50% no-repeat;
+                 }
+
+                 /* When the body has the loading class, we turn
+        the scrollbar off with overflow:hidden */
+                 body.loading {
+                     overflow: hidden;
+                 }
+
+                     /* Anytime the body has the loading class, our
+        modal element will be visible */
+                     body.loading .loader {
+                         display: block;
+                     }
+    </style>
+    <style>
+        #main {
+            direction:rtl;
+            transform: scale(0.4);
+           transform-origin: top right;
+    transition: all 2s;
+ 
+        }
+         #main.zoomMain {
+            transform: scale(1);
+           }
+
+          .zoom{
+    position:fixed;
+    bottom:10px;
+   left:10px;
+    cursor:pointer;
+    z-index:5000
+    }
+
+
+              hr.type12 { 
+  padding: 0;
+  border: none; 
+  border-top: medium double #8c8c8c; 
+  color: #8c8c8c; 
+  text-align: center; 
+      margin-top: 30px
+} 
+hr.type12:after { 
+  content: "§§§"; 
+  display: inline-block; 
+  position: relative; 
+  top: -1.1em; 
+  font-size: 1.5em; 
+  padding: 0 0.25em; 
+  background: #fff; 
+}
+
+    </style>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.columnizer.js"></script>
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+
+
+    <script>
+
+        $(function () {
+            var content_height = 1140;	// the height of the content, discluding the header/footer
+            var page = 1;				// the beginning page number to show in the footer
+            function start() {
+                //$('.tableOfContent').each(function (index, element) {
+                //    var columns = 1
+                //    buildNewsletter(element, columns);
+
+                //});
+                //$('.tempTableOfContent').each(function (index, element) {
+                //    var columns = 1
+                //    buildNewsletter(element, columns);
+                //});
+                $('.article').each(function (index, element) {
+                    var columns = parseInt($(element).attr('columns'));
+                    buildNewsletter(element, columns);
+
+                }
+                );
+                $('body').removeClass("loading");
+            }
+
+            function buildNewsletter(item, vColumns) {
+                if ($(item).contents().length > 0) {
+                    // when we need to add a new page, use a jq object for a template
+                    // or use a long HTML string, whatever your preference
+                    $page = $("#page_template").clone().addClass("page").css("display", "block");
+
+                    // fun stuff, like adding page numbers to the footer
+
+                    //to convert page number in urdu format
+                    var pageInStr = '' + page;
+                    var pageNumInUrdu = "";
+                    for (var i = 0; i < pageInStr.length; i++) {
+
+                        var a = typeUrdu(pageInStr.charCodeAt(i), String.fromCharCode(pageInStr.charCodeAt(i)));
+                        console.log(a.newKey);
+                        pageNumInUrdu += a.newKey;
+
+                    }
+                    $page.find("#pgNum").append(pageNumInUrdu);
+                    $("#main").append($page);
+
+
+                    page++;
+
+                    // here is the columnizer magic
+                    $(item).columnize({
+                        buildOnce: true,
+                        columns: vColumns,
+                        target: ".page:last .content",
+                        columnFloat: "right",
+                        overflow: {
+                            height: content_height,
+                            id: '#' + $(item).attr('id'),
+                            doneFunc: function () {
+                                console.log("done with page");
+                                //$('body').append('<div class="page-break"></div>');
+                                buildNewsletter(item, vColumns);
+                            }
+                        }
+                    });
+                }
+            }
+            setTimeout(start, 3000);
+            var zoom = true;
+            $('body').on('click', '.zoom', function (event) {
+                console.log($('#main').css('zoom') + zoom);
+                if (!zoom) {
+                    $('#main').addClass('zoomMain');
+                    $('body').css({ 'width': '1050' });
+                    var left = $(document).outerWidth() - $(window).width();
+                    $('body,html').scrollLeft(left);
+                    $(".zoom").removeClass("fa-search-plus");
+                    $(".zoom").addClass("fa-search-minus");
+                }
+                else {
+
+                    $('#main').removeClass('zoomMain');
+                    $(".zoom").removeClass("fa-search-minus");
+                    $(".zoom").addClass("fa-search-plus");
+
+
+                }
+                zoom = !zoom;
+            });
+        });
+
+
+    </script>
+</head>
+
+<body onload="$('body').addClass('loading');" style="font-family: Jameel Noori Nastaleeq">
+    <div id="main" class="zoomMain">
+        <div id="page_template">
+            <div class='header'><hr></div>
+            <div class='content' dir="rtl"></div>
+            <div class='footer' style="position:absolute;bottom:13px;left:95px"><hr><span id="pgNum"></span></div>
+
+        </div>
+        <div id="newsletterContent" hidden>
+            <div id='@(Model.Id)' class="article" columns="@ViewBag.columns">
+                <div style="margin-bottom: 20px;">
+                    <div>
+                        <h1 style="margin-bottom: -8px;">
+                            @{if (Model.article_name == null || Model.article_name.Equals(""))
+                                {
+                                    @Urdu_Magazine.Resources.Resource.ArticleNameDisplay
+                                }
+                                else
+                                {
+                                    @Model.article_name
+                                }
+                            }
+                        </h1>
+                    </div>
+                    <div>
+                        <span style="font-size: 21px;font-weight: 500;padding: 0 10px;">
+                            @Urdu_Magazine.Resources.Resource.Writer: @(((Urdu_Magazine.Models.User)Session["User"]).full_name)
+                        </span>
+                    </div>
+                </div>
+
+                @Html.Raw(Model.article_data)
+                <hr class="type12" />
+            </div>
+
+        </div>
+    </div>
+
+    <span class="zoom fa fa-2x fa-search-minus"></span>
+    <div class="loader"><!-- Place at bottom of page --></div>
+</body>
+
+</html>

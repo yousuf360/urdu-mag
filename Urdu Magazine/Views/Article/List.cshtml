@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewBag.Title = "List";
+    var Articles = ViewBag.Articles as List<Urdu_Magazine.Models.Article>;
+}
+<link href="~/Content/jquery-confirm/css/jquery-confirm.css" rel="stylesheet" />
+<div class="left_col" role="main" style="min-height: 700px;">
+
+
+    <div class="">
+
+        <div class="clearfix"></div>
+        <div class="x_panel">
+            <div class="x_title">
+                <h1 class="langStyle">@Urdu_Magazine.Resources.Resource.AllArticles</h1>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>@Urdu_Magazine.Resources.Resource.ArticleNameDisplay</th>
+                                <th>@Urdu_Magazine.Resources.Resource.NumberOfColumnsDisplay</th>
+                                <th>@Urdu_Magazine.Resources.Resource.NumberOfSubmissions</th>
+                                <th>@Urdu_Magazine.Resources.Resource.Published</th>
+                                <th style="text-align:center">@Urdu_Magazine.Resources.Resource.Action</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var article in Articles)
+                            {
+                                <tr>
+                                    <td>@article.name</td>
+                                    <td>@article.columns</td>
+                                    <td>@article.Number_Of_Submissions/5</td>
+                                    @{if (article.Available_To_Select == true)
+                                        {
+                                            <td><span class="label label-warning">@Urdu_Magazine.Resources.Resource.Unpublished</span></td>
+                                            <td align="center">
+                                                <button type="button" onclick="location.href = '@(Url.Action("Edit","Article")+"/"+article.Id)'"  article-id="@article.Id" class="btn btn-primary">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                    @Urdu_Magazine.Resources.Resource.Edit
+                                                </button>
+                                                <button type="button" style="font-size:16pt" action="delete" article-id="@article.Id" class="btn btn-danger">
+                                                    <i class="fa fa-trash-o"></i>
+                                                    @Urdu_Magazine.Resources.Resource.Delete
+                                                </button>
+
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="label label-success">@Urdu_Magazine.Resources.Resource.Published</span></td>
+                                            <td align="center">
+                                                
+                                                @*<button type="button"  disabled article-id="@article.Id" class="btn btn-primary">
+                                                   @Urdu_Magazine.Resources.Resource.Edit
+                                                </button>
+                                                <button type="button"  disabled article-id="@article.Id" class="btn btn-danger">
+                                                    @Urdu_Magazine.Resources.Resource.Delete
+                                                </button>*@
+
+                                            </td>
+                                        }
+                                    }
+                                   
+
+                                </tr>
+                                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script src="~/Content/jquery-confirm/js/jquery-confirm.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("body").on("click", "[action='delete']", function () {
+                var articleId = $(this).attr('article-id');
+                var div = $(this);
+                $.confirm({
+                    rtl: true,
+                    type: 'red',
+                    title: '@Urdu_Magazine.Resources.Resource.ArticleDataDisplay @Urdu_Magazine.Resources.Resource.Delete @Urdu_Magazine.Resources.Resource.Confirmation!',
+                    content: '@Urdu_Magazine.Resources.Resource.ArticleDeleteConfirmationMessage',
+                    buttons: {
+                        deleteArticle: {
+                            text: '@Urdu_Magazine.Resources.Resource.Delete',
+                            btnClass: 'btn-red',
+                            action: function () {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "@Url.Action("Delete", "Article")/" + articleId,
+                                    success: function (data) {
+                                        if (data == "login") {
+                                            window.location.href = "@Url.Action("Index", "User")"
+                                        }
+                                        else if (data == "success") {
+                                            div.parent().parent().remove();
+                                        }
+                                        else if (data == "no rights") {
+
+                                        }
+                                        else if (data == "article not found") {
+                                            
+                                        }
+                                        else if (data == "null id") {
+
+                                        }
+
+                                    }
+                                });
+                            }
+                        },
+                        closeAction:{
+                            text:'@Urdu_Magazine.Resources.Resource.Close'
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+    }

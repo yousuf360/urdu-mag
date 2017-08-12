@@ -1,0 +1,270 @@
+﻿@model Urdu_Magazine.Models.HelpingModels.MediaUpload
+@{
+    ViewBag.Title = "UploadMedia";
+    var uploadedMedia = ViewBag.UploadedMedia as List<Urdu_Magazine.Models.UploadMedia>;
+}
+<style>
+     #modal .modal-dialog {
+        min-width: 80%;
+    }
+
+
+    .my-modal {
+        min-height: 0px !important;
+    }
+
+</style>
+<link href="~/Content/iCheck/skins/flat/green.css" rel="stylesheet" />
+<div class="left_col" role="main" style="min-height: 700px;">
+
+
+    <div class="">
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h1 class="langStyle">@Urdu_Magazine.Resources.Resource.UploadMedia</h1>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+
+                            <div class="col-md-55" id="divToUpload">
+                                <a href="#" id="openUploadForm">
+                                    <div class="thumbnail text-center"  style="height:auto">
+                                        <i class="fa fa-2x fa-upload" style="text-align: center;vertical-align: middle;line-height: 120px">
+                                        </i>
+
+                                    </div>
+                                </a>
+                            </div>
+                            @foreach (var item in uploadedMedia)
+                            {
+                                <div class="col-md-55">
+                                    <div class="thumbnail" style="height:auto">
+                                        <div class="image view view-first">
+                                            <img style="width: 100%; display: block;" src="@Url.Content(item.imgPath)" alt="image" />
+                                            <div class="mask">
+                                                <p>@item.imgName</p>
+                                                <div class="tools tools-bottom">
+                                                    <a href="@Url.Content(item.imgPath)"><i class="fa fa-link"></i></a>
+                                                    <a href="#" media-id="@item.Id"><i class="fa fa-remove"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal" class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h1 class="modal-title" id="myModalLabel" style="font-family:'Jameel Noori Nastaleeq';">@Urdu_Magazine.Resources.Resource.UploadMedia</h1>
+            </div>
+            <div class="modal-body">
+                <div class="left_col my-modal" style="margin-right:0px" role="main">
+
+                    <div class="">
+
+                        <div class="clearfix"></div>
+                        <div class="x_panel">
+
+                            <div class="x_content">
+                                <form class="form-horizontal form-label-left" enctype="multipart/form-data" id="uploadForm">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
+                                            @Html.DisplayNameFor(model => model.Name) <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12", @dir = "rtl"} })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="margin-right:25%;margin-top:15px">
+                                            <input type="checkbox" id="romanCheckBox" class="flat" checked /> @Urdu_Magazine.Resources.Resource.RomanUrduTyping
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Name">
+                                            @Html.DisplayNameFor(m => m.Image) <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <label class="btn btn-lg btn-info btn-file fa fa-upload form-control">
+
+                                                @Html.TextBoxFor(model => model.Image, new { @class = "form-control col-md-7 col-xs-12", type = "file", @style = "display:none" })
+                                            </label>
+                                            @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                            @*<input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">*@
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <div>
+                                    <img class="img-responsive center-margin" style="max-width:100px" id="ImagePhoto" src="http://vignette1.wikia.nocookie.net/towerofsaviors/images/4/47/Placeholder.png/revision/20140518072131" alt="your image" />
+                                </div>
+                                </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="UploadMedia">@Urdu_Magazine.Resources.Resource.UploadMedia</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Urdu_Magazine.Resources.Resource.Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+    <script src="~/Content/iCheck/icheck.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("body").on("click", "#openUploadForm", function () {
+                $('#modal').modal({
+                    show: 'true'
+                });
+            });
+
+            $("body").on("click", "#UploadMedia", function () {
+               
+               
+                var condition = true;
+                condition = $("#uploadForm").validate().element("#Name");
+                condition = $("#uploadForm").validate().element("#Image") && condition;
+                if (!condition) {
+                    return;
+                }
+                var file = $('#Image')[0].files[0];
+                if (file != undefined) {
+                    if (window.FormData !== undefined) {
+                        var frmdata = new FormData();
+                        frmdata.append("Image", file);
+                        frmdata.append("Name",$("#Name").val());
+                        $('#uploadForm').trigger("reset");
+                        $('#ImagePhoto').attr('src', "http://vignette1.wikia.nocookie.net/towerofsaviors/images/4/47/Placeholder.png/revision/20140518072131");
+                        $('#modal').modal('toggle');
+                        $.ajax({
+                            type: "POST",
+                            contentType: false,
+                            processData: false,
+                            url:'@Url.Action("UploadMedia","Home")',
+                            data: frmdata,
+                            success: function (data) {
+                                if (data == "login") {
+                                    window.location.href = "@Url.Action("Index", "User")"
+                                }
+                                else if (data == "failed") {
+                                }
+                                else {
+                                    console.log(data);
+                                    $('#divToUpload').after('<div class="col-md-55">'+
+                                    '<div class="thumbnail" style="height:auto">' +
+                                    '<div class="image view view-first">'+
+                                        '<img style="width: 100%; display: block;" src="' + data["path"].replace('~', '@Url.Content("~/")') + '" alt="image" />' +
+                                        '<div class="mask">'+
+                                            '<p>' + data["file"] + '</p>' +
+                                            '<div class="tools tools-bottom">'+
+                                                '<a href="' + data["path"].replace('~', '@Url.Content("~/")') + '"><i class="fa fa-link"></i></a>' +
+                                                '<a href="#" media-id="'+data["Id"]+'"><i class="fa fa-remove"></i></a>'+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                    //'<div class="caption">'+
+                                    //    '<p>Snow and Ice Incoming for the South</p>'+
+                                    //'</div>'+
+                                '</div>'+
+                            '</div>');
+                                }
+                           }
+                        });
+                    } else {
+                        alert("This browser doesn't support HTML5 file uploads!");
+                    }
+                }
+
+            });
+
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#ImagePhoto').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#Image").change(function (e) {
+
+                readURL(this);
+                $("#uploadForm").validate().element("#Image");
+            });
+        });
+    </script>
+
+
+@*to enable a text area with only conversion*@
+<script src="https://www.google.com/jsapi"
+        type="text/javascript">
+</script>
+
+<script type="text/javascript">
+
+
+    google.load("elements", "1", {
+        packages: "transliteration"
+    });
+
+    function onLoad() {
+        var options = {
+            sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage: [google.elements.transliteration.LanguageCode.URDU],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        var control = new google.elements.transliteration.TransliterationControl(options);
+        control.makeTransliteratable(['Name']);
+        $("#Name").css("font-family", "Jameel noori nastaleeq");
+        $("#Name").css("font-size", "15pt");
+        $('#romanCheckBox').on('ifChecked', function (event) {
+            $("#Name").attr("onkeypress", "");
+            control.enableTransliteration();
+            $("#Name").focus();
+        });
+        $('#romanCheckBox').on('ifUnchecked', function (event) {
+            control.disableTransliteration();
+            $("#Name").attr("onkeypress", "return changeKey(this, event, typeUrdu);");
+            $("#Name").focus();
+        });
+    }
+    google.setOnLoadCallback(onLoad);
+</script>
+@*to enable a text area with only conversion*@
+}

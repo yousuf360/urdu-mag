@@ -1,0 +1,97 @@
+﻿@model Urdu_Magazine.Models.UserIndex
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<style>
+  
+    /* webkit solution */
+::-webkit-input-placeholder { text-align:center; }
+/* mozilla solution */
+input:-moz-placeholder { text-align:center; }
+</style>
+<link href="~/Content/iCheck/skins/flat/green.css" rel="stylesheet" />
+<div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+
+   
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <div class="login_div">
+                <section class="login_content">
+                    <div>
+                        @Html.Partial("~/Views/User/LogIn.cshtml", Model.logIn)
+
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div id="register" class="animate form registration_form">
+            <div class="login_div">
+                <section class="login_content">
+                    @Html.Partial("~/Views/User/SignUp.cshtml", Model.signUp)
+
+
+                </section>
+            </div>
+        </div>
+    </div>
+     
+        
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Content/iCheck/icheck.min.js"></script>
+
+<script src="~/Scripts/rtl/urdukeys.js"></script>
+<script>
+    $(document).ready(function () {
+        var tab = '@ViewBag.activeTab'
+        document.location.hash = tab;
+
+    });
+    </script>
+@*to enable a text area with only conversion*@
+<script src="https://www.google.com/jsapi"
+        type="text/javascript">
+</script>
+
+<script type="text/javascript">
+
+
+    google.load("elements", "1", {
+        packages: "transliteration"
+    });
+
+    function onLoad() {
+        var options = {
+            sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage: [google.elements.transliteration.LanguageCode.URDU],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        var control = new google.elements.transliteration.TransliterationControl(options);
+        control.makeTransliteratable(['full_name']);
+        $("#full_name").css("font-family", "Jameel noori nastaleeq");
+        $("#full_name").css("font-size", "15pt");
+        $('#romanCheckBox').on('ifChecked', function (event) {
+            $("#full_name").attr("onkeypress", "");
+            control.enableTransliteration();
+            $("#full_name").focus();
+        });
+        $('#romanCheckBox').on('ifUnchecked', function (event) {
+            control.disableTransliteration();
+            $("#full_name").attr("onkeypress", "return changeKey(this, event, typeUrdu);");
+            $("#full_name").focus();
+        });
+    }
+    google.setOnLoadCallback(onLoad);
+</script>
+
+
+}

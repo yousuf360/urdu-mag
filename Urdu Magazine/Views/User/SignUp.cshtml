@@ -1,0 +1,52 @@
+﻿@model Urdu_Magazine.Models.UserSignUpVM
+
+@using (Html.BeginForm("SignUp", "User", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <h1 class="langStyle">@Urdu_Magazine.Resources.Resource.CreateAnAccount</h1>
+    <div>
+        @Html.ValidationMessageFor(model => model.SignUpEmail, "", new { @class = "text-danger" })
+        @Html.EditorFor(model => model.SignUpEmail, new { htmlAttributes = new { @class = "form-control", @dir = "ltr", @placeholder = @Html.DisplayNameFor(model => model.SignUpEmail) } })
+  </div>
+<div>
+    @Html.ValidationMessageFor(model => model.full_name, "", new { @class = "text-danger" })
+    @Html.EditorFor(model => model.full_name, new { htmlAttributes = new { @class = "form-control",  @dir = "rtl", @placeholder = @Html.DisplayNameFor(model => model.full_name)  } })
+    <div class="clearfix"></div>
+    <div style="float:right;margin-bottom:13px">
+
+        <input type="checkbox" id="romanCheckBox" class="flat" checked /> @Urdu_Magazine.Resources.Resource.RomanUrduTyping
+    </div>
+
+    </div>
+            <div>
+                @Html.ValidationMessageFor(model => model.SignUpPassword, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.SignUpPassword, new { htmlAttributes = new { @class = "form-control", @dir = "ltr", @placeholder = @Html.DisplayNameFor(model => model.SignUpPassword) } })
+
+      
+           </div>
+            <div>
+                @Html.ValidationMessageFor(model => model.SignUpConfirmPassword, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.SignUpConfirmPassword, new { htmlAttributes = new { @class = "form-control", @dir = "ltr", @placeholder = @Html.DisplayNameFor(model => model.SignUpConfirmPassword) } })
+          </div>
+            <div>
+                <input type="submit" class="btn btn-danger btn-block" value="@(Urdu_Magazine.Resources.Resource.SignUpButton)" />
+              
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="separator">
+                <h1 class="change_link">
+                    @Urdu_Magazine.Resources.Resource.AlreadyAMember
+                    <a href="#signin" class="to_register"> @Urdu_Magazine.Resources.Resource.LogInDisplay </a>
+                </h1>
+
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                    <h1 style="font-family:'Jameel Noori Nastaleeq' !important"><a href="@Url.Action("Index","Home")"><i class="fa fa-book"></i> @Urdu_Magazine.Resources.Resource.UrduMagazine</a></h1>
+                    <p>@Urdu_Magazine.Resources.Resource.TermsAndCondition</p>
+                </div>
+            </div>
+}

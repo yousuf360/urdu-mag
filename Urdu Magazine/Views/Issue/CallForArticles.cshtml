@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewBag.Title = "CallForArticles";
+
+}
+@{
+    var Issues = ViewBag.Issues as List<Urdu_Magazine.Models.Issue>;
+}
+<link href="~/Content/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+<div class="left_col" role="main" style="min-height: 700px;">
+
+
+    <div class="">
+
+        <div class="clearfix"></div>
+       
+        <div class="x_panel">
+            <div class="x_title">
+                <h1 class="langStyle">@Urdu_Magazine.Resources.Resource.CallForArticles</h1>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="panel-body">
+                    <table class="table table-striped">
+
+
+                        <thead>
+                            <tr>
+
+                                <th>@Urdu_Magazine.Resources.Resource.IssueDisplay</th>
+                                <th>@Urdu_Magazine.Resources.Resource.Date</th>
+                                <th style="text-align:center">@Urdu_Magazine.Resources.Resource.Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var issue in Issues)
+                            {
+                                <tr>
+
+                                    <td><span style="padding-left:10px">@(issue.Magazine.Name)</span> @("(" + issue.Issue_date.ToShortDateString() + ")")</td>
+                                 
+                                    @{
+                                       if (issue.Submission_date == null)
+                                        {
+                                            <td>
+                                                <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                                                    <form id="frm-@issue.Id">
+
+                                                        <input id="Submit-date-@issue.Id" name="Submit-date-@issue.Id" issue-date="@issue.Issue_date.ToString("MM-dd-yyyy")" type="datetime" data-val="true" data-val-date="(@Urdu_Magazine.Resources.Resource.ErrorDateField)" data-val-required="@Urdu_Magazine.Resources.Resource.Required" dir="rtl" class="date-picker form-control text-box single-line input-validation-error" />
+                                                        <span class="field-validation-valid text-danger" data-valmsg-for="Submit-date-@issue.Id" data-valmsg-replace="true"></span>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                            <td align="center">
+                                                <button type="button" action="call" issue-id="@issue.Id" class="btn btn-primary callForArticle">
+                                                    @Urdu_Magazine.Resources.Resource.Call
+                                                </button>
+                                            </td>
+                                        }
+                                        else
+                                        {
+
+                                            <td>
+                                                <div class="col-md-8 col-sm-12 col-xs-12 form-group">
+                                                    <form id="frm-@issue.Id">
+                                                        <input id="Submit-date-@issue.Id" name="Submit-date-@issue.Id" issue-date="@issue.Issue_date.ToString("MM-dd-yyyy")" type="datetime" data-val="true" data-val-date="(@Urdu_Magazine.Resources.Resource.ErrorDateField)" data-val-required="@Urdu_Magazine.Resources.Resource.Required" dir="rtl" class="date-picker form-control text-box single-line input-validation-error" value="@issue.Submission_date.Value.ToString("yyyy-MM-dd")" />
+                                                        <span class="field-validation-valid text-danger" data-valmsg-for="Submit-date-@issue.Id" data-valmsg-replace="true"></span>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                                        <td align="center">
+                                                            <button type="button" action="stop" issue-id="@issue.Id" class="btn btn-danger callForArticle">
+                                                                @Urdu_Magazine.Resources.Resource.StopCall
+                                                            </button>
+                                                            <button type="button" action="change" issue-id="@issue.Id" class="btn btn-success callForArticle">
+                                                                @Urdu_Magazine.Resources.Resource.Change
+                                                            </button>
+                                                        </td>
+                                        }
+                                    }
+
+
+                                </tr>
+                                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/moment/min/moment.min.js"></script>
+    <script src="~/Content/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("body").on("click", ".callForArticle", function () {
+                var action= $(this).attr('action');
+                var issueId=$(this).attr('issue-id');
+                var div = $(this);
+                console.log(issueId);
+                if($('#frm-'+issueId).validate().element('#Submit-date-'+issueId)){
+                    $.ajax({
+                        url: "@Url.Action("CallForArticle", "Issue")",
+                        type:'POST',
+                        data:{
+                            IssueId:issueId,
+                            submissionDate:$('#Submit-date-'+issueId).val(),
+                            action:action
+                        },
+                        success: function(data){
+                            if (data == "login") {
+                                window.location.href = "@Url.Action("Index", "User")"
+                            }
+                            else if(data=="success"){
+                                if(action=="stop"){
+                                    console.log(div.parent().html('<button type="button" action="call" issue-id="'+issueId+'" class="btn btn-primary callForArticle">'+
+                                                        '@Urdu_Magazine.Resources.Resource.Call'+
+                                                    '</button>'));
+                                }
+                                else if(action=="call"){
+                                    console.log(div.parent().html('<button type="button" action="stop" issue-id="'+issueId+'" class="btn btn-danger callForArticle">'+
+                                                            '@Urdu_Magazine.Resources.Resource.StopCall'+
+                                                        '</button>'+
+                                                        '<button type="button" action="change" issue-id="'+issueId+'" class="btn btn-success callForArticle">'+
+                                                            '@Urdu_Magazine.Resources.Resource.Change'+
+                                                        '</button>'));
+                                }}
+                        }
+                    });
+                };
+            });
+        });
+    </script>
+
+    @foreach (var item in Issues)
+    {
+        <script type="text/javascript">
+    $(document).ready(function () {
+
+        console.log( new Date($('#Submit-date-'+@item.Id).attr('issue-date')))
+        $('#Submit-date-'+@item.Id).daterangepicker({
+            autoUpdateInput: false,
+            "opens": "left",
+            "locale": {
+                "format": "MM/DD/YYYY",
+                "separator": " - ",
+                "applyLabel": "Apply",
+                "cancelLabel": "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "daysOfWeek": [
+                   'اتوار', 'پیر', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتے'
+                ],
+                "monthNames": [
+                   'جنوری', 'فروری', 'مریخ', 'اپریل', 'مائی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'
+                ],
+                "firstDay": 1
+            },
+            singleDatePicker: true,
+            calender_style: "picker_3",
+            maxDate: new Date($('#Submit-date-'+@item.Id).attr('issue-date')),
+
+        }, function (chosen_date) {
+            $('#Submit-date-'+@item.Id).val(chosen_date.format('YYYY-MM-DD'));
+        });
+        });
+
+        </script>
+    }
+}

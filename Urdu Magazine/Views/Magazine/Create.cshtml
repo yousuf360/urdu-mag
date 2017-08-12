@@ -1,0 +1,352 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+@model Urdu_Magazine.Models.MagazineCreateVM
+<style>
+
+    .Features {
+    }
+
+
+    .CategoriesSelected {
+        padding: 2px 8px;
+        background-color: rgba(231,235,238,7);
+        border: 1px solid lightgray;
+        cursor: pointer;
+        display: inline-block;
+        margin-top: 3px;
+    }
+
+
+    .CategoriesSelected:hover {
+        background-color: lightgray;
+    }
+
+    .CategoriesSelected i {
+        color: darkred;
+        font-weight: 700;
+        font-style: normal;
+    }
+
+
+</style>
+<style>
+    .img-responsive {
+        margin: auto;
+        margin-top: 3%;
+    }
+</style>
+
+<link href="~/Content/iCheck/skins/flat/green.css" rel="stylesheet" />
+<div class="left_col" role="main" style="min-height: 700px;">
+
+
+    <div class="">
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h1 class="langStyle">@Urdu_Magazine.Resources.Resource.EnterNewMagazine</h1>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+
+                        <!-- Smart Wizard -->
+                        <div id="wizard" class="form_wizard wizard_horizontal">
+                            <ul class="wizard_steps">
+                                <li>
+                                    <a href="#step-1">
+                                        <span class="step_no">@Urdu_Magazine.Resources.Resource.digit1</span>
+                                        <span class="step_descr">
+                                            @Urdu_Magazine.Resources.Resource.Step1<br />
+                                            <small>@*Step 1 description*@</small>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#step-2">
+                                        <span class="step_no">@Urdu_Magazine.Resources.Resource.digit2</span>
+                                        <span class="step_descr">
+                                            @Urdu_Magazine.Resources.Resource.Step2<br />
+                                            <small>@*Step 2 description*@</small>
+                                        </span>
+                                    </a>
+                                </li>
+                              
+                        
+                            </ul>
+                            @using (Html.BeginForm("Create", "Magazine", FormMethod.Post, new { id = "frm", encType = "multipart/form-data" }))
+                            {
+
+                                @Html.AntiForgeryToken();
+                                <div id="step-1">
+                                    <div class="form-horizontal form-label-left">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Name">
+                                                @Html.DisplayNameFor(m => m.Name)<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12"} })
+                                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                @*<input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">*@
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="margin-right:25%;margin-top:15px">
+                                                <input type="checkbox" id="romanCheckBox" class="flat" checked /> @Urdu_Magazine.Resources.Resource.RomanUrduTyping
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Categories">
+                                                @Html.DisplayNameFor(m => m.Categories)<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.HiddenFor(model => model.Categories, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12" } })
+                                                <input id="Category-textbox" class = "form-control col-md-7 col-xs-12" />
+                                                @Html.ValidationMessageFor(model => model.Categories, "", new { @class = "text-danger" })
+                                               
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="margin-right:25%;margin-top:15px">
+                                                <input type="checkbox" id="romanCheckBoxForCategories" class="flat" checked /> @Urdu_Magazine.Resources.Resource.RomanUrduTyping
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="margin-right:25%;margin-top:15px">
+                                                <div class="Categories"></div>
+                                             </div>
+                                            </div>
+
+
+                                    </div>
+
+                                </div>
+                                <div id="step-2">
+                                    <div class="form-horizontal form-label-left">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Name">
+                                                @Html.DisplayNameFor(m => m.Cover)
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <label class="btn btn-lg btn-info btn-file fa fa-upload form-control">
+                                            
+                                                @Html.TextBoxFor(model => model.Cover, new { @class = "form-control col-md-7 col-xs-12", type = "file", @style = "display:none" })
+                                               </label >
+                                                 @Html.ValidationMessageFor(model => model.Cover, "", new { @class = "text-danger" })
+                                                @*<input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">*@
+                                            </div>
+                                            
+                                             </div>
+                                        
+                                            <img class="img-responsive" style="max-width:300px" id="CoverPhoto" src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Kadro_A4_001.svg" alt="your image" />
+                                        
+
+
+
+                                    </div>
+
+                                </div>
+                             
+                            }
+                                    </div>
+                                    <!-- End SmartWizard Content -->
+
+                                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/rtl/urdukeys.js"></script>
+<script src="~/Content/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+<script src="~/Content/iCheck/icheck.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var someData = $("#Categories").val();
+        var category = someData.slice(0, -1).split(',');
+        console.log(category);
+        $.each(category, function (index, value) {
+            if (value.length > 0) {
+                $('.Categories').append('<span class="CategoriesSelected"><span class="CategoriesSelectedVal"  temp="' + value + '" name="Categories">' + value + '.</span>&nbsp;&nbsp;<i>X</i></span> ');
+            }
+
+        });
+        $("#Category-textbox").keypress(function (event) {
+
+            if (event.which == 13) {
+                if ($("#msg").text() == "Please add some Category.") {
+                    $("#msg").text('');
+                }
+                if ($("span:contains('" + $('#Category-textbox').val().trim() + "')").length > 0) {
+                    $("#msg1").text($('#Category-textbox').val().trim() + ' فہرست میں پہلے سے ہی ہے');
+                    $('#Category-textbox').val("");
+                }
+                else {
+                    $("#msg1").text('');
+                    $('#Categories').val($('#Categories').val() + $('#Category-textbox').val().trim() + ',');
+                    $('.Categories').append('<span class="CategoriesSelected"><span class="CategoriesSelectedVal"  temp="' + $('#Category-textbox').val().trim() + '" name="Categories">' + $('#Category-textbox').val().trim() + '.</span>&nbsp;&nbsp;<i>X</i></span> ');
+                    $('#Category-textbox').val("");
+                    $("#frm").validate().element("#Categories");
+                }
+                return false;
+            }
+            else {
+                $("#msg1").text('');
+                return true;
+            }
+        });
+
+
+        $("body").on("click", ".CategoriesSelected", function () {
+            $('#Categories').val($('#Categories').val().replace($(this).children(':first').attr('temp') + ',', ''));
+            $("#msg1").text('');
+            this.remove();
+
+        });
+
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#CoverPhoto').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#Cover").change(function () {
+
+            readURL(this);
+            var img = document.getElementById('CoverPhoto');
+            //or however you get a handle to the IMG
+            //var width = img.clientWidth;
+            //var height = img.clientHeight;
+
+            //if ((height / width) > 0.708 || (height / width) < 0.706)
+            //{
+            //    alert('error');
+            //}
+            //else {
+            //    alert('good');
+            //}
+        });
+
+
+        $('#wizard').smartWizard({
+            onLeaveStep: leaveAStepCallback,
+            onFinish: onFinishCallback
+        });
+        function onFinishCallback(objs, context) {
+            if (validateAllSteps()) {
+                $('#frm').submit();
+            }
+        }
+        function validateAllSteps() {
+            if (!validateSteps(1)) {
+                return false;
+            }
+            else if (!validateSteps(2)) {
+                return false;
+            }
+
+            else {
+                return true;
+            }
+        }
+        function leaveAStepCallback(obj, context) {
+
+            return validateSteps(context.fromStep); // return false to stay on step and true to continue navigation
+        }
+        function validateSteps(stepnumber) {
+            var isStepValid = true;
+            // validate step 1
+            if (stepnumber == 1) {
+                return $("#frm").validate().element("#Name") & $("#frm").validate().element("#Categories");
+            }
+            if(stepnumber==2)
+            {
+                return $("#frm").validate().element("#Cover");
+            }
+
+            // ...
+        }
+
+        $('.buttonNext').addClass('btn btn-success pull-left').html('@Urdu_Magazine.Resources.Resource.Next');
+        $('.buttonPrevious').addClass('btn btn-primary').html('@Urdu_Magazine.Resources.Resource.Previous');
+        $('.buttonFinish').addClass('btn btn-default pull-left').html('@Urdu_Magazine.Resources.Resource.Finish');
+
+    });
+</script>
+
+
+@*to enable a text area with only conversion*@
+<script src="https://www.google.com/jsapi"
+        type="text/javascript">
+</script>
+
+<script type="text/javascript">
+
+
+    google.load("elements", "1", {
+        packages: "transliteration"
+    });
+
+    function onLoad() {
+        var options = {
+            sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage: [google.elements.transliteration.LanguageCode.URDU],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        var control = new google.elements.transliteration.TransliterationControl(options);
+        control.makeTransliteratable(['Name', 'Category-textbox']);
+        $("#Name").css("font-family", "Jameel noori nastaleeq");
+        $("#Name").css("font-size", "15pt");
+        $("#Category-textbox").css("font-family", "Jameel noori nastaleeq");
+        $("#Category-textbox").css("font-size", "15pt");
+        $('#romanCheckBox').on('ifChecked', function (event) {
+            $("#Name").attr("onkeypress", "");
+            control.enableTransliteration();
+            $("#Name").focus();
+        });
+        $('#romanCheckBox').on('ifUnchecked', function (event) {
+            control.disableTransliteration();
+            $("#Name").attr("onkeypress", "return changeKey(this, event, typeUrdu);");
+            $("#Name").focus();
+        });
+
+
+
+        $('#romanCheckBoxForCategories').on('ifChecked', function (event) {
+            $("#Category-textbox").attr("onkeypress", "");
+            control.enableTransliteration();
+            $("#Category-textbox").focus();
+        });
+        $('#romanCheckBoxForCategories').on('ifUnchecked', function (event) {
+            control.disableTransliteration();
+            $("#Category-textbox").attr("onkeypress", "return changeKey(this, event, typeUrdu);");
+            $("#Category-textbox").focus();
+        });
+
+    }
+    google.setOnLoadCallback(onLoad);
+</script>
+@*to enable a text area with only conversion*@
+    }

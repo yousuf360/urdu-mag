@@ -1,0 +1,213 @@
+﻿
+@{
+    ViewBag.Title = "SubmitArticle";
+    var Articles = ViewBag.Articles as List<Urdu_Magazine.Models.Article>;
+}
+<style>
+    #modal .modal-dialog {
+        min-width: 80%;
+    }
+    .my-modal{
+        min-height:0px !important;
+    }
+</style>
+
+
+<link href="~/Content/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+
+
+<div class="left_col" role="main" style="min-height: 700px;">
+
+
+    <div class="">
+
+        <div class="clearfix"></div>
+        <div class="x_panel">
+            <div class="x_title">
+                <h1 class="langStyle">@Urdu_Magazine.Resources.Resource.SubmitArticle</h1>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>@Urdu_Magazine.Resources.Resource.ArticleNameDisplay</th>
+                                <th>@Urdu_Magazine.Resources.Resource.NumberOfSubmissions</th>
+                                <th style="text-align:center">@Urdu_Magazine.Resources.Resource.Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var article in Articles)
+                            {
+                                <tr>
+                                    <td>@article.name</td>
+                                    <td><a href="#"><span submission-quantity-id="@article.Id">@article.Number_Of_Submissions</span>/5 @Urdu_Magazine.Resources.Resource.SeeDetails</a></td>
+                                    @if (article.Number_Of_Submissions != 5)
+                                    {
+                                    <td align="center">
+                                        <button type="button" action="showIssues" article-id="@article.Id" class="btn btn-primary submitArticle">
+                                            @Urdu_Magazine.Resources.Resource.Submit
+                                        </button>
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                        <td align="center">
+                                            <button type="button" action="showIssues" disabled article-id="@article.Id" class="btn btn-primary submitArticle">
+                                                @Urdu_Magazine.Resources.Resource.Submit
+                                            </button>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input hidden id="ArticleId"/>
+<div id="modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel" style="font-family:'Jameel Noori Nastaleeq';">@Urdu_Magazine.Resources.Resource.SelectIssue</h4>
+            </div>
+            <div class="modal-body">
+                <div  class="left_col my-modal" style="margin-right:0px" role="main">
+                    <div class="title_right">
+                        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                            <div class="input-group">
+                                <input type="text" id="SearchBox" onkeypress = "return changeKey(this, event, typeUrdu);" class="form-control" placeholder="@(Urdu_Magazine.Resources.Resource.SearchForMagazines)...">
+                                <span class="input-group-btn">
+                                    <button class="btn  btn-primary" style="color:white" id="Search" type="button">@Urdu_Magazine.Resources.Resource.Search</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+
+                        <div class="clearfix"></div>
+                        <div class="x_panel">
+                      
+                            <div class="x_content">
+                                <div id="fillMeWithIssues" class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Urdu_Magazine.Resources.Resource.Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("body").on("click", ".submitArticleToThisIssue", function () {
+
+                
+
+                var issueId = $(this).attr("issue-id");
+                var catId = $('select[issue-id="' + issueId + '"]').val();
+                console.log(catId);
+                if (catId == "") {
+                    $('.categoryError[issue-id="' + issueId + '"]').css('display', 'block');
+                    return;
+                }
+                console.log(123);
+
+                $.ajax({
+                    url: '@Url.Action("SubmitArticle", "Article")',
+                    data: {
+                        articleId: $('#ArticleId').val(),
+                        issueId: issueId,
+                        catId: catId
+                    },
+                    type:"POST",
+                    success: function (data) {
+                        if (data == "login") {
+                            window.location.href = "@Url.Action("Index", "User")"
+                        }
+                        else if(data=="limitreached")
+                        {
+                            alert("Limit of the submission of this issue has been reached.");
+                        }
+                        else if (data == "success") {
+                            var q = parseInt($("span[submission-quantity-id='" + $('#ArticleId').val() + "']").text());
+                            q = q + 1;
+                            console.log(q);
+                            if (q == 5) {
+                                $('button[action="showIssues"][article-id="' + $('#ArticleId').val() + '"]').prop('disabled', true);
+                            }
+                            $("span[submission-quantity-id='" + $('#ArticleId').val() + "']").text((q).toString());
+                            $('#modal').modal('toggle');
+                        }
+                    }
+                    });
+            });
+
+            $("body").on('keyup', '#SearchBox', function (e) {
+                if ($(this).val() == "") {
+                    $('#Search').click();
+                };
+                if (e.which == 13) {
+                    $('#Search').click();
+                }
+            });
+
+            $("body").on("click", ".submitArticle", function () {
+                var action = $(this).attr('action');
+
+                var articleId = $(this).attr('article-id');
+                $('#ArticleId').val(articleId);
+                $.ajax({
+                    url: "@Url.Action("getIssues", "Issue")",
+                    data: { magazineName: "", articleId: articleId },
+                    success: function (data) {
+                        if (data == "login") {
+                            window.location.href = "@Url.Action("Index", "User")"
+                        }
+                        else {
+                            $('#fillMeWithIssues').html(data);
+                            $('#modal').modal({
+                                show: 'true'
+                            });
+                        }
+                    }
+                });
+            });
+            $("body").on("click", "#Search", function () {
+                $.ajax({
+                    url: "@Url.Action("getIssues", "Issue")",
+                    data: { magazineName: $('#SearchBox').val(), articleId: $('#ArticleId').val() },
+                    success: function (data) {
+                        if (data == "login") {
+                            window.location.href = "@Url.Action("Index", "User")"
+                        }
+                        else {
+                            $('#fillMeWithIssues').html(data);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

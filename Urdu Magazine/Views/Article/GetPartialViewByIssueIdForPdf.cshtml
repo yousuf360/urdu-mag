@@ -1,0 +1,222 @@
+﻿
+@model List<Urdu_Magazine.Models.Article>
+    @{
+        var inPageAds = ViewBag.inPageAds as List<Urdu_Magazine.Models.inPageAd>;
+        var fullPageAds = ViewBag.fullPageAds as List<Urdu_Magazine.Models.fullPageAd>;
+    }
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/columnizerUI/PrintStyle.css" rel="stylesheet" />
+    <link href="~/Content/columnizerUI/BodyStyle.css" rel="stylesheet" />
+    <link href="~/Content/columnizerUI/IndexStyle.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.columnizer.js"></script>
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+    <script src="~/Content/columnizerScripts/simple.js"></script>
+    <script src="~/Content/dateChangeScript/script.js"></script>
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                changeDateToUrdu();
+                var fullPageAds = $('#fullPageAdsHidden').clone(true);
+                $('#fullPageAdsHidden').remove();
+                startColumnizing(false);
+                
+                fullPageAds.children().each(function () {
+                    $(this).removeClass("page");
+                    console.log($(this));
+                    var pgNum = $(this).attr("data-pg-num");
+                    var priority = $(this).attr("priority-num");
+                    if (pgNum == 0) {
+                        if (priority == 0) {
+                            console.log(pgNum);
+                            console.log(priority);
+                            console.log($('#main [data-pg-num=' + pgNum + ']'));
+                            $('#main [data-pg-num=' + pgNum + ']').after($(this));
+                        }
+                        else {
+                            console.log(pgNum);
+                            console.log(priority);
+                            console.log($('#main [data-pg-num=' + pgNum + '][priority-num=' + (priority - 1) + ']'));
+                            $('#main [data-pg-num=' + pgNum + '][priority-num=' + (priority - 1) + ']').after($(this));
+                        }
+
+                    }
+                    else {
+                        if (priority == 0) {
+                            console.log("Hello");
+                            console.log(pgNum);
+                            console.log($('#main [data-pg-num=' + pgNum + ']'));
+                            $('#main [data-pg-num=' + pgNum + ']').after($(this));
+                        }
+                        else {
+                            console.log("Hello2");
+                            console.log($('#main [data-pg-num=' + pgNum + '][priority-num=' + (priority - 1) + ']'));
+                            $('#main [data-pg-num=' + pgNum + '][priority-num=' + (priority - 1) + ']').after($(this));
+                        }
+                    }
+                });
+          
+            }, 5000);
+        });
+
+
+    </script>
+    <style>
+        .adPage {
+           overflow:hidden;
+             margin-left:0px !important;
+            margin-top:0px !important;
+            width:1000px !important;
+            height:1414px !important;
+        }
+        .adPage {
+            padding-top: 0px !important;
+            background-color:black;
+        }
+        .adImage {
+            margin:0px !important;
+        }
+
+        .adPage {
+            background-color:transparent;
+        }
+        .adPage div {
+            border:0px !important;
+        }
+
+          hr.type12 { 
+  padding: 0;
+  border: none; 
+  border-top: medium double #8c8c8c; 
+  color: #8c8c8c; 
+  text-align: center; 
+      margin-top: 30px
+} 
+hr.type12:after { 
+  content: "§§§"; 
+  display: inline-block; 
+  position: relative; 
+  top: -1.1em; 
+  font-size: 1.5em; 
+  padding: 0 0.25em; 
+  background: #fff; 
+}
+    </style>
+</head>
+
+<body style="font-family: Jameel Noori Nastaleeq">
+    <div id="premain">
+        <div id="main">
+            <div id="issue-cover" style="width: 1000px !important;
+    height: 1414px !important;position:relative">
+                <div style="background: brown;
+    padding-bottom:40px;
+    padding-top:0px;
+    width: 47.4%;
+    text-align: center;
+    opacity: 0.98;
+    position: absolute;
+    /* align-self: center; */
+    right: 0px;
+    /*top: 45%;*/
+    vertical-align: middle;
+    z-index: 5000;
+    color:white">
+                    <span style="font-size:53pt">@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Magazine.Name</span><br />
+                    <span style="font-size:20pt" class="changeDateFormat" date="@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Issue_date.ToString("yyyy-MM-dd")">@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Issue_date.ToString("MM-dd-yyyy")</span>
+                </div>
+<img id="img-cover" src="@Url.Content(Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Cover)" />
+            </div>
+            <div style="width: 1000px !important;
+    height: 1414px !important;position:relative">
+
+            </div>
+            <div>
+
+                <div id="page_template">
+                    <div class='header'>@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Magazine.Name<hr></div>
+                    <div class='content' dir="rtl"></div>
+                    <div class='footer' style="position:absolute;bottom:13px;left:95px"><hr><span id="pgNum"></span></div>
+
+                </div>
+                <div id="newsletterContent" hidden>
+
+                    @{ Dictionary<string, List<string>> contentDic = new Dictionary<string, List<string>>();}
+                    @for (int i = 0; i < Model.Count; i++)
+            {
+
+                        <div id='@("article"+i)' class="article" columns="@(Model.ElementAt(i).columns)">
+                            <div style="margin-bottom: 20px;">
+                                <div>
+                                    <h1 style="margin-bottom: -8px;">
+                                        @Model.ElementAt(i).name
+                                    </h1>
+                                </div>
+                                <div>
+                                    <span style="font-size: 21px;font-weight: 500;padding: 0 10px;">
+                                        @Urdu_Magazine.Resources.Resource.Writer: @Model.ElementAt(i).User.full_name
+                                    </span>
+                                </div>
+                            </div>
+                            @Html.Raw(Model.ElementAt(i).article_data)
+                            <hr class="type12"/>
+                            @foreach (var item in inPageAds.Where(x => x.articleId == Model.ElementAt(i).Id)) {
+                              
+                                       @Html.Raw(item.html)
+                           
+                            }
+                        </div>
+                        string cat = Model.ElementAt(i).Article_Issue.ElementAt(0).Magazine_Category.category;
+                        if (contentDic.ContainsKey(cat))
+                        {
+                            contentDic[cat].Add(Model.ElementAt(i).name);
+                        }
+                        else
+                        {
+                            contentDic[cat] = new List<string>();
+                            contentDic[cat].Add(Model.ElementAt(i).name);
+                        }
+                    }
+
+                    <div id="tempTableOfContent" class="tempTableOfContent">
+                        <h1 style="text-align:center">@Urdu_Magazine.Resources.Resource.Index</h1>
+
+                        @{
+                            var tempId = 0;
+                            var keys = contentDic.Keys.ToList();
+                            keys.Sort();
+                            foreach (var key in keys)
+                            {
+                                <h2 align="right">@key</h2>
+                                <ul class="leaders">
+                                    @foreach (var item in contentDic[key])
+                                    {
+                                        <li>
+                                            <a id="table-of-content-element-@(tempId+1)">
+                                                <span>@item</span>
+                                                <span id="indexPage-@(tempId+1)"></span>
+                                            </a>
+                                        </li>
+                                        tempId++;
+                                    }
+                                </ul>
+                            }
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  id="fullPageAdsHidden" hidden>
+      @foreach (var item in fullPageAds)
+      {
+          @Html.Raw(item.html)
+      }
+
+    </div>
+</body>
+</html>

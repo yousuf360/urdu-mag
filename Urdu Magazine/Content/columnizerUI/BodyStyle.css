@@ -1,0 +1,87 @@
+﻿body {
+    font-family: 'Jameel Noori Nastaleeq';
+    margin: 0;
+}
+
+@font-face {
+    font-family: 'Jameel Noori Nastaleeq';
+    src: url('../../Content/Admin-ui/rtl/Jameel Noori Nastaleeq.ttf') format('truetype');
+}
+#index li {
+font-size:25px;
+
+}
+    #index li a {
+    text-decoration:none;
+    }
+.page {
+    page-break-after: always;
+    width: 919px;
+    height: 1300px;
+    position: relative;
+    margin: 30px !important;
+    padding-top: 60px !important;
+}
+
+    .page .content .column {
+        text-align: justify;
+        font-size: 12pt !important;
+    }
+
+        .page .content .column blockquote {
+            border-left: 2px solid #999999;
+            background: #DEDEDE;
+            padding: 10px;
+            margin: 4px 20px;
+            clear: both;
+        }
+
+        .page .content .column img {
+            margin: 10px;
+        }
+
+        .page .content .column p {
+            padding: 0 17px;
+            margin: 0;
+        }
+
+        .page .content .column h1 {
+            padding: 0 10px;
+        }
+
+    .page .header {
+        text-align: center;
+        font-size: 18pt;
+        padding: 20px 0 0;
+    }
+
+        .page .header hr {
+            width: 919px;
+        }
+
+    .page .footer hr {
+        width: 919px;
+        margin-left: -90px;
+    }
+
+    .page .footer {
+        text-align: center;
+    }
+
+#pgNum {
+    font-size: 16pt;
+    margin-left: -10%;
+}
+
+#page_template {
+    display: none;
+}
+
+.enclosure {
+    border: 1px dashed black;
+}
+
+.content img {
+    max-width: 100%;
+    max-height: 100%;
+}

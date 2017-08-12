@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/Content/Admin-ui/rtl/bootstrap-rtl.css" rel="stylesheet" />
+    @Styles.Render("~/Content/font-awesome")
+
+
+    <link href="~/Content/animate.css/animate.min.css" rel="stylesheet" />
+
+    <link href="~/Content/custom.min.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="login">
+    @RenderBody()
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap-rtl")
+    @Scripts.Render("~/bundles/Custom-rtl")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,293 @@
+﻿
+@model List<Urdu_Magazine.Models.Article>
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/columnizerUI/BodyStyle.css" rel="stylesheet" />
+    <link href="~/Content/columnizerUI/IndexStyle.css" rel="stylesheet" />
+    <link href="~/Content/columnizerUI/TurnJsStyle.css" rel="stylesheet" />
+
+
+
+    <script src="~/Content/bookletScripts/src/jquery-2.1.0.min.js"></script>
+    <script src="~/Content/bookletScripts/src/jquery-ui-1.10.4.min.js"></script>
+    
+    <script src="~/Content/bookletScripts/src/jquery.booklet.latest.min.js"></script>
+    <script src="~/Content/bookletScripts/src/jquery.easing.1.3.js"></script>
+    <link href="~/Content/bookletScripts/src/jquery.booklet.latest.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.columnizer.js"></script>
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+    <style>
+           hr.type12 { 
+  padding: 0;
+  border: none; 
+  border-top: medium double #8c8c8c; 
+  color: #8c8c8c; 
+  text-align: center; 
+      margin-top: 30px
+} 
+hr.type12:after { 
+  content: "§§§"; 
+  display: inline-block; 
+  position: relative; 
+  top: -1.1em; 
+  font-size: 1.5em; 
+  padding: 0 0.25em; 
+  background: #fff; 
+}
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            
+            var content_height = 1150;	// the height of the content, discluding the header/footer
+            var page = 1;
+            var pageNumInUrduGlobal = "۱";// the beginning page number to show in the footer
+            function start() {
+                //$('.tableOfContent').each(function (index, element) {
+                //    var columns = 1
+                //    buildNewsletter(element, columns);
+
+                //});
+                $('.tempTableOfContent').each(function (index, element) {
+                    var columns = 1
+                    buildNewsletterWithOutPageNumber(element, columns);
+                });
+                $('#mag').append('<div></div>');
+                $('.article').each(function (index, element) {
+                    console.log('#indexPage-' + (index + 1));
+                    $('#indexPage-' + (index + 1)).html(pageNumInUrduGlobal)
+                    var countForTableOfContent = page+4;//kyun k actual mae tou 4 pages choray ek cover ek blank and ek table of content phir ek blank
+                    $('#table-of-content-element-' + (index + 1)).prop("href", "#/page/"
+                        + (((countForTableOfContent) % 2)==0 ? countForTableOfContent+1 : countForTableOfContent));
+
+                    var columns = parseInt($(element).attr('columns'));
+                    buildNewsletter(element, columns);
+
+                }
+                );
+                if (page % 2 == 0) {
+                    $('#mag').append('<div></div>');
+                    
+                }
+                else {
+                    $('#mag').append('<div></div>');
+                    $('#mag').append('<div></div>');
+                }
+                $('#mag').booklet({
+                    width: 850,
+                    height: 600,
+                    closed: true,
+                    autoCenter: true,
+                    direction: 'RTL',
+                    pageNumbers: false,
+                    hoverWidth: 100,
+                    hash: true
+               
+                });
+            }
+
+            function buildNewsletterWithOutPageNumber(item, vColumns) {
+                if ($(item).contents().length > 0) {
+                    // when we need to add a new page, use a jq object for a template
+                    // or use a long HTML string, whatever your preference
+                    $page = $("#page_template").clone().addClass("page").css("display", "block");
+
+               
+
+                   
+
+                  //  $("#mag").booklet("add", "end", $page);
+                    $('#mag').append($page)
+
+
+
+
+                    // here is the columnizer magic
+                    $(item).columnize({
+                        buildOnce: true,
+                        columns: vColumns,
+                        target: ".page:last .content",
+                        columnFloat: "right",
+                        overflow: {
+                            height: content_height,
+                            id: '#' + $(item).attr('id'),
+                            doneFunc: function () {
+                                console.log("done with page");
+                                //$('body').append('<div class="page-break"></div>');
+                                buildNewsletterWithOutPageNumber(item, vColumns);
+                            }
+                        }
+                    });
+                }
+            }
+            function buildNewsletter(item, vColumns) {
+                if ($(item).contents().length > 0) {
+                    // when we need to add a new page, use a jq object for a template
+                    // or use a long HTML string, whatever your preference
+                    $page = $("#page_template").clone().addClass("page").css("display", "block");
+
+                    // fun stuff, like adding page numbers to the footer
+
+                    //to convert page number in urdu format
+                    var pageInStr = '' + page;
+                    var pageNumInUrdu = "";
+                    for (var i = 0; i < pageInStr.length; i++) {
+
+                        var a = typeUrdu(pageInStr.charCodeAt(i), String.fromCharCode(pageInStr.charCodeAt(i)));
+                        console.log(a.newKey);
+                        pageNumInUrdu += a.newKey;
+
+                    }
+                    pageInStr = "" + (page + 1);
+
+                    //Index Page Number
+                    pageNumInUrduGlobal = "";
+                    for (var i = 0; i < pageInStr.length; i++) {
+
+                        var a = typeUrdu(pageInStr.charCodeAt(i), String.fromCharCode(pageInStr.charCodeAt(i)));
+                        console.log(a.newKey);
+                        pageNumInUrduGlobal += a.newKey;
+
+                    }
+                    //Index Page Number
+
+
+                    $page.find("#pgNum").append(pageNumInUrdu);
+                   // $("#mag").booklet("add", "end", $page);
+                    $('#mag').append($page)
+
+                    page++;
+
+                    // here is the columnizer magic
+                    $(item).columnize({
+                        buildOnce: true,
+                        columns: vColumns,
+                        target: ".page:last .content",
+                        columnFloat: "right",
+                        overflow: {
+                            height: content_height,
+                            id: '#' + $(item).attr('id'),
+                            doneFunc: function () {
+                                console.log("done with page");
+                                //$('body').append('<div class="page-break"></div>');
+                                buildNewsletter(item, vColumns);
+                            }
+                        }
+                    });
+                }
+            }
+            setTimeout(function () {
+                start();
+
+
+            }, 5000);
+            
+        });
+
+
+    </script>
+</head>
+
+<body style="font-family: Jameel Noori Nastaleeq">
+    <div id="main">
+        <div id="mag">
+            <div id="issue-cover" style="position:relative">
+                <div style="background: brown;
+    margin-top: -25px;
+    zoom: 0.4;
+    padding-bottom: 40px;
+    padding-top: 0px;
+    width: 47.4%;
+    text-align: center;
+    opacity: 0.98;
+    position: absolute;
+    /* align-self: center; */
+    right: -25px;
+    /*top: 45%;*/
+    vertical-align: middle;
+    z-index: 5000;
+    color: white;">
+                    <span style="font-size:53pt">@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Magazine.Name</span><br />
+                    <span>@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Issue_date.ToString("MM-dd-yyyy")</span>
+                </div>
+                <img id="img-cover" style="max-width:105%" src="@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Cover.Replace("~","../..")" />
+            </div>
+            <div>
+
+            </div>
+        </div>
+        <div>
+
+            <div id="page_template">
+                <div class='header'>@Model.ElementAt(0).Article_Issue.ElementAt(0).Issue.Magazine.Name<hr></div>
+                <div class='content' dir="rtl"></div>
+                <div class='footer' style="position:absolute;bottom:13px;left:95px"><hr><span id="pgNum"></span></div>
+
+            </div>
+            <div id="newsletterContent" hidden>
+
+                @{ Dictionary<string, List<string>> contentDic = new Dictionary<string, List<string>>();}
+                @for (int i = 0; i < Model.Count; i++)
+            {
+
+                    <div id='@("article"+i)' class="article" columns="@(Model.ElementAt(i).columns)">
+                        <div style="margin-bottom: 20px;">
+                            <div>
+                                <h1 style="margin-bottom: -8px;">
+                                    @Model.ElementAt(i).name
+                                </h1>
+                            </div>
+                            <div>
+                                <span style="font-size: 21px;font-weight: 500;padding: 0 10px;">
+                                    @Urdu_Magazine.Resources.Resource.Writer: @Model.ElementAt(i).User.full_name
+                                </span>
+                            </div>
+                        </div>
+                        @Html.Raw(Model.ElementAt(i).article_data)
+                        <hr class="type12" />
+                    </div>
+                    string cat = Model.ElementAt(i).Article_Issue.ElementAt(0).Magazine_Category.category;
+
+                    if (contentDic.ContainsKey(cat))
+                    {
+                        contentDic[cat].Add(Model.ElementAt(i).name);
+                    }
+                    else
+                    {
+                        contentDic[cat] = new List<string>();
+                        contentDic[cat].Add(Model.ElementAt(i).name);
+                    }
+                }
+
+                <div id="tempTableOfContent" class="tempTableOfContent">
+                    <h1 style="text-align:center">@Urdu_Magazine.Resources.Resource.Index</h1>
+
+                    @{
+                        var tempId = 0;
+                        var keys = contentDic.Keys.ToList();
+                        keys.Sort();
+                        foreach (var key in keys)
+                        {
+                            <h2 align="right">@key</h2>
+                            <ul class="leaders">
+                                @foreach (var item in contentDic[key])
+                                {
+                                    <li>
+                                        <a id="table-of-content-element-@(tempId+1)">
+                                            <span>@item</span>
+                                            <span id="indexPage-@(tempId+1)"></span>
+                                        </a>
+                                    </li>
+                                    tempId++;
+                                }
+                            </ul>
+                        }
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+
+    if (Session["User"] == null)
+    {
+        Layout = "~/Views/Shared/_Layoutbflogin.cshtml";
+        ViewBag.left_Col = "left_col mid_column";
+    }
+    else {
+        ViewBag.left_Col = "left_col";
+    }
+}
+@{
+    var issues = ViewBag.Issues as List<Urdu_Magazine.Models.Issue>;
+}
+
+<link href="~/Content/book/component2.css" rel="stylesheet" />
+<style>
+    #modal .modal-dialog {
+        min-width: 80%;
+        min-height:80%;
+    }
+    .modal-body {
+    min-height:500px
+    }
+
+   
+</style>
+
+<div class="left_col" role="main">
+    <div class="container">
+        <br /><br /><br /><br />
+        <div class="main">
+            <ul id="bk-list" class="bk-list clearfix">
+                @foreach (var item in issues)
+                {
+                    <li>
+                        <a @*href="#issue-@(item.Id)"*@ href="@Url.Action("WebView","Issue",new { Id=item.Id})" my-work="get-Articles" issue-id="@item.Id">
+                            <div class="bk-book book-1 bk-bookdefault">
+                                <div class="bk-front">
+                                    <div class="bk-cover-back"></div>
+                                    <div class="bk-cover" style="background-image:url('@(Url.Content(item.Cover))')">
+                                        <div class="magazine_name">
+                                            <h1> @item.Magazine.Name</h1>
+                                        </div>
+                                        <div class="bullet">
+                                            <h1></h1>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="bk-back">
+                                </div>
+
+                                <div class="bk-left">
+                                    <h2>
+                                        <span class="changeDateFormat" style="font-family: Jameel Noori Nastaleeq" date="@item.Issue_date.ToString("yyyy-MM-dd")">@item.Issue_date.ToString("yyyy-MM-dd")</span>
+
+                                    </h2>
+                                </div>
+                                <div class="bk-top"></div>
+                                <div class="bk-bottom"></div>
+                            </div>
+                        </a>
+                        <div class="bk-info">
+                            <button class="btn-default col-md-5">تفصیلات</button>
+                            @if (item.pdfStatus == 1)
+                            {
+                            <a href="@Url.Action("Download", "Issue", new { Id = item.Id })">
+                                <button class="btn-default col-md-5"><i class="fa fa-download" aria-hidden="true"></i> &nbsp;&nbsp;&nbsp;محفوظ </button>
+                            </a>
+                            }
+                            @*<p>ویب پیج یا کسی بھی پروگرام میں اردو لکھئے۔ نیچے دیئے گئے ایڈیٹر یا پھر کیبورڈ کو استعمال کریں۔</p>*@
+                        </div>
+
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    
+</div>
+<div id="modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body">
+            
+                                <iframe id="magIframe" style="background:white; width:100%;min-height:594px"></iframe>
+             </div>
+        
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script src="~/Scripts/rtl/urdukeys.js"></script>
+<script src="~/Content/dateChangeScript/script.js"></script>
+    <script type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $(document).ready(function () {
+            changeDateToUrdu();
+            /********************************************boooook flip ***********************************/
+            var Books = (function () {
+
+                var $books = $('#bk-list > li > div.bk-book'), booksCount = $books.length;
+
+                function init() {
+
+                    $books.each(function () {
+
+                        var $book = $(this),
+                            $other = $books.not($book),
+                            $parent = $book.parent(),
+                            $page = $book.children('div.bk-page'),
+                            $bookview = $parent.find('button.bk-bookview'),
+                            $content = $page.children('div.bk-content'), current = 0;
+
+                        $parent.find('button.bk-bookback').on('click', function () {
+
+                            $bookview.removeClass('bk-active');
+
+                            if ($book.data('flip')) {
+
+                                $book.data({ opened: false, flip: false }).removeClass('bk-viewback').addClass('bk-bookdefault');
+
+                            }
+                            else {
+
+                                $book.data({ opened: false, flip: true }).removeClass('bk-viewinside bk-bookdefault').addClass('bk-viewback');
+
+                            }
+
+                        });
+
+                        $bookview.on('click', function () {
+
+                            var $this = $(this);
+
+                            $other.data('opened', false).removeClass('bk-viewinside').parent().css('z-index', 0).find('button.bk-bookview').removeClass('bk-active');
+                            if (!$other.hasClass('bk-viewback')) {
+                                $other.addClass('bk-bookdefault');
+                            }
+
+                            if ($book.data('opened')) {
+                                $this.removeClass('bk-active');
+                                $book.data({ opened: false, flip: false }).removeClass('bk-viewinside').addClass('bk-bookdefault');
+                            }
+                            else {
+                                $this.addClass('bk-active');
+                                $book.data({ opened: true, flip: false }).removeClass('bk-viewback bk-bookdefault').addClass('bk-viewinside');
+                                $parent.css('z-index', booksCount);
+                                current = 0;
+                                $content.removeClass('bk-content-current').eq(current).addClass('bk-content-current');
+                            }
+
+                        });
+
+                        if ($content.length > 1) {
+
+                            var $navPrev = $('<span class="bk-page-prev">&lt;</span>'),
+                                $navNext = $('<span class="bk-page-next">&gt;</span>');
+
+                            $page.append($('<nav></nav>').append($navPrev, $navNext));
+
+                            $navPrev.on('click', function () {
+                                if (current > 0) {
+                                    --current;
+                                    $content.removeClass('bk-content-current').eq(current).addClass('bk-content-current');
+                                }
+                                return false;
+                            });
+
+                            $navNext.on('click', function () {
+                                if (current < $content.length - 1) {
+                                    ++current;
+                                    $content.removeClass('bk-content-current').eq(current).addClass('bk-content-current');
+                                }
+                                return false;
+                            });
+
+                        }
+
+                    });
+
+                }
+
+                return { init: init };
+
+            })();
+
+            /************************************************ book flip end***************************************************/
+
+
+
+
+
+
+
+            $("body").on('click', 'a[my-work="get-Articles"]', function () {
+
+                @*$('#magIframe').attr('src', "@Url.Action("GetPartialViewWithTurnJs", "Article")" + '?Id=' + $(this).attr('issue-id'));
+                $('#modal').modal({
+                    show: 'false'
+                });*@
+                @*console.log($(this));
+                var params = [
+                 'height=' + screen.height,
+                 'width=' + screen.width * 0.6,
+                 'fullscreen=yes' // only works in IE, but here for completeness
+                ].join(',');
+                // and any other options from
+                // https://developer.mozilla.org/en/DOM/window.open
+
+                var popup = window.open("@Url.Action("GetPartialViewByIssueId", "Article")" + '?Id=' + $(this).attr('issue-id'), 'popup_window', params);
+                popup.moveTo(0, 0);*@
+                // opendialog('/Article/GetPartialViewByIssueId?Id=' + $(this).attr('issue-id'), $(this).attr('magazine-info'));
+            });
+        });
+
+
+
+    </script>}

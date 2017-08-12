@@ -1,0 +1,435 @@
+﻿@model Urdu_Magazine.Models.ArticleViewModel
+@{
+    ViewBag.Title = "Edit";
+    var uploadedMedia = ViewBag.UploadedMedia as List<Urdu_Magazine.Models.UploadMedia>;
+}
+
+<style>
+      #modal .modal-dialog {
+          min-width: 60%;
+      }
+    
+      /*#previewModal .modal-dialog {
+      width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+      }*/
+      iframe{
+          border-width:0px;
+    }
+
+      .custom-modal-class {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          /*padding-top: 100px; /* Location of the box */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+      }
+
+      /* Modal Content (Image) */
+      .modal-content-custom {
+          margin: auto;
+          display: block;
+          width: 80%;
+          max-width: 700px;
+      }
+
+      /* Caption of Modal Image (Image Text) - Same Width as the Image */
+
+
+      /* Add Animation - Zoom in the Modal */
+      .modal-content-custom {
+          -webkit-animation-name: zoom;
+          -webkit-animation-duration: 0.6s;
+          animation-name: zoom;
+          animation-duration: 0.6s;
+      }
+
+      @@-webkit-keyframes zoom {
+          from {
+              -webkit-transform: scale(0);
+          }
+
+          to {
+              -webkit-transform: scale(1);
+          }
+      }
+
+      @@keyframes zoom {
+          from {
+              transform: scale(0);
+          }
+
+          to {
+              transform: scale(1);
+          }
+      }
+
+      /* The Close Button */
+      .close {
+          opacity: 0.6;
+          z-index: 5000;
+          position: absolute;
+          top: 15px;
+          right: 35px;
+          color: #FFFFFF;
+          font-size: 40px;
+          font-weight: bold;
+          transition: 0.3s;
+      }
+
+          .close:hover,
+          .close:focus {
+              opacity: 1;
+              color: #ffffff;
+              text-decoration: none;
+              cursor: pointer;
+          }
+
+      /* 100% Image Width on Smaller Screens */
+      @@media only screen and (max-width: 700px) {
+          .modal-content-custom {
+              width: 80%;
+              height: 90%;
+          }
+
+          .close {
+              top: 0px;
+              right: 0px;
+              font-size: 40px;
+          }
+      }
+</style>
+<link href="~/Content/iCheck/skins/flat/green.css" rel="stylesheet" />
+<div class="left_col" role="main" style="min-height: 700px;">
+    <div class="clearfix"></div>
+    <input hidden id="previewId" value="@Guid.NewGuid()" />
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h1>@Urdu_Magazine.Resources.Resource.EditArticle<small></small></h1>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br />
+                    @using (Html.BeginForm("Edit", "Article", FormMethod.Post, new { @class = "form-horizontal form-label-left", id = "frm", encType = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.HiddenFor(model=>model.Id)
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">
+                                @Html.DisplayNameFor(model => model.name) <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.EditorFor(model => model.name, new
+                           {
+                               htmlAttributes = new
+                               {
+                                   @class = "form-control col-md-7 col-xs-12",
+                                   @dir = "rtl"@*, @onkeypress = "return changeKey(this, event, typeUrdu);"*@ }
+                           })
+                                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="margin-right:25%;margin-top:15px">
+                                <input type="checkbox" id="romanCheckBoxName" class="flat" checked /> @Urdu_Magazine.Resources.Resource.RomanUrduTyping
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="columns">
+                                @Html.DisplayNameFor(model => model.columns) <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.EditorFor(model => model.columns, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12", @dir = "rtl" } })
+                                @Html.ValidationMessageFor(model => model.columns, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="article_data">
+                                @Html.DisplayNameFor(model => model.article_data) <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.TextAreaFor(model => model.article_data, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.article_data, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+
+                                <button type="submit" class="btn btn-success pull-left">@Urdu_Magazine.Resources.Resource.Edit</button>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel" style="font-family:'Jameel Noori Nastaleeq';">@Urdu_Magazine.Resources.Resource.TypeInUrdu</h4>
+            </div>
+            <div class="modal-body">
+                <input type="checkbox" id="romanCheckBox" class="flat" checked />&nbsp;&nbsp;<span style="font-size:25px">@Urdu_Magazine.Resources.Resource.RomanUrduTyping</span>
+    <textarea id="tempInput" class="form-control pull-right " style="font-size:15pt!important;font-family:'Jameel Noori Nastaleeq';" rows="7" @*onkeypress="return changeKey(this, event, typeUrdu);"*@></textarea>
+
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="modal-footer">
+
+                <button id="tempbtn" type="button" data-clipboard-action="cut" data-clipboard-target="#tempInput" data-dismiss="modal" class="btn btn-primary">@Urdu_Magazine.Resources.Resource.CopyAndClose</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Urdu_Magazine.Resources.Resource.Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*<div id="previewModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel" style="font-family:'Jameel Noori Nastaleeq';">@Urdu_Magazine.Resources.Resource.TypeInUrdu</h4>
+                </div>
+                <div class="modal-body">
+                    <iframe id="previewIframe" style="min-width:100%;min-height:1000px;background-color:white" src=""></iframe>
+                    <div class="clearfix"></div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">@Urdu_Magazine.Resources.Resource.Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>*@
+
+<!-- The Modal -->
+<div id="previewModal" class="custom-modal-class">
+
+    <!-- The Close Button -->
+    <span class="close" onclick="document.getElementById('previewModal').style.display = 'none'">&times;</span>
+
+    <!-- Modal Content (The Image) -->
+    <iframe style="min-width:85%;min-height:100%;background-color:white;" id="previewIframe" class="modal-content-custom"></iframe>
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+<script src="~/Content/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/rtl/urdukeys.js"></script>
+
+    <script src="~/Scripts/clipboard.min.js"></script>
+    <script src="~/Content/TextEditor/tinymce.min.js"></script>
+
+    <script>
+    var clipboard = new Clipboard('#tempbtn');
+    clipboard.on('success', function (e) {
+        console.log(e);
+    });
+    clipboard.on('error', function (e) {
+        console.log(e);
+    });
+
+
+    tinyMCE.init({
+
+        mode: "exact",
+        elements: "article_data",
+
+        plugins: [
+    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars fullscreen',
+    'insertdatetime nonbreaking save table codesample code contextmenu directionality',
+    'emoticons paste textcolor colorpicker textpattern imagetools autoresize legacyoutput'
+        ],
+
+        toolbar1: 'paste | insertfile undo redo | styleselect | sizeselect | fontsizeselect fontselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | codesample',
+
+        toolbar2: 'forecolor backcolor emoticons | Urdu searchreplace | PreviewArticle',
+        imagetools_cors_hosts: ['www.tinymce.com', 'pbs.twimg.com'],
+        nonbreaking_force_tab: true,
+        paste_data_images: true,
+        image_list: [
+               @foreach (var item in uploadedMedia) {
+                   <text>
+                       {title:'@item.imgName',value:'@Url.Content(item.imgPath)'},
+                    </text>
+        }
+        ],
+        font_formats: 'Urdu=Jameel Noori Nastaleeq;',
+        content_css: "@Url.Content("~/Content/Editor_Style.css")",
+        //  image_advtab: true,
+        directionality: 'rtl',
+        autoresize_max_height: 450,
+        setup: function (ed) {
+
+            // Add a custom button
+            ed.addButton('Urdu', {
+                title: 'Type in Urdu',
+                text: "اردو",
+
+                // image: '../Content/TextEditor/skins/lightgray/img/anchor.gif',
+                onclick: function () {
+                    $('#modal').modal({
+                        show: 'true'
+                    });
+
+                }
+            });
+            ed.addButton('PreviewArticle', {
+                title: 'Preview Article',
+                text: "پیش نظارہ آرٹیکل",
+
+                // image: '../Content/TextEditor/skins/lightgray/img/anchor.gif',
+                onclick: function () {
+                    $.ajax({
+                        url: "@Url.Action("saveArticleToPreview", "Article")",
+                        type: 'POST',
+                        data: {
+                            Id: $('#previewId').val(),
+                            articleName: $('#name').val(),
+                            articleData: tinyMCE.get('article_data').getContent()
+                        },
+                        success: function (data) {
+                            if (data == "login") {
+                                window.location.href = "@Url.Action("Index", "User")"
+                            }
+                            else if (data == "success") {
+                                // Get the modal
+                                var customModal = document.getElementById('previewModal');
+
+                                $("#previewIframe").attr("src", " @Url.Action("previewArticle", "Article")" + '?Id=' + $("#previewId").val()
+                                    + '&columns=' + $("#columns").val());
+                                // Get the image and insert it inside the modal - use its "alt" text as a caption
+
+                                customModal.style.display = "block";
+                                // Get the <span> element that closes the modal
+                                var span = document.getElementsByClassName("close")[0];
+                                // When the user clicks on <span> (x), close the modal
+                                span.onclick = function () {
+                                    customModal.style.display = "none";
+                                }
+
+
+
+                                @*$("#previewIframe").attr("src", " @Url.Action("previewArticle", "Article")" + '?Id=' + $("#previewId").val()
+                                    + '&columns=' + $("#columns").val());
+
+                                $('#previewModal').modal({
+                                    show: 'true'
+                                });*@
+                                @*var params = [
+                                'height=' + screen.height,
+                                'width=' + screen.width * 0.6,
+                                'fullscreen=yes' // only works in IE, but here for completeness
+                                ].join(',');
+                                // and any other options from
+                                // https://developer.mozilla.org/en/DOM/window.open
+
+                                var popup = window.open("@Url.Action("previewArticle", "Article")" + '?Id=' + $("#previewId").val()
+                                    + '&columns=' + $("#columns").val(), 'popup_window', params);*@
+                                //popup.moveTo(0, 0);
+                                // opendialog('/Article/GetPartialViewByIssueId?Id=' + $(this).attr('issue-id'), $(this).attr('magazine-info'));
+                            }
+                        }
+                    });
+                }
+
+            });
+        }
+    }
+ );
+
+    </script>
+
+
+    @*to enable a text area with only conversion*@
+  <script src="https://www.google.com/jsapi"
+        type="text/javascript">
+</script>
+
+<script type="text/javascript">
+
+    google.load("elements", "1", {
+        packages: "transliteration"
+    });
+
+    function onLoad() {
+        var options = {
+            sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
+            destinationLanguage: [google.elements.transliteration.LanguageCode.URDU],
+            shortcutKey: 'ctrl+g',
+            transliterationEnabled: true
+        };
+
+        var control = new google.elements.transliteration.TransliterationControl(options);
+        control.makeTransliteratable(['tempInput','name']);
+
+        $("#name").css("font-family", "Jameel noori nastaleeq");
+        $("#name").css("font-size", "15pt");
+        $("#tempInput").css("font-family", "Jameel noori nastaleeq");
+        $("#tempInput").css("font-size", "15pt");
+
+        $('#romanCheckBoxName').on('ifChecked', function (event) {
+            $("#name").attr("onkeypress", "");
+            control.enableTransliteration();
+        });
+        $('#romanCheckBoxName').on('ifUnchecked', function (event) {
+            control.disableTransliteration();
+            $("#name").attr("onkeypress", "return changeKey(this, event, typeUrdu);");
+        });
+
+
+
+        $('#romanCheckBox').on('ifChecked', function (event) {
+            $("#tempInput").attr("onkeypress", "");
+            control.enableTransliteration();
+        });
+        $('#romanCheckBox').on('ifUnchecked', function (event) {
+            control.disableTransliteration();
+            $("#tempInput").attr("onkeypress", "return changeKey(this, event, typeUrdu);");
+        });
+    }
+    google.setOnLoadCallback(onLoad);
+
+</script>
+    @*to enable a text area with only conversion*@
+
+
+
+}

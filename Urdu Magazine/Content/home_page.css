@@ -1,0 +1,29 @@
+﻿.headcontent {
+    width:100%;
+    height: 848px;
+   
+    /*background-image: url(../images/check.jpg);
+    background-repeat:no-repeat;*/
+    overflow:hidden;
+    position:relative;
+    background-color:#F2D19B;
+}
+.bgimage{
+    height:848px;
+    width:100%;
+    position:relative;
+}
+.light1{
+    width: 340px;
+    height: 107%;
+    background-image: url(../images/300.png);
+    background-repeat: no-repeat;
+    background-position-y: -440px;
+    background-size: cover;
+    margin-left: 67px;
+    float: right;
+    
+    position: absolute;
+    top: 0px;
+}
+

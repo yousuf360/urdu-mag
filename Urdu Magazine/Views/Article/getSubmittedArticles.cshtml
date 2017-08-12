@@ -1,0 +1,123 @@
+﻿@model List<Urdu_Magazine.Models.Article>
+<div class="">
+    <form id="frm">
+        <input hidden id="issueid" name="issueid" value="@ViewBag.issueId"/>
+          
+            @foreach (var item in Model)
+            {
+                <input hidden name="AllArticleIds" value="@item.Id" />
+
+                       <span class="button-checkbox col-md-12">
+                            <button type="button" class="btn" data-color="success"><span style="padding-left:20px; padding-right:20px">@item.name</span> (@item.User.email)</button>
+                           @if (item.Available_To_Select)
+                           {
+                               <input type="checkbox" class="hidden"  value="@item.Id" name="ArticlesChecked">
+                           }
+                           else
+                           {
+                            <input type="checkbox" class="hidden" value="@item.Id" name="ArticlesChecked" checked>
+                           }
+                           <a href="#" my-work="get-Articles"  article-id="@item.Id">@Urdu_Magazine.Resources.Resource.ReadArticle</a>
+                        </span>
+                        
+                        <div class="clearfix"></div>
+            }
+
+    </form>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("body").on('click', 'a[my-work="get-Articles"]', function () {
+            var customModal = document.getElementById('previewModal');
+            $("#previewIframe").attr("src", "@Url.Action("getArticleToRead", "Article")" + '?Id=' + $(this).attr('article-id'));
+
+            customModal.style.display = "block";
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                customModal.style.display = "none";
+            }
+
+            @*console.log($(this));
+            var params = [
+             'height=' + screen.height,
+             'width=' + screen.width * 0.6,
+             'fullscreen=yes' // only works in IE, but here for completeness
+            ].join(',');
+            // and any other options from
+            // https://developer.mozilla.org/en/DOM/window.open
+
+            var popup = window.open("@Url.Action("getArticleToRead", "Article")" + '?Id=' + $(this).attr('article-id'), 'popup_window', params);
+            popup.moveTo(0, 0);
+            // opendialog('/Article/GetPartialViewByIssueId?Id=' + $(this).attr('issue-id'), $(this).attr('magazine-info'));*@
+        });
+    });
+    $(function () {
+
+        $('.button-checkbox').each(function () {
+
+            // Settings
+            var $widget = $(this),
+                $button = $widget.find('button'),
+                $checkbox = $widget.find('input:checkbox'),
+                color = $button.data('color'),
+                settings = {
+                    on: {
+                        icon: 'fa fa-check'
+                    },
+                    off: {
+                        icon: 'fa fa-unchecked'
+                    }
+                };
+
+            // Event Handlers
+            $button.on('click', function () {
+                $checkbox.prop('checked', !$checkbox.is(':checked'));
+                $checkbox.triggerHandler('change');
+                updateDisplay();
+            });
+            $checkbox.on('change', function () {
+                updateDisplay();
+            });
+
+            // Actions
+            function updateDisplay() {
+                var isChecked = $checkbox.is(':checked');
+
+                // Set the button's state
+                $button.data('state', (isChecked) ? "on" : "off");
+
+                // Set the button's icon
+                $button.find('.state-icon')
+                    .removeClass()
+                    .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+                // Update the button's color
+                if (isChecked) {
+                    $button
+                        .removeClass('btn-default')
+                        .addClass('btn-' + color + ' active');
+                }
+                else {
+                    $button
+                        .removeClass('btn-' + color + ' active')
+                        .addClass('btn-default');
+                }
+            }
+
+            // Initialization
+            function init() {
+
+                updateDisplay();
+
+                // Inject the icon if applicable
+                if ($button.find('.state-icon').length == 0) {
+                    $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+                }
+            }
+            init();
+        });
+    });
+</script>

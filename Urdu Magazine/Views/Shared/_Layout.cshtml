@@ -1,0 +1,474 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css-rtl")
+   @*@Styles.Render("~/Content/font-awesome")*@
+    <link href="~/Content/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    @Styles.Render("~/Content/malihu-custom-scrollbar-plugin")
+    @Scripts.Render("~/bundles/modernizr")
+        <link href="~/Content/pnotify/pnotify.custom.min.css" rel="stylesheet" />
+    <style>
+        .Noti {
+            overflow-y: scroll !important;
+           height: 200px !important;
+        }
+        /* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.loader {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('https://d13yacurqjgara.cloudfront.net/users/107759/screenshots/2436386/copper-loader.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .loader {
+    display: block;
+}
+
+    </style>
+</head>
+@{
+    var User = Session["User"] as Urdu_Magazine.Models.User;
+}
+@{    var page = ((RazorView)ViewContext.View).ViewPath;}
+
+<body class='@((page.Equals("~/Views/Issue/WebView.cshtml")) ? "nav-sm" : "nav-md")'>
+   
+    <div class="container body" style="max-width:100%">
+        <div class="main_container">
+
+            <div class="col-md-3 right_col menu_fixed">
+                <div class="right_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="@Url.Action("Index", "Home")" class="site_title"><i class="fa fa-book"></i> <span>@Urdu_Magazine.Resources.Resource.UrduMagazine</span></a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- /menu profile quick info -->
+
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div>
+                            <h3>&nbsp;</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a href="@Url.Action("Index", "Home")">@Urdu_Magazine.Resources.Resource.ShowAllMagazines</a>
+                                </li>
+
+                                <li>
+
+                                    <a><i class="fa fa-home"></i> @Urdu_Magazine.Resources.Resource.YourMagazines <span class="fa fa-chevron-down"></span></a>
+                                    
+                                    <ul class="nav child_menu">
+                                        @*<li><a href="/Magazine/Index">@Urdu_Magazine.Resources.Resource.ShowAllMagazines</a></li>*@
+                                        <li><a href="@Url.Action("Create", "Magazine")">@Urdu_Magazine.Resources.Resource.EnterNewMagazine</a></li>
+                                        <li>
+                                            <a>@Urdu_Magazine.Resources.Resource.IssueDisplay<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="@Url.Action("Create", "Issue")">@Urdu_Magazine.Resources.Resource.CreateNewIssue</a>
+                                                </li>
+                                                <li class="sub_menu">
+                                                    <a href="@Url.Action("CallForArticles", "Issue")">@Urdu_Magazine.Resources.Resource.CallForArticles</a>
+                                                </li>
+                                                <li>
+                                                    <a href="@Url.Action("publishIssue", "Issue")">@Urdu_Magazine.Resources.Resource.PublishAnIssue</a>
+                                                </li>
+                                                @*<li>
+                                                    <a href="#level2_2">@Urdu_Magazine.Resources.Resource.ShowAllIssues</a>
+                                                </li>*@
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-edit"></i> @Urdu_Magazine.Resources.Resource.YourArticles <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="@Url.Action("List", "Article")">@Urdu_Magazine.Resources.Resource.AllArticles</a></li>
+                                        <li><a href="@Url.Action("Create", "Article")">@Urdu_Magazine.Resources.Resource.CreateArticle</a></li>
+                                        <li><a href="@Url.Action("SubmitArticle", "Article")">@Urdu_Magazine.Resources.Resource.SubmitArticle</a></li>                             
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("UploadMedia", "Home")"><i class="fa fa-cloud-upload"></i> @Urdu_Magazine.Resources.Resource.UploadMedia</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                       
+
+                    </div>
+                    <!-- /sidebar menu -->
+                    <!-- /menu footer buttons -->
+               
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-left">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    @if (User.profile_picture == null)
+                                    {
+                                        <img id="userProfileOnNavBar" username="@User.full_name" src="@Url.Content("~/Delete Me Later/10703961_790883610958096_1037989544213840837_n.jpg")" />
+                                    }
+                                    else
+                                    {
+                                        <img id="userProfileOnNavBar" src="@Url.Content(User.profile_picture)" />
+
+
+                                    }
+                                    @User.full_name
+                                    <span class="fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-left">
+                                    @*<li><a href="javascript:;"> @Urdu_Magazine.Resources.Resource.Profile</a></li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="badge bg-red pull-left">50%</span>
+                                            <span>@Urdu_Magazine.Resources.Resource.Settings</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="javascript:;">@Urdu_Magazine.Resources.Resource.Help</a></li>*@
+                                    
+                                    <li>
+                                        <a href="@Url.Action("EditProfile", "User")"><i class="fa fa-user fa-flip-horizontal pull-left"></i> @Urdu_Magazine.Resources.Resource.YourProfile</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("LogOut", "User")"><i class="fa fa-sign-out fa-flip-horizontal pull-left"></i> @Urdu_Magazine.Resources.Resource.LogOut</a>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+
+                            <li role="presentation" class="dropdown">
+                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-green"></span>
+                                </a>
+                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list Noti" role="menu">
+
+                                    @{Html.RenderAction("loadComments", "User",new { pageIndex = 0,pageSize=3});}
+                                    <li id="progress" style="display:none">
+                                        <h4>Loading...</h4>
+                                    </li>
+                                    </ul>
+                                    @*<ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+
+                                    <li>
+                                    <a>
+                                    <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                                    <span>
+                                    <span>John Smith</span>
+                                    <span class="time">3 mins ago</span>
+                                    </span>
+                                    <span class="message">
+                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                    </span>
+                                    </a>
+                                    </li>
+                                    <li>
+                                    <span class="message">
+                                    @Urdu_Magazine.Resources.Resource.NoNotificationYet
+                                    </span>
+                                    </li>
+                                    </ul>*@
+</li>
+                        </ul>
+              </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <div id="changingContent">
+
+                @RenderBody()
+            </div>
+            <footer>
+                <div class="pull-left">
+                   @Urdu_Magazine.Resources.Resource.CompanyLink  <a href="https://www.facebook.com/Code2Code-368406660199520/?skip_nax_wizard=true"></a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+    <div class="loader"><!-- Place at bottom of page --></div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap-rtl")
+    @Scripts.Render("~/bundles/Custom-rtl")
+    @Scripts.Render("~/bundles/malihu-custom-scrollbar-plugin")
+ 
+
+        <script src="~/Scripts/jquery.jscroll.js"></script>
+    <!--SignalR implementation-->
+    <script src="~/Scripts/jquery.signalR-2.1.2.min.js"></script>
+    <!--Reference the autogenerated SignalR hub script. -->
+    <script src="~/signalr/hubs"></script>
+    <script src="@Url.Content("~/Content/pnotify/pnotify.custom.min.js")"></script>
+    <script>
+        $(function () {
+            var liveConnectivity = $.connection.liveConnectivity;
+
+
+
+
+            liveConnectivity.client.showNotification = function (who, type, profilepic, date, link) {
+                console.log("OHOHOHOHO!!");
+                if(profilepic=="default"){
+                    profilepic = "~/Delete Me Later/10703961_790883610958096_1037989544213840837_n.jpg"
+                }
+                var message="";
+                if (type == 1)
+                {
+                    message =  who +  " " + '@Urdu_Magazine.Resources.Resource.CommentedNotificationText';
+                }
+                else if (type == 2)
+                {
+                    message = who + " " + '@Urdu_Magazine.Resources.Resource.CallForArticleNotificationText';
+                }
+
+                else if (type == 3)
+                {
+                    message = who + " " + '@Urdu_Magazine.Resources.Resource.PublishNotificationText';
+                }
+                else if (type == 4)
+                {
+                    message = who + " " + '@Urdu_Magazine.Resources.Resource.SubmittedNotificationText';
+                }
+                else if (type == 5)
+                {
+                    message = who + " " + '@Urdu_Magazine.Resources.Resource.AcceptedNotificationText';
+                }
+                var html = '<li>' +
+               '<a href="' + link.replace('~', '@Url.Content("~/")') + '">' +
+                    '<span class="image"><img src="' + profilepic.replace('~', '@Url.Content("~/")') + '" alt="Profile Image" /></span>' +
+
+                            '<span>' +
+                        '<span class="time">' + date + '</span>' +
+                                '<br />' +
+                    '</span>' +
+                    '<span class="message">' +
+                    message
+
+                    '</span>' +
+                '</a>' +
+           '</li>';
+                    $('.Noti').prepend(html);
+                    var pNotifyType = 'info';
+                    if(type==5){
+                        pNotifyType = 'success';
+                    }
+                    var notice = new PNotify({
+                        title: 'اہم اطلاع',
+                        text: message,
+                        type: pNotifyType
+                    });
+                    notice.get().css('cursor', 'pointer').click(function (e) {
+                        if ($(e.target).is('.ui-pnotify-closer *, .ui-pnotify-sticker *')) return;
+                        window.location.href = link.replace('~', '@Url.Content("~/")');
+                    });
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //ForComments
+            @if (page.Equals("~/Views/Issue/WebView.cshtml"))
+                {
+                <text>
+                    liveConnectivity.client.addComment = function(from, profilePic, commentText, date) {
+                        if (profilePic == "default") {
+                            profilePic = "~/Delete Me Later/10703961_790883610958096_1037989544213840837_n.jpg"
+                        }
+
+                $('#appendCommentsHere').append('<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:center; color:#d3d3d3"><hr style="border-bottom: solid 0.5px #d3d3d3 !important;"/></div>' +
+                                   '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">' +
+                                   '<ul class="media-list">' +
+                                       '<li class="media">' +
+                                           '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">' +
+                                           '<div class="col-lg-1 col-md-2 col-sm-2 col-xs-2 media-img">' +
+                                               '<img src="' + profilePic.replace('~', '@Url.Content("~/")') + '" style="width:75px;height:75px" class="img-circle">' +
+                                           '</div>'
+
+                                               + '<div class="col-lg-11 col-md-10 col-sm-10 col-xs-10 media-body" style="padding-top:5px; ">'
+                                                   + '<div class="col-md-9 media-name" style="padding-top:6px;">'
+                                                       + '<h4 class="media-heading" style="color:Black">'
+                                                           + '<a href="#" style="font-family:\'Jameel Noori Nastaleeq\';font-size:25px">' + from + '</a>'
+                                                           + '<br>'
+                                                           + '<small>'
+                                                               + date
+                                                           + '</small>'
+                                                       + '</h4>'
+                                                   + '</div>'
+                                                   + '<div class="col-md-11">'
+                                                       + '<p style="color:black">'
+                                                         + commentText
+                                                       + '</p>'
+                                                   + '</div>'
+                                               + '</div>'
+
+                                          + '</div>'
+
+                                       + '</li>'
+
+                                   + '</ul>'
+                                   + '</div>');
+                    }
+            </text>
+
+
+
+
+
+                }
+
+
+            $.connection.hub.start().done(function () {
+
+
+                //forcomments
+                @if (page.Equals("~/Views/Issue/WebView.cshtml")) {
+                    <text>liveConnectivity.server.addMeToWebViewRoom($('#issueIdForLiveConnectivity').val());</text>
+                    }
+
+
+
+
+                liveConnectivity.server.joinUserDic('@User.id');
+
+
+
+                });
+
+
+            });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <script>
+        
+            $(document).ready(function () {
+             
+                var pageSize = 3;
+                var pageIndex = 1;
+                var fetchData = true;
+                $('.Noti').bind('scroll', function () {
+                    if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+                        GetData();
+                    }
+                })
+                function GetData() {
+                    if (fetchData) {
+                        console.log("why?");
+                        fetchData = false;
+                        $.ajax({
+                            type: 'GET',
+                            url: '@Url.Action("loadComments","User")',
+                            data: { "pageindex": pageIndex, "pagesize": pageSize },
+
+                            success: function (data) {
+                                if (data != null) {
+                                    if (data == "login") {
+                                        window.location.href = "@Url.Action("Index", "User")"
+                                    }
+                                    else if (data == "finished") {
+                                        console.log('finsihe');
+                                        return;
+                                    }
+                                    else {
+                                        $("#menu1").append(data);
+                                        fetchData = true;
+                                        pageIndex++;
+                                    }
+                                }
+                            },
+                            beforeSend: function () {
+                                $("#progress").show();
+                            },
+                            complete: function () {
+                                $("#progress").hide();
+                            },
+                            error: function () {
+                                alert("Error while retrieving data!");
+                            }
+                        });
+                    }
+                }
+
+              
+            });
+        </script>
+   <script>
+       $body = $("body");
+
+       $(document).on({
+           ajaxStart: function () { $body.addClass("loading"); },
+           ajaxStop: function () { $body.removeClass("loading"); }
+       });
+   </script>
+
+    @RenderSection("scripts", required: false)
+   
+  
+
+
+
+</body>
+</html>

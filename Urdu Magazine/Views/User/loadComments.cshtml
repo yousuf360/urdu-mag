@@ -1,0 +1,72 @@
+﻿@model List<Urdu_Magazine.Models.get_notification_Result>
+
+    @*<li>
+            <a>
+                <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                <span>
+                    <span>John Smith</span>
+                    <span class="time">3 mins ago</span>
+                </span>
+                <span class="message">
+                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                </span>
+            </a>
+        </li>*@
+    @*<li>
+        <span class="message">
+            @Urdu_Magazine.Resources.Resource.NoNotificationYet
+        </span>
+    </li>*@
+
+   
+        @foreach (var item in Model)
+        {
+
+            <li>
+               
+                <a href="@((item.link==null)?"#":Url.Content(item.link))">
+@if (item.profile_picture == null)
+{
+                    <span class="image"><img src="~/Delete Me Later/10703961_790883610958096_1037989544213840837_n.jpg" alt="Profile Image" /></span>
+}
+else
+{
+
+    <span class="image"><img src="@Url.Content(item.profile_picture)" alt="Profile Image" /></span>
+}           
+                            <span>
+                        @*<span>@item.full_name</span>*@
+                        <span class="time">@item.date</span>
+                                <br />
+                    </span>
+                    <span class="message">
+                       @{
+                           if (item.type == 1)
+                           {
+                              @(item.full_name +  " " + Urdu_Magazine.Resources.Resource.CommentedNotificationText)
+                           }
+                           else if (item.type == 2)
+                           {
+                            @(item.full_name + " " + Urdu_Magazine.Resources.Resource.CallForArticleNotificationText)
+                           }
+
+                           else if (item.type == 3)
+                           {
+                            @(item.full_name + " " + Urdu_Magazine.Resources.Resource.PublishNotificationText)
+                           }
+                           else if (item.type == 4)
+                           { 
+                            @(item.full_name + " " + Urdu_Magazine.Resources.Resource.SubmittedNotificationText)
+                           }
+                           else if (item.type == 5)
+                           {
+                            @(item.full_name + " " + Urdu_Magazine.Resources.Resource.AcceptedNotificationText)
+                                                                        }
+                           }
+                    </span>
+                </a>
+            </li>
+                           }
+        
+
+

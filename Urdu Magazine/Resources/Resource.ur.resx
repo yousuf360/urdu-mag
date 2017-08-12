@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>ایکشن</value>
+  </data>
+  <data name="ArticleDataDisplay" xml:space="preserve">
+    <value>مضمون</value>
+  </data>
+  <data name="ArticleNameDisplay" xml:space="preserve">
+    <value>مضمون کا نام</value>
+  </data>
+  <data name="Call" xml:space="preserve">
+    <value>کال کریں</value>
+  </data>
+  <data name="CallForArticles" xml:space="preserve">
+    <value>مضامین کے لئے درخواست</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>محفوظ کریں</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>بند کریں</value>
+  </data>
+  <data name="ConfirmPasswordDisplay" xml:space="preserve">
+    <value>پاس ورڈ کی توثیق</value>
+  </data>
+  <data name="ConfirmPasswordError" xml:space="preserve">
+    <value>پاس ورڈ کی توثیق ناکام رہا ہے، پھر سے ٹائپ کریں!</value>
+  </data>
+  <data name="CopyAndClose" xml:space="preserve">
+    <value>کاپی کریں اور بند کریں</value>
+  </data>
+  <data name="CreateArticle" xml:space="preserve">
+    <value>مضمون بنائیں</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>تاریخ</value>
+  </data>
+  <data name="digit1" xml:space="preserve">
+    <value>١</value>
+  </data>
+  <data name="digit2" xml:space="preserve">
+    <value>٢</value>
+  </data>
+  <data name="digit3" xml:space="preserve">
+    <value>٣</value>
+  </data>
+  <data name="EmailDisplay" xml:space="preserve">
+    <value>ای میل</value>
+  </data>
+  <data name="EmailRequiredError" xml:space="preserve">
+    <value>ای میل درج کریں</value>
+  </data>
+  <data name="EmailValidError" xml:space="preserve">
+    <value>برائے مہربانی قابل قبول ای میل ایڈریس لکھیں.</value>
+  </data>
+  <data name="ErrorDateField" xml:space="preserve">
+    <value>.فیلڈ کو ایک تاریخ ہونا چاہیے</value>
+  </data>
+  <data name="InvalidNumber" xml:space="preserve">
+    <value>نمبر ۱ سے ٣  کے درمیان میں ہونا چاہئے</value>
+  </data>
+  <data name="IssueDateDisplay" xml:space="preserve">
+    <value>تاریخ اجراء</value>
+  </data>
+  <data name="IssueDisplay" xml:space="preserve">
+    <value>اجراء</value>
+  </data>
+  <data name="LogInButton" xml:space="preserve">
+    <value>لاگ ان</value>
+  </data>
+  <data name="LogInDisplay" xml:space="preserve">
+    <value>لاگ ان کریں</value>
+  </data>
+  <data name="Magazine" xml:space="preserve">
+    <value>میگزین</value>
+  </data>
+  <data name="MagazineDisplay" xml:space="preserve">
+    <value>میگزین کا نام</value>
+  </data>
+  <data name="MagazineNameAlreadyUsed" xml:space="preserve">
+    <value>آپ پہلے ہی اس نام کو استعمال کرچکے ہیں</value>
+  </data>
+  <data name="NumberOfColumnsDisplay" xml:space="preserve">
+    <value>کالم کی تعداد</value>
+  </data>
+  <data name="NumberOfSubmissions" xml:space="preserve">
+    <value>گذارشات کی تعداد</value>
+  </data>
+  <data name="PasswordDisplay" xml:space="preserve">
+    <value>پاس ورڈ</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>براہ مہربانی، مطلوبہ فیلڈ بھرنے!</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>محفوظ کریں</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>تلاش کریں</value>
+  </data>
+  <data name="SearchForMagazines" xml:space="preserve">
+    <value>رسالے کے لئے تلاش کریں</value>
+  </data>
+  <data name="SeeDetails" xml:space="preserve">
+    <value>تفصیلات دیکھیں</value>
+  </data>
+  <data name="SelectDisplay" xml:space="preserve">
+    <value>منتخب کریں</value>
+  </data>
+  <data name="SelectError" xml:space="preserve">
+    <value>براہ مہربانی فہرست میں سے ایک آئٹم منتخب کریں</value>
+  </data>
+  <data name="SelectIssue" xml:space="preserve">
+    <value>اجراء منتخب کریں</value>
+  </data>
+  <data name="SignUpButton" xml:space="preserve">
+    <value>سائن اپ</value>
+  </data>
+  <data name="SignUpDisplay" xml:space="preserve">
+    <value>سائن اپ کریں</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>مرحلہ نمبر ١</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>مرحلہ نمبر ٢</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>مرحلہ نمبر ٣</value>
+  </data>
+  <data name="StopCall" xml:space="preserve">
+    <value>سٹاپ کال</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>جمع کرائیں</value>
+  </data>
+  <data name="SubmitArticle" xml:space="preserve">
+    <value>مضمون جمع کرانے</value>
+  </data>
+  <data name="SubmittedArticlesListDisplay" xml:space="preserve">
+    <value>پیش مضامین کی فہرست</value>
+  </data>
+  <data name="TypeInUrdu" xml:space="preserve">
+    <value>اردو میں ٹائپ کریں</value>
+  </data>
+  <data name="WebSiteTitle" xml:space="preserve">
+    <value> ای میگزین</value>
+  </data>
+  <data name="AlreadyAMember" xml:space="preserve">
+    <value>پہلے سے ہی رکن؟</value>
+  </data>
+  <data name="ChooseArticles" xml:space="preserve">
+    <value>مضامین کا انتخاب کریں</value>
+  </data>
+  <data name="CompanyLink" xml:space="preserve">
+    <value> کی طرف سے اردو میگزین Code2Code</value>
+  </data>
+  <data name="CreateAnAccount" xml:space="preserve">
+    <value>اکاؤنٹ بنائیں</value>
+  </data>
+  <data name="CreateNewIssue" xml:space="preserve">
+    <value>اجراء بنائیں</value>
+  </data>
+  <data name="EnterNewMagazine" xml:space="preserve">
+    <value>نیا میگزین درج کریں</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>مدد</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>لاگ آوٹ</value>
+  </data>
+  <data name="NewToSite" xml:space="preserve">
+    <value>سائٹ پر نئے ہیں؟</value>
+  </data>
+  <data name="NoNotificationYet" xml:space="preserve">
+    <value>کوئی نوٹیفکیشن نہیں</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>پروفائل</value>
+  </data>
+  <data name="Publish" xml:space="preserve">
+    <value>شائع کریں</value>
+  </data>
+  <data name="PublishAnIssue" xml:space="preserve">
+    <value>اجراء شائع کریں</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>ترتیبات</value>
+  </data>
+  <data name="ShowAllArticles" xml:space="preserve">
+    <value>تمام مضامین دکھائیں</value>
+  </data>
+  <data name="ShowAllIssues" xml:space="preserve">
+    <value>تمام اجراء دکھائیں</value>
+  </data>
+  <data name="ShowAllMagazines" xml:space="preserve">
+    <value>تمام میگزین دکھائیں</value>
+  </data>
+  <data name="TermsAndCondition" xml:space="preserve">
+    <value>© 2016 تمام حقوق محفوظ ہیں. اردو میگزین. پرائیویسی اور شرائط</value>
+  </data>
+  <data name="UrduMagazine" xml:space="preserve">
+    <value>اردو میگزین</value>
+  </data>
+  <data name="YourArticles" xml:space="preserve">
+    <value>آپ کے مضامین</value>
+  </data>
+  <data name="YourMagazines" xml:space="preserve">
+    <value>آپ کے میگزین</value>
+  </data>
+  <data name="GetStarted" xml:space="preserve">
+    <value>اغاز کریں</value>
+  </data>
+  <data name="CannotUploadThisFileTryAgain" xml:space="preserve">
+    <value>یہ فائل اپ لوڈ نہیں کی جا سکتی. دوبارہ کوشش کریں.</value>
+  </data>
+  <data name="CategoryOfArticle" xml:space="preserve">
+    <value>مضمون کے زمرے</value>
+  </data>
+  <data name="Finish" xml:space="preserve">
+    <value>آخیر کرنا</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>اگلا</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>پچھلا</value>
+  </data>
+  <data name="EmailAlreadyExistsError" xml:space="preserve">
+    <value>ای میل پہلے سے موجود ہے. ایک مختلف ای میل درج کریں.</value>
+  </data>
+  <data name="LoginFailedWithGivenInformation" xml:space="preserve">
+    <value>دی گئی معلومات ساتھ لاگ ان ناکام ہوگئی .</value>
+  </data>
+  <data name="IssuesCover" xml:space="preserve">
+    <value>اجراء کور</value>
+  </data>
+  <data name="MagazinesCover" xml:space="preserve">
+    <value>میگزین کور</value>
+  </data>
+  <data name="NoArticlesSubmittedForThisIssueYet" xml:space="preserve">
+    <value>کوئی مضامین نہیں جمع کرائے ابھی تک اس اجرا کیلئے </value>
+  </data>
+  <data name="Published" xml:space="preserve">
+    <value>اشاعت شدہ</value>
+  </data>
+  <data name="Unpublish" xml:space="preserve">
+    <value>اپرکاشت</value>
+  </data>
+  <data name="ReadArticle" xml:space="preserve">
+    <value>مضمون پڑھیں</value>
+  </data>
+  <data name="ArticlesSumbissionDate" xml:space="preserve">
+    <value>مضامین جمع کرانے کی تاریخ</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>فہرست</value>
+  </data>
+  <data name="AllArticles" xml:space="preserve">
+    <value>تمام مضامین</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>تصیح</value>
+  </data>
+  <data name="Unpublished" xml:space="preserve">
+    <value>شائع نہیں</value>
+  </data>
+  <data name="EditArticle" xml:space="preserve">
+    <value>آرٹیکل میں ترمیم کریں</value>
+  </data>
+  <data name="ArticleDeleteConfirmationMessage" xml:space="preserve">
+    <value>کیا آپ واقعی اس مضمون کو حذف کرنا چاہتے ہیں!</value>
+  </data>
+  <data name="Confirmation" xml:space="preserve">
+    <value>توثیق</value>
+  </data>
+  <data name="Writer" xml:space="preserve">
+    <value>مصنف</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>پورا نام</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>تبصرے</value>
+  </data>
+  <data name="RomanUrduTyping" xml:space="preserve">
+    <value>رومن اردو ٹائپنگ</value>
+  </data>
+  <data name="Ads" xml:space="preserve">
+    <value>اشتھارات</value>
+  </data>
+  <data name="ChooseAds" xml:space="preserve">
+    <value>اشتھارات منتخب کریں</value>
+  </data>
+  <data name="UploadMedia" xml:space="preserve">
+    <value>اپ لوڈ میڈیا</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>فائل کا نام</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>فائل منتخب کریں</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>ریٹ</value>
+  </data>
+  <data name="FullPage" xml:space="preserve">
+    <value>مکمل صفحے کے</value>
+  </data>
+  <data name="InArticle" xml:space="preserve">
+    <value>مضمون میں</value>
+  </data>
+  <data name="YourProfile" xml:space="preserve">
+    <value>آپ کی پروفائل</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>موجودہ پاس ورڈ</value>
+  </data>
+  <data name="NewPasswordDisplay" xml:space="preserve">
+    <value>نیا پاس ورڈ</value>
+  </data>
+  <data name="ProfilePicture" xml:space="preserve">
+    <value>پروفائل تصویر</value>
+  </data>
+  <data name="PasswordDoesNotMatch" xml:space="preserve">
+    <value>پاس ورڈ میچ نہیں کرتا</value>
+  </data>
+  <data name="MagazinesCategories" xml:space="preserve">
+    <value>میگزین کے زمرے</value>
+  </data>
+  <data name="AcceptedNotificationText" xml:space="preserve">
+    <value>نے آپ کے مضمون کو قبول کیا ہے</value>
+  </data>
+  <data name="CallForArticleNotificationText" xml:space="preserve">
+    <value>نے مضامین کے لئے درخواست کی ہے</value>
+  </data>
+  <data name="CommentedNotificationText" xml:space="preserve">
+    <value>نے آپ کے اجراء پر بھی تبصرہ کیا</value>
+  </data>
+  <data name="PublishNotificationText" xml:space="preserve">
+    <value>نے اجراء شائع کیا ہے</value>
+  </data>
+  <data name="SubmittedNotificationText" xml:space="preserve">
+    <value>نے آپ کے اجراء کے لئے مضمون پیش کر دیا ہے</value>
+  </data>
+  <data name="April" xml:space="preserve">
+    <value>اپریل</value>
+  </data>
+  <data name="August" xml:space="preserve">
+    <value>اگست</value>
+  </data>
+  <data name="December" xml:space="preserve">
+    <value>دسمبر</value>
+  </data>
+  <data name="February" xml:space="preserve">
+    <value>فروری</value>
+  </data>
+  <data name="January" xml:space="preserve">
+    <value>جنوری</value>
+  </data>
+  <data name="July" xml:space="preserve">
+    <value>جولائی</value>
+  </data>
+  <data name="June" xml:space="preserve">
+    <value>جون</value>
+  </data>
+  <data name="March" xml:space="preserve">
+    <value>مارچ</value>
+  </data>
+  <data name="May" xml:space="preserve">
+    <value>مئی</value>
+  </data>
+  <data name="November" xml:space="preserve">
+    <value>نومبر</value>
+  </data>
+  <data name="October" xml:space="preserve">
+    <value>اکتوبر</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>ستمبر</value>
+  </data>
+</root>
